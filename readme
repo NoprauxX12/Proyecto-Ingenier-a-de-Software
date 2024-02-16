@@ -1,0 +1,8 @@
+instructions:
+1. change files's name to .env-change to .env.
+2. change data in the variables:
+DB_HOST=localhost
+DB_USER=myuser
+DB_PASS=mypassword
+
+yo your database own data in the .env file.
