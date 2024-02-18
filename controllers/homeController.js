@@ -1,4 +1,3 @@
-const dbCredentials = require("../model/dbCredentials");
 exports.homeCOntroller = (req, res, next) =>{
     console.log(req.session.user);
     if(req.session.user){

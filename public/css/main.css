@@ -5,6 +5,10 @@ body{
 
 }
 
+label{
+  font-weight: 500;
+}
+
 .freelancers__h2{
     margin: 3rem 3rem;
 }
@@ -207,8 +211,8 @@ body{
 
   .btne:hover,
   .btne:active {
-
-    background-color: #3D00B7;
+    border: none;
+    background-color: #55ACEE;
     color: white;
   }
   
@@ -226,8 +230,12 @@ body{
     text-decoration: none;
     color: #3D00B7;
     margin-right: 30px;
-    font-family: 'Work Sans', sans-serif;
     font-weight: 700;
+    font-family: "Fredoka", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+   
   }
   /* estilo del mini navegador */
 
@@ -237,7 +245,7 @@ body{
   .search-container input[type="search"] {
     border-radius: 20px; /* Ajustar el radio para que se vea bien con el icono */
     padding-right: 40px; /* Espacio para el icono */
-    width: 590px;
+    width: 500px;
   }
   .search-container button {
     position: absolute;

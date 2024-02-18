@@ -4,5 +4,7 @@ instructions:
 DB_HOST=localhost
 DB_USER=myuser
 DB_PASS=mypassword
+DATABASE="el_que_sabe"
+PORT=port_to_use
 
-yo your database own data in the .env file.
+to your database own data in the .env file.

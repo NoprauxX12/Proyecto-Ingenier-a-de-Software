@@ -1,12 +1,12 @@
 const express= require("express");
+const usersControllers = require("../controllers/userControllers")
 const router = express.Router();
 
-router.post("/log-in", (req, res, next)=>{
-    //TODO: implement the log in methot 
-});
+router.get("/log-in", usersControllers.Login);
 
-router.post("/sign-up", (req, res, next)=>{
-    //TODO: implement the sign up methot
-});
+router.get("/sign-up", usersControllers.getSignUp);
+
+router.post("/sign-up", usersControllers.postSignUp);
 
 module.exports= router;
+

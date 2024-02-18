@@ -8,7 +8,5 @@ module.exports=mysql.createPool({
     password: process.env.DB_PASS,
     database: process.env.DATABASE,
     port:parseInt(process.env.PORT),
-    waitForConnections: true,
-    connectionLimit: 10
-    
+    waitForConnections: true
 })

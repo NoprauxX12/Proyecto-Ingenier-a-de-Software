@@ -1,9 +1,11 @@
 const mysqlCon = require("./util/mysqlConnexion")
 
-mysqlCon.query("SELECT * FROM department", (err, res, fields)=>{
+cosa = mysqlCon.query("SELECT * FROM town", (err, res, fields)=>{
     if(err){
         console.log(err);
     }else{
-        console.log(res);
+        for(let town of res){
+            console.log(town.name);
+        }
     }
 })

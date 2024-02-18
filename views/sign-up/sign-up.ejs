@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="./css/register.css">
+
+</head>
+<%- include("../includes/head.ejs") %>
+
+<body>
+    
+    <%- include("../includes/MiddlePageLog.ejs") %>
+    
+    <div class="mitad div__form">
+        <form action="/sign-up" method="post">
+            <fieldset>
+              <div class="form__container">
+                <legend id="log_in"><span style="color: #3D00B7;">Sign </span><span style="color: #55ACEE;">Up</span></legend>
+                <div class="form-group row">
+                    <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                      <input type="text" readonly="" class="form-control-plaintext" id="staticEmail" value="email@ejemplo.com">
+                    </div>
+                    
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleFreelancer/client" class="form-label mt-4">Tipo de Usuario</label>
+                    <select class="form-control" style="background-color: rgb(236, 236, 236);" id="exampleFreelancer/client" name="user">
+                      <option value="0">Seleccione tipo usuario</option>
+                      <option value="1">Freelancer</option>
+                      <option value="2">Cliente</option>
+                    </select>
+                    <% if (error) { %>
+                      <p style="color: red; margin: 0;"><%= error %></p>
+                    <% } %>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1" class="form-label mt-4">Dirección de Email</label>
+                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese Email" required>
+                    <small id="emailHelp" class="form-text text-muted">No compartiremos tu Email.</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1"  class="form-label mt-4 ">Contraseña</label>
+                    <input type="password" name="password1" class="form-control" id="exampleInputPassword1" placeholder="Contraseña" autocomplete="off" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1" class="form-label mt-4">Confirmar Contraseña</label>
+                    <input type="password" name="password2" class="form-control" id="exampleInputPasswordConfirm1" placeholder="Confirmar Contraseña" autocomplete="off">
+                  </div>
+                  <button class="btne_dark" style="margin: 10px; margin-left: 86%;" >Enviar</button>
+                  
+              </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>    
+</body>
+
+<%- include('../includes/end.ejs') %>

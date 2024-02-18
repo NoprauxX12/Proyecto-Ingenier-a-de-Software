@@ -4,7 +4,7 @@ const express = require("express");
 const session= require("express-session");
 
 const home = require("./controllers/homeController")
-const sessionProbe= require("./routes/users")
+const userRoutes= require("./routes/users")
 const app = express();
 
 // Configuración de EJS
@@ -20,7 +20,9 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }));
 // Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
-app.use(sessionProbe)
+
+
+app.use(userRoutes)
 // Ruta de inicio
 app.get('/', home.homeCOntroller);
 
