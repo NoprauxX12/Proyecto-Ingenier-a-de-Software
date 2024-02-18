@@ -1,6 +1,12 @@
-const dbCredentials = require("../util/database/credentials");
+const dbCredentials = require("../model/dbCredentials");
 exports.homeCOntroller = (req, res, next) =>{
-    res.render("index", {
-        host: dbCredentials.DatabaseCredentials.host
-    });
+    console.log(req.session.user);
+    if(req.session.user){
+        res.redirect("/cosa")
+    }else{
+        res.render("index", {
+            pageTitle: "Home"
+        });
+    }
+    
 }
