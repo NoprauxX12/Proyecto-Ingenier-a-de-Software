@@ -241,16 +241,20 @@ label{
 
   .search-container {
     position: relative;
+    margin-top: 15px;
   }
+
   .search-container input[type="search"] {
     border-radius: 20px; /* Ajustar el radio para que se vea bien con el icono */
     padding-right: 40px; /* Espacio para el icono */
+    
     width: 500px;
   }
   .search-container button {
     position: absolute;
     top: 0;
     right: 0;
+    
     height: calc(100% - 0px); /* Restar el grosor del borde del input */
     width: 40px; /* Ancho del botón */
     border: 1px solid #ced4da;
