@@ -2,14 +2,10 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const express = require("express");
 const session= require("express-session");
-
-const home = require("./controllers/homeController")
-const userRoutes= require("./routes/users")
+const cors = require("cors");
 const app = express();
+const userRoutes = require("./routes/users")
 
-// Configuración de EJS
-app.set("view engine", "ejs");
-app.set("views", "views");
 app.use(session({
     secret:"tu_secreto",
     resave: false,
@@ -17,15 +13,15 @@ app.use(session({
 }))
 
 // Middleware de body-parser para analizar datos de formularios
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 // Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
-
-
-app.use(userRoutes)
+app.use(cors());
 // Ruta de inicio
-app.get('/', home.homeCOntroller);
+app.use(userRoutes);
 
 
 // Iniciar el servidor
-app.listen(3000);
+app.listen(3200);

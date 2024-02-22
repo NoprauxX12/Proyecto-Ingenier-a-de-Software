@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import axios from "axios"
+import { BaseUrl } from "../util/apiUrl";
 
 const Formulario = () => {
-  const [step, setStep] = useState(1); // Variable para controlar el paso del formulario
+  const [response, setResponse]= useState(null);
+  const [step, setStep] = useState(1); 
   const [formValues, setFormValues] = useState({
-    tipo: "0",
+    user: "0",
     name: "",
     idCard: "",
     telphone: "",
@@ -12,8 +15,9 @@ const Formulario = () => {
     email: "",
     password1: "",
     password2:"",
-    idCity: "",
+    idCity: "Medellin",
     rut: null,
+    profilePhoto:"",
     description: "",
   });
 
@@ -23,24 +27,42 @@ const Formulario = () => {
       ...formValues,
       [name]: value
     });
+      
+    
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Datos del formulario:", formValues);
-    // Aquí puedes enviar los datos al servidor o realizar otras operaciones necesarias
+    axios.post(BaseUrl+"/sign-up", formValues
+    ).then((response)=>{
+      setResponse(response.data);
+      if(response.data.result){
+        localStorage.setItem("user", FormData);
+        alert("te has registrado con exito!")
+        window.location.href = "/";
+      }else{
+        alert("oops ha habido un error :(")
+      }
+    });
   };
 
   const nextStep = () => {
-    setStep(step + 1);
+      setStep(step + 1);
   };
 
+  
+
+
+  
   const prevStep = () => {
-    setStep(step - 1);
+      setStep(step - 1);
+    
+
   };
 
   return (
     <div>
+      {response!==null && (<h2>{response.email}</h2>)}
       <form onSubmit={handleSubmit}>
         {step === 1 && (
           <div>
@@ -76,7 +98,7 @@ const Formulario = () => {
             <div className="form-group">
             <label htmlFor="exampleInputPassword1" className="form-label mt-4">Confirmar Contraseña</label>
             <input value={formValues.password2}  type="password" name="password2" className="form-control" id="exampleInputPasswordConfirm1" placeholder="Confirmar Contraseña" autoComplete="off" onChange={handleChange}/>
-            {formValues.password1!== formValues.password2 && (<p className="error-message">las contraseñas no coinciden.</p>)}
+            {formValues.password1!== formValues.password2 && (<p className="error-message">las contraseñas no coinciden</p>)}
             </div>
         </div>
         </fieldset>
@@ -97,6 +119,7 @@ const Formulario = () => {
                     <input
                     className="form-control" 
                     type="text"
+                    readOnly
                     name="idCity"
                     value={formValues.idCity}
                     onChange={handleChange}
@@ -109,6 +132,7 @@ const Formulario = () => {
                     <input
                     className="form-control" 
                     type="text"
+                    required
                     name="adress"
                     value={formValues.adress}
                     onChange={handleChange}
@@ -121,6 +145,7 @@ const Formulario = () => {
                     className="form-control" 
                     type="text"
                     name="cellphone"
+                    required
                     value={formValues.cellphone}
                     onChange={handleChange}
                     placeholder="celular"
@@ -154,10 +179,11 @@ const Formulario = () => {
                 <div className="form-group">
                     <label htmlFor="name" className="form-label mt-4">Nombre</label>
                     <input
+                    required
                     className="form-control" 
                     type="text"
                     name="name"
-                    value={formValues.field7}
+                    value={formValues.name}
                     onChange={handleChange}
                     placeholder="Nombre"
                     />
@@ -166,9 +192,10 @@ const Formulario = () => {
                     <label htmlFor="idCard" className="form-label mt-4">Cedula</label>
                     <input
                     className="form-control" 
+                    required
                     type="text"
                     name="idCard"
-                    value={formValues.field8}
+                    value={formValues.idCard}
                     onChange={handleChange}
                     placeholder="Cedula"
                     />
@@ -179,23 +206,24 @@ const Formulario = () => {
                     className="form-control" 
                     type="text"
                     name="description"
-                    value={formValues.field9}
+                    value={formValues.description}
+                    onChange={handleChange}
+                    placeholder="Descripcion"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="profilePhoto" className="form-label mt-4">agregar url de photo:</label>
+                    <input
+                    className="form-control" 
+                    type="text"
+                    name="profilePhoto"
+                    value={formValues.profilePhoto}
                     onChange={handleChange}
                     placeholder="Descripcion"
                     />
                 </div>
             </div>
-                <div>
-            { parseInt(formValues.tipo)===1 && (
-                
-                    <div className="form-group">
-                    <label htmlFor="rut">RUT:</label>
-                    <input type="file" id="rut" name="rut" accept=".pdf,.doc,.docx" />
-                    </div>
-                
-            )}
             </div>
-          </div>
         )}
         <div className="buttonsContainer"> 
         {step !== 1 && (
