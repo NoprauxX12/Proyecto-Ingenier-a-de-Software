@@ -4,6 +4,7 @@ import HomeScreen from './screens/homeScreen';
 import SignUpScreen from './screens/sign-up/sign-up';
 
 import "./styles/App.css";
+import LoginScreen from './screens/login/loginScreen';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/sign-up" element={<SignUpScreen />} />
+        <Route path='/log-in' element={<LoginScreen />}/>
       </Routes>
     </Router>
   );

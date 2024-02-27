@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../providers/userProvider";
 import axios from "axios"
 import { BaseUrl } from "../util/apiUrl";
 
 const Formulario = () => {
+  const {login} = useContext(AuthContext);
   const [response, setResponse]= useState(null);
   const [step, setStep] = useState(1); 
   const [formValues, setFormValues] = useState({
@@ -37,8 +39,8 @@ const Formulario = () => {
     ).then((response)=>{
       setResponse(response.data);
       if(response.data.result){
-        localStorage.setItem("user", FormData);
-        alert("te has registrado con exito!")
+        login( formValues);
+        alert("te has registrado con exito!");
         window.location.href = "/";
       }else{
         alert("oops ha habido un error :(")

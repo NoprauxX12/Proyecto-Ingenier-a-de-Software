@@ -1,12 +1,17 @@
 const FreelancerModel = require("../model/freelancer/freelancer")
+const clientModel = require("../model/client/client")
 
 exports.SignUp= (req, res, next)=>{
-    console.log(req.body)
     if(parseInt(req.body.user)===1){
         const free= new FreelancerModel.Freelancer(req.body).createFreelancer((result)=>{
             res.json(result);
         });
         
+    }else{
+        const _ = new clientModel(req.body).createClient((result)=>{
+            res.json(result)
+        });
+
     }
     
 }
@@ -14,7 +19,6 @@ exports.SignUp= (req, res, next)=>{
 
 exports.getFreelancer =(req, res, next)=>{
     FreelancerModel.fetchAll((result)=>{
-        console.log(result);
         res.json(result);
     })
     

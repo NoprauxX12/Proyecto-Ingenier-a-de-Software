@@ -52,6 +52,7 @@ const freelancers= [];
  const fetchAll= async (cb)=>{
     let sql= "select f.idFreelancer, f.name , t.name city, f.description, f.url from freelancer f left join town t using (idCity)";
     try{
+        
         const results= await executeQuery(sql);
         cb(results);
     }catch(err){
