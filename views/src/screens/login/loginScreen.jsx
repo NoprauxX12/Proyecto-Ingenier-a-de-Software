@@ -1,12 +1,11 @@
-import React, {useContext} from "react";
-import { AuthContext } from "../../providers/userProvider";
+import MiddleLogoContainer from "../../includes/middleLogoContainer";
 
 function LoginScreen() {
-    const {userData} = useContext(AuthContext);
-    console.log(userData.name);
+    
     return (
         <div>
-            <h1>welcome {userData.name}</h1>
+            <MiddleLogoContainer/>
+            <div className="mitad div__form"></div>
         </div>
     )
 }

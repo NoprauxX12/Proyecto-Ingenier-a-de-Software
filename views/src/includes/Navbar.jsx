@@ -6,16 +6,18 @@ const Navbar = ({ links, brandName, logoUrl }) => {
   console.log(userData);
    return (
     <header className="main-header">
-  <h3><a className="pageTitle" href="/">El Que <span style={{color: '#55ACEE'}}>Sabe</span></a></h3>
-  <nav className="main-header__nav">
-    <ul className="main-header__item-list">
-      <li className="main-header__item">
-        <a className="a__main-header" href="/">Clientes</a>
-      </li>
-      <li className="main-header__item">
-        <a className="a__main-header" href="/">Freelancers</a>
-      </li></ul>
-  </nav>
+      <div className='main-nav'>
+        <h3><a className="pageTitle" href="/">El Que <span style={{color: '#55ACEE'}}>Sabe</span></a></h3>
+        <nav className="main-header__nav">
+          <ul className="main-header__item-list">
+            <li className="main-header__item">
+              <a className="a__main-header" href="/">Clientes</a>
+            </li>
+            <li className="main-header__item">
+              <a className="a__main-header" href="/">Freelancers</a>
+            </li></ul>
+        </nav>
+      </div>
   <div className="col-md-6">
     <form className="d-flex">
       <div className="search-container">
@@ -24,22 +26,23 @@ const Navbar = ({ links, brandName, logoUrl }) => {
       </div>
     </form>
   </div>
+  <div className='button-container'>
   {!isLoggedIn ? (
-      <div>
+      <>
       <a className="btne" href="/log-in">Log in</a>
       <a className="btne_dark" href="/sign-up">Sign up</a>
-    </div>
+    </>
   ): (
-    <div>
+    <>
       <p style={{display: "inline-block", marginRight: "10px"}}>{userData.name}</p>
       <button className='btne' onClick={() => logout()}>log out</button>
-    </div>
+    </>
     
   
   )
   }
   
-
+  </div>
 
 </header>
 

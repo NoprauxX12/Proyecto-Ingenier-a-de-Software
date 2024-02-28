@@ -41,6 +41,31 @@ font-weight: 500;
   .main-header {
     flex-direction: column; /* Stack elements vertically on smaller screens */
   }
+  .main-header__nav {
+    display: flex; /* Ocultar la barra de navegación en pantallas más pequeñas */
+  }
+  #side-menu-toggle {
+    display: block; /* Mostrar el botón de menú lateral en pantallas más pequeñas */
+  }
+  .col-md-6 {
+    flex: 1;
+    margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+  }
+  .btne, .btne_dark {
+    font-size: 0.3em; /* Reducir el tamaño de fuente en pantallas más pequeñas */
+  }
+  .search-container input[type="search"] {
+    width: 10em;
+    
+  }
+  .main-nav h3 {
+    font-size: 1.2em; /* Reducir el tamaño del título en pantallas más pequeñas */
+  }
+
+  .main-nav .a__main-header {
+    font-size: 0.8em; /* Reducir el tamaño del texto del enlace en pantallas más pequeñas */
+  }
+
 }
 
 .main-header__nav {
@@ -87,6 +112,15 @@ font-weight: 500;
   transition: transform 0.3s ease-out;
 }
 
+.main-nav{
+  justify-content: space-between; /* Distribuye los elementos horizontalmente */
+  align-items: last baseline;
+  display: flex;
+  height: 100%;
+  padding: auto;
+  flex-direction: column;
+}
+
 .mobile-nav.open {
   transform: translateX(0);
 }
@@ -100,7 +134,7 @@ font-weight: 500;
 }
 
 .mobile-nav__item {
-  margin: 1rem;
+  margin: 1.2rem;
   padding: 0;
 }
 
@@ -197,24 +231,18 @@ font-weight: 500;
 }
 
 .btne {
-  margin:0 0.1em ;
   display: inline-block;
-  padding: 0.25rem 1rem;
   text-decoration: none;
   font: inherit;
   border: 1px solid #3D00B7;
   color: #3D00B7;
-  font-size: 1em;
   background: rgb(255, 255, 255);
   border-radius: 20px;
   cursor: pointer;
 }
 
 .btne_dark {
-  margin:0 0.1em ;
-  font-size: 1em;
   display: inline-block;
-  padding: 0.25rem 1rem;
   text-decoration: none;
   font: inherit;
   border: 1px solid #ffffff;
@@ -222,6 +250,12 @@ font-weight: 500;
   background: #3D00B7;
   border-radius: 20px;
   cursor: pointer;
+}
+
+.btne, .btne_dark {
+  margin: 0 0.5em; /* Agregar espacio entre los botones */
+  padding: 0.5em 1em; /* Ajustar el relleno de los botones */
+  font-size: 0.8em; /* Reducir el tamaño de fuente de los botones */
 }
 
 .btne_dark:hover,
@@ -248,6 +282,14 @@ font-weight: 500;
   }
 }
 
+.pageTitle a{
+  font-size: 0.9em;
+}
+
+.pageTitle h1{
+  font-size: 30em;
+}
+
 .pageTitle{
   text-decoration: none;
   color: #3D00B7;
@@ -255,7 +297,6 @@ font-weight: 500;
   font-weight: 700;
   font-family: "Fredoka", sans-serif;
   font-optical-sizing: auto;
-  font-size: 0.9em;
   font-style: normal;
 }
 /* estilo del mini navegador */
@@ -268,10 +309,12 @@ font-weight: 500;
 .search-container input[type="search"] {
   border-radius: 20px; /* Ajustar el radio para que se vea bien con el icono */
   padding-right: 40px; /* Espacio para el icono */
-  width: 20em;
+  width: 30em;
+  
 }
 .search-container button {
   position: absolute;
+  width: 2.5em;
   top: 0;
   right: 0;
   
@@ -361,3 +404,8 @@ button[type=submit]:hover{
   }
 }
 
+
+.button-container {
+  display: flex;
+  align-items: center; /* Centrar verticalmente los botones */
+}
