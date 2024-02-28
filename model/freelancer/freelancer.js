@@ -1,18 +1,5 @@
-const pool = require("../../util/mysqlConnexion")
+const executeQuery = require("../Queryes");
 
-function executeQuery(sql, values) {
-    return new Promise((resolve, reject) => {
-        pool.query(sql, values, (error, results, fields) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(results);
-            }
-        });
-    });
-}
-
-const freelancers= [];
  class Freelancer {
     constructor(json){
         this.name = json.name;
@@ -62,4 +49,5 @@ const freelancers= [];
 
 
 exports.Freelancer= Freelancer;
+
 exports.fetchAll= fetchAll;

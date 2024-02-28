@@ -197,20 +197,22 @@ font-weight: 500;
 }
 
 .btne {
-  margin:0 5px ;
+  margin:0 0.1em ;
   display: inline-block;
   padding: 0.25rem 1rem;
   text-decoration: none;
   font: inherit;
   border: 1px solid #3D00B7;
   color: #3D00B7;
+  font-size: 1em;
   background: rgb(255, 255, 255);
   border-radius: 20px;
   cursor: pointer;
 }
 
 .btne_dark {
-  margin:0 5px ;
+  margin:0 0.1em ;
+  font-size: 1em;
   display: inline-block;
   padding: 0.25rem 1rem;
   text-decoration: none;
@@ -249,13 +251,12 @@ font-weight: 500;
 .pageTitle{
   text-decoration: none;
   color: #3D00B7;
-  margin-right: 30px;
+  margin-right: 1.5em;
   font-weight: 700;
   font-family: "Fredoka", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 700;
+  font-size: 0.9em;
   font-style: normal;
- 
 }
 /* estilo del mini navegador */
 
@@ -267,8 +268,7 @@ font-weight: 500;
 .search-container input[type="search"] {
   border-radius: 20px; /* Ajustar el radio para que se vea bien con el icono */
   padding-right: 40px; /* Espacio para el icono */
-  
-  width: 500px;
+  width: 20em;
 }
 .search-container button {
   position: absolute;
@@ -276,7 +276,7 @@ font-weight: 500;
   right: 0;
   
   height: calc(100% - 0px); /* Restar el grosor del borde del input */
-  width: 40px; /* Ancho del botón */
+  width: 2.5em; /* Ancho del botón */
   border: 1px solid #ced4da;
   border-left: none; /* Añadir un borde al botón */
   background-color: #fdfeff; /* Cambiar al color deseado */

@@ -4,7 +4,10 @@ const express = require("express");
 const session= require("express-session");
 const cors = require("cors");
 const app = express();
-const userRoutes = require("./routes/users")
+
+//routes
+const userRoutes = require("./routes/users");
+const townRoutes = require("./routes/town");
 
 app.use(session({
     secret:"tu_secreto",
@@ -21,7 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 // Ruta de inicio
 app.use(userRoutes);
-
+app.use(townRoutes);
 
 // Iniciar el servidor
 app.listen(3200);

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../providers/userProvider";
 import axios from "axios"
 import { BaseUrl } from "../util/apiUrl";
@@ -7,6 +7,7 @@ const Formulario = () => {
   const {login} = useContext(AuthContext);
   const [response, setResponse]= useState(null);
   const [step, setStep] = useState(1); 
+  const [cityes, setCytyes] = useState([]);
   const [formValues, setFormValues] = useState({
     user: "0",
     name: "",
@@ -22,6 +23,18 @@ const Formulario = () => {
     profilePhoto:"",
     description: "",
   });
+
+  useEffect(()=>{
+    const fetchCityes= async () =>{
+      try {
+        const response= await axios.post(BaseUrl+"/towns");
+        setCytyes(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCityes();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,7 +74,7 @@ const Formulario = () => {
     
 
   };
-
+  
   return (
     <div>
       {response!==null && (<h2>{response.email}</h2>)}
@@ -116,17 +129,18 @@ const Formulario = () => {
                     </div>
                 </div>
                 <div className="form-group">
-                    
-                    <label htmlFor="idCity" className="form-label mt-4">ciudad</label>
-                    <input
-                    className="form-control" 
-                    type="text"
-                    readOnly
-                    name="idCity"
-                    value={formValues.idCity}
-                    onChange={handleChange}
-                    placeholder="por realizar"
-                    />
+                    <label htmlFor="cityes" className="form-label mt-4">Ciudad residencia:</label>
+                    <select className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="cityes" name="city" onChange={handleChange}>
+                    <option value={0}>Seleccione una ciudad</option>
+                      {cityes.length>0 && (
+                        <>
+                          { cityes.map((city)=>(
+                          <option value={city.idCity}>{city.name}</option>
+                        ))}
+                        </>
+                      )}
+                        
+                    </select>
                 </div>
                 <div className="form-group">
                     <label htmlFor="adress" className="form-label mt-4">direccion</label>
