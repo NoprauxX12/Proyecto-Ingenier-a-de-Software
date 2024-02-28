@@ -1,7 +1,7 @@
-const Town = require("../model/town/town");
+const TownDAO = require("../model/data Acces/townDAO");
 
 exports.fetchCityes = (req, res, next)=>{
-    Town.fetchAll((results)=>{
+    TownDAO.fetchAll((results)=>{
         res.json(results);
     })
     
