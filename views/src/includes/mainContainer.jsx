@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { BaseUrl } from "../util/apiUrl";
 
-const MainContainer=()=>{
+const ClientsMainContainer=()=>{
     const [freelancers, setFreelancers] = useState([]);
 
   useEffect(() => {
@@ -56,4 +56,4 @@ const MainContainer=()=>{
     );
 }
 
-export default MainContainer;
+export default ClientsMainContainer;

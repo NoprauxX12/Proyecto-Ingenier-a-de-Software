@@ -18,7 +18,7 @@ const Formulario = () => {
     email: "",
     password1: "",
     password2:"",
-    idCity: "Medellin",
+    idCity: "",
     rut: null,
     profilePhoto:"",
     description: "",
@@ -130,7 +130,7 @@ const Formulario = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="cityes" className="form-label mt-4">Ciudad residencia:</label>
-                    <select className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="cityes" name="city" onChange={handleChange}>
+                    <select className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="cityes" name="idCity" onChange={handleChange}>
                     <option value={0}>Seleccione una ciudad</option>
                       {cityes.length>0 && (
                         <>

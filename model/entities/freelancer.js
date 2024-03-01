@@ -8,7 +8,7 @@
         this.adress=json.adress;
         this.email=json.email;
         this.password=json.password1;
-        this.idCity=json.idCity==="Medellin"? 5001:0;
+        this.idCity=parseFloat(json.idCity);
         this.description=json.description;
         this.rut= json.rut;
         this.profilePhoto= json.profilePhoto;
