@@ -1,35 +1,18 @@
-.product-form {
-    width: 20rem;
-    max-width: 90%;
-    margin: auto;
-    display: block;
+.border-none{
+    border: none;
 }
-
-.product-item {
-    width: 20rem;
-    max-width: 95%;
-    margin: 1rem;
-}
-
-.product__title {
-    font-size: 1.2rem;
-    text-align: center;
-}
-
-.product__price {
-    text-align: center;
-    color: #4d4d4d;
-    margin-bottom: 0.5rem;
-}
-
-.product__description {
-    text-align: center;
-}
-
-.itemF{
-    padding: 10px;
-}
-
 img{
-    border-radius: 10%;
+    border-radius: 0.5em;
+}
+.card__item{
+    width: 18rem;
+    margin: 0 0.7em;
+    padding: 0.5em;
+}
+
+.discoberDontainer{
+    width: 100%;
+    margin: 2em;
+    display: flex;
+    flex-direction: row;
 }

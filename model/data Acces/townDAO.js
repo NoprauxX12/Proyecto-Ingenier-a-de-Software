@@ -6,6 +6,7 @@ class TownDAO{
     try {
         const results = await mysqlExecute(sql);
         cb(results);
+
     } catch (error) {
         console.log(error);
     }

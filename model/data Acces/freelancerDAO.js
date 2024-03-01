@@ -13,15 +13,26 @@ class FreelancerDAO{
        
     }
 
-    static async fetchAll(cb){
-        let sql= "select f.idFreelancer, f.name , t.name city, f.description, f.url from freelancer f left join town t using (idCity)";
+    static async fetchAll(p,cb){
+        let sql= "select f.idFreelancer, f.name , t.name city, f.description, f.url from freelancer f left join town t using (idCity) where f.idCity=?";
         try{
-            const results= await mysqlExecute(sql);
+            const results= await mysqlExecute(sql, [parseFloat(p.city)]);
             cb(results);
         }catch(err){
             cb({result: false});
         }
     }
+
+    static async fetchByKeyword(p, cb){
+        let sql = "SELECT * FROM freelancer WHERE description LIKE ? or name like ? and idCity=?";
+        try {
+            const results = await mysqlExecute(sql, [`%${p.keyword}%`, `%${p.keyword}%`, parseFloat(p.city)]);
+            cb(results);
+        } catch (err) {
+            cb({ result: false });
+        }
+
+            }
 }
 
 module.exports = FreelancerDAO;

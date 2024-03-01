@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomeScreen from './screens/homeScreen';
 import SignUpScreen from './screens/sign-up/sign-up';
-
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "./styles/App.css";
 import LoginScreen from './screens/login/loginScreen';
 

@@ -21,9 +21,18 @@ exports.SignUp= (req, res, next)=>{
 
 
 exports.getFreelancer =(req, res, next)=>{
-    FreelancerDAO.fetchAll((result)=>{
-        res.json(result);
-    })
+    console.log(req.body)
+    const params= req.body;
+    if(params.keyword!==null){
+        FreelancerDAO.fetchByKeyword(params, (result)=>{
+            res.json(result);
+        });
+    }else{
+        FreelancerDAO.fetchAll(params, (result)=>{
+            res.json(result);
+        });
+    }
+    
     
 }
    
