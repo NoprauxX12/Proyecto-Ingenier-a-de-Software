@@ -409,3 +409,65 @@ button[type=submit]:hover{
   display: flex;
   align-items: center; /* Centrar verticalmente los botones */
 }
+
+.white{
+  background-color: #ffffff;
+
+}
+.custom-footer {
+  background-color: #ffffff !important; /* Fondo blanco */
+}
+
+.custom-footer p,
+.custom-footer ul li a {
+  color: #000000 !important; /* Texto negro */
+  text-decoration: none;
+}
+
+.custom-footer h5{
+  font-weight: 700;
+  color: #3D00B7 !important;
+}
+
+.icons{
+  max-width: 2em;
+  margin-left: 0.5em
+}
+.back,
+.back p{
+  margin-top: 0.5em;
+  text-decoration: none;
+  color:rgb(128, 128, 128);
+}
+
+.back img,
+.back p,
+.back h4{
+  display: inline-block;
+}
+
+.container-1 {
+  width: 100%;
+  margin: 1em 0;
+  padding: 1em;
+  text-align: center;
+}
+
+.grid-container-1 {
+  height: max-content;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.grid-item {
+  text-align: left;
+  text-align: center;
+  padding: 20px;
+}
+
+.grid-item h4{
+  margin-bottom: 1em;
+  color: #000000;
+  font-weight: 700;
+}

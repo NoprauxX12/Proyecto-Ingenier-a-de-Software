@@ -3,6 +3,8 @@ import React, {useState} from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { BaseUrl } from "../util/apiUrl";
+import Card from "./card";
+import InfoContainer from "./infoContainer";
 
 const ClientsMainContainer=()=>{
     const [freelancers, setFreelancers] = useState([]);
@@ -38,6 +40,12 @@ const ClientsMainContainer=()=>{
   },[search, selectedCity]); 
     return (
       <div>
+        {search===null && (
+          <>
+          <InfoContainer/>
+          </>
+        )}
+
         <div className="discoberDontainer">
           <h2>
             {search===null ? (
@@ -95,17 +103,8 @@ const ClientsMainContainer=()=>{
               {freelancers.length>0 ? (
                 <>
                 {freelancers.map((freelancer) => (
-                  <div className="card__item card">
-                    <img src={freelancer.url} class="card-img-top" alt="..."/>
-                    <div className="card-body">
-                      <h5 className="card-title">{freelancer.name}</h5>
-                      <p className="card-text">{freelancer.description}</p>
-                      <a href="/" className="btne btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-
-        
-))}
+                  <Card freelancer={freelancer}/>    
+                ))}
                 
               </>
               ): (
