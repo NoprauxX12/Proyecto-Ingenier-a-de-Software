@@ -1,5 +1,5 @@
 instructions:
-1. change files's name to .env-change to .env.
+1. change files's name .env-change to .env.
 2. change data in the variables:
 DB_HOST=localhost
 DB_USER=myuser
