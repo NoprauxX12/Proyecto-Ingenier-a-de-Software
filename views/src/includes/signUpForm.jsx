@@ -3,10 +3,17 @@ import { AuthContext } from "../providers/userProvider";
 import axios from "axios"
 import { BaseUrl } from "../util/apiUrl";
 
+const users= {"0": "Seleccione tipo usuario",
+"1": "Freelancer",
+"2":"Cliente"
+}
+
+
 const Formulario = () => {
   const {login} = useContext(AuthContext);
   const [response, setResponse]= useState(null);
   const [step, setStep] = useState(1); 
+  const [err, setErr] = useState(null);
   const [cityes, setCytyes] = useState([]);
   const [formValues, setFormValues] = useState({
     user: "0",
@@ -24,6 +31,8 @@ const Formulario = () => {
     description: "",
   });
 
+  
+
   useEffect(()=>{
     const fetchCityes= async () =>{
       try {
@@ -33,8 +42,16 @@ const Formulario = () => {
         console.log(error);
       }
     };
+    if(formValues.password1!== formValues.password2){
+      setErr("las contraseñas no coinciden");
+    }else if((!formValues.email.includes("@") || !formValues.email.includes(".com")) && formValues.email.length > 0){
+        setErr("ingrese un email valido por favor");
+    }else{
+      setErr(null);
+    }
+
     fetchCityes();
-  }, []);
+  }, [formValues]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +59,6 @@ const Formulario = () => {
       ...formValues,
       [name]: value
     });
-      
     
   };
 
@@ -62,13 +78,20 @@ const Formulario = () => {
   };
 
   const nextStep = () => {
-      setStep(step + 1);
+    if(step===1){
+      if((formValues.password1.length + formValues.password2.length) < 16){
+        setErr("La contraseña debe contener minimo 8 caracteres.")
+      }else if(err===null){
+        if(formValues.user!=="0"){
+          setErr(null);
+          setStep(step + 1);
+        }else{
+          setErr("debe seleccionar un usuario")
+        }
+      }
+    }
+    
   };
-
-  
-
-
-  
   const prevStep = () => {
       setStep(step - 1);
     
@@ -96,9 +119,12 @@ const Formulario = () => {
                 <div className="form-group">
                     <label htmlFor="exampleFreelancer/client" className="form-label mt-4">Tipo de Usuario</label>
                     <select className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="exampleFreelancer/client" name="user" onChange={handleChange}>
-                        <option value={0}>Seleccione tipo usuario</option>
-                        <option value={1}>Freelancer</option>
-                        <option value={2}>Cliente</option>
+                        <option value={"0"}>{users[formValues.user]}</option>
+                        <option value={"1"}>Freelancer</option>
+                        <option value={"2"}>Cliente</option>
+                        {formValues.user!=="0" && (
+                          <option value={"0"}>...</option>
+                        )}
                     </select>
             </div>
             <div className="form-group">
@@ -113,7 +139,6 @@ const Formulario = () => {
             <div className="form-group">
             <label htmlFor="exampleInputPassword1" className="form-label mt-4">Confirmar Contraseña</label>
             <input value={formValues.password2}  type="password" name="password2" className="form-control" id="exampleInputPasswordConfirm1" placeholder="Confirmar Contraseña" autoComplete="off" onChange={handleChange}/>
-            {formValues.password1!== formValues.password2 && (<p className="error-message">las contraseñas no coinciden</p>)}
             </div>
         </div>
         </fieldset>
@@ -241,12 +266,14 @@ const Formulario = () => {
             </div>
             </div>
         )}
+        {err !== null && (<p className="error-message" style={{marginLeft: "3.8em"}}>{err}</p>)}
         <div className="buttonsContainer"> 
         {step !== 1 && (
           <button className="btne_dark" type="button" style={{margin: 10, display: "inline"}} onClick={prevStep}>
             Anterior
           </button>
         )}
+        
         {step !== 3 ? (
           <button style={{margin: 10, display: "inline"}} className="btne" type="button" onClick={nextStep}>
             Siguiente

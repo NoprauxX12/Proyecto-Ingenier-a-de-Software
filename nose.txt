@@ -1,0 +1,289 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema el_que_sabe
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema el_que_sabe
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `el_que_sabe` DEFAULT CHARACTER SET utf8 ;
+USE `el_que_sabe` ;
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`department`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`department` (
+  `idDepartment` INT NOT NULL,
+  `name` TEXT NULL,
+  PRIMARY KEY (`idDepartment`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`town`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`town` (
+  `idCity` FLOAT UNSIGNED NOT NULL,
+  `name` TEXT NULL,
+  `idDepartment` INT NOT NULL,
+  PRIMARY KEY (`idCity`, `idDepartment`),
+  INDEX `fk_city_department1_idx` (`idDepartment` ASC) ,
+  CONSTRAINT `fk_city_department1`
+    FOREIGN KEY (`idDepartment`)
+    REFERENCES `el_que_sabe`.`department` (`idDepartment`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`client`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`client` (
+  `idClient` VARCHAR(15) NOT NULL,
+  `name` TEXT NULL,
+  `phoneNumber` VARCHAR(10) NULL,
+  `cellphone` VARCHAR(10) NULL,
+  `adress` TEXT NULL,
+  `email` TEXT NULL,
+  `password` TEXT NULL,
+  `idCity` FLOAT UNSIGNED NOT NULL,
+  `profilePhoto` BLOB NULL,
+  `description` VARCHAR(300) NULL,
+  PRIMARY KEY (`idClient`),
+  INDEX `fk_client_department_idx` (`idCity` ASC) ,
+  CONSTRAINT `fk_client_department`
+    FOREIGN KEY (`idCity`)
+    REFERENCES `el_que_sabe`.`town` (`idCity`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`freelancer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`freelancer` (
+  `idFreelancer` VARCHAR(15) NOT NULL,
+  `name` TEXT NULL,
+  `phoneNumber` VARCHAR(10) NULL,
+  `cellphone` VARCHAR(10) NULL,
+  `adress` VARCHAR(150) NULL,
+  `email` TEXT NULL,
+  `password` TEXT NULL,
+  `idCity` FLOAT UNSIGNED NOT NULL,
+  `rut` BLOB NULL,
+  `profilePhoto` BLOB NULL,
+  `description` VARCHAR(300) NULL,
+  PRIMARY KEY (`idFreelancer`),
+  INDEX `fk_freelancer_department1_idx` (`idCity` ASC) ,
+  CONSTRAINT `fk_freelancer_department1`
+    FOREIGN KEY (`idCity`)
+    REFERENCES `el_que_sabe`.`town` (`idCity`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`technicalKnowledge`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`technicalKnowledge` (
+  `idTechnicalKnowledge` INT NOT NULL,
+  `title` TEXT NULL,
+  PRIMARY KEY (`idTechnicalKnowledge`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`academicDegrees`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`academicDegrees` (
+  `idFreelancer` VARCHAR(15) NOT NULL,
+  `idTechnicalKnowledge` INT NOT NULL,
+  `institution` TEXT NULL,
+  PRIMARY KEY (`idTechnicalKnowledge`, `idFreelancer`),
+  INDEX `fk_degrees_freelancer1_idx` (`idFreelancer` ASC) ,
+  INDEX `fk_degrees_technicalKnowledge1_idx` (`idTechnicalKnowledge` ASC) ,
+  CONSTRAINT `fk_degrees_freelancer1`
+    FOREIGN KEY (`idFreelancer`)
+    REFERENCES `el_que_sabe`.`freelancer` (`idFreelancer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_degrees_technicalKnowledge1`
+    FOREIGN KEY (`idTechnicalKnowledge`)
+    REFERENCES `el_que_sabe`.`technicalKnowledge` (`idTechnicalKnowledge`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`message`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`message` (
+  `date` TIMESTAMP NOT NULL,
+  `messageContent` TEXT NULL,
+  `photo` BLOB NULL,
+  `sendBy` ENUM('0', '1') NULL,
+  `idClient` VARCHAR(15) NOT NULL,
+  `idFreelancer` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`date`, `idClient`, `idFreelancer`),
+  INDEX `fk_message_client1_idx` (`idClient` ASC) ,
+  INDEX `fk_message_freelancer1_idx` (`idFreelancer` ASC) ,
+  CONSTRAINT `fk_message_client1`
+    FOREIGN KEY (`idClient`)
+    REFERENCES `el_que_sabe`.`client` (`idClient`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_message_freelancer1`
+    FOREIGN KEY (`idFreelancer`)
+    REFERENCES `el_que_sabe`.`freelancer` (`idFreelancer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`previousWork`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`previousWork` (
+  `idPreviousWork` INT NOT NULL AUTO_INCREMENT,
+  `idFreelancer` VARCHAR(15) NOT NULL,
+  `date` DATETIME NULL,
+  `description` TEXT NULL,
+  `title` TEXT NULL,
+  PRIMARY KEY (`idPreviousWork`),
+  INDEX `fk_previousWork_freelancer1_idx` (`idFreelancer` ASC) ,
+  CONSTRAINT `fk_previousWork_freelancer1`
+    FOREIGN KEY (`idFreelancer`)
+    REFERENCES `el_que_sabe`.`freelancer` (`idFreelancer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`imagesPW`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`imagesPW` (
+  `idImagesPW` INT NOT NULL,
+  `idPreviousWork` INT NOT NULL,
+  `image` BLOB NULL,
+  PRIMARY KEY (`idImagesPW`),
+  INDEX `fk_imagesPW_previousWork1_idx` (`idPreviousWork` ASC) ,
+  CONSTRAINT `fk_imagesPW_previousWork1`
+    FOREIGN KEY (`idPreviousWork`)
+    REFERENCES `el_que_sabe`.`previousWork` (`idPreviousWork`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`contractOffer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`contractOffer` (
+  `idContractOffer` INT NOT NULL,
+  `description` VARCHAR(45) NULL,
+  `title` VARCHAR(45) NULL,
+  `idClient` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`idContractOffer`),
+  INDEX `fk_hireOffer_client1_idx` (`idClient` ASC) ,
+  CONSTRAINT `fk_hireOffer_client1`
+    FOREIGN KEY (`idClient`)
+    REFERENCES `el_que_sabe`.`client` (`idClient`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`imegesCO`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`imegesCO` (
+  `idImagesHO` INT NOT NULL,
+  `image` BLOB NULL,
+  `idContractOffer` INT NOT NULL,
+  PRIMARY KEY (`idImagesHO`),
+  INDEX `fk_imegesHO_hireOffer1_idx` (`idContractOffer` ASC) ,
+  CONSTRAINT `fk_imegesHO_hireOffer1`
+    FOREIGN KEY (`idContractOffer`)
+    REFERENCES `el_que_sabe`.`contractOffer` (`idContractOffer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`contract`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`contract` (
+  `idContract` INT NOT NULL,
+  `value` VARCHAR(45) NULL,
+  `idFreelancer` VARCHAR(15) NOT NULL,
+  `idClient` VARCHAR(15) NOT NULL,
+  `termns` VARCHAR(45) NULL,
+  PRIMARY KEY (`idContract`),
+  INDEX `fk_contract_freelancer1_idx` (`idFreelancer` ASC) ,
+  INDEX `fk_contract_client1_idx` (`idClient` ASC) ,
+  CONSTRAINT `fk_contract_freelancer1`
+    FOREIGN KEY (`idFreelancer`)
+    REFERENCES `el_que_sabe`.`freelancer` (`idFreelancer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_contract_client1`
+    FOREIGN KEY (`idClient`)
+    REFERENCES `el_que_sabe`.`client` (`idClient`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`review`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`review` (
+  `idContract` INT NOT NULL,
+  `clientScore` ENUM("0", "1", "2", "3", "4", "5") NULL,
+  `clientComment` VARCHAR(45) NULL,
+  PRIMARY KEY (`idContract`),
+  INDEX `fk_review_contract1_idx` (`idContract` ASC) ,
+  CONSTRAINT `fk_review_contract1`
+    FOREIGN KEY (`idContract`)
+    REFERENCES `el_que_sabe`.`contract` (`idContract`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`view`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`view` (
+  `idFreelancer` VARCHAR(15) NOT NULL,
+  `idClient` VARCHAR(15) NOT NULL,
+  `idView` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`idView`),
+  INDEX `fk_view_client1_idx` (`idClient` ASC) ,
+  CONSTRAINT `fk_view_freelancer1`
+    FOREIGN KEY (`idFreelancer`)
+    REFERENCES `el_que_sabe`.`freelancer` (`idFreelancer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_view_client1`
+    FOREIGN KEY (`idClient`)
+    REFERENCES `el_que_sabe`.`client` (`idClient`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
