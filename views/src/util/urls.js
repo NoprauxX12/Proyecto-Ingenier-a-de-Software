@@ -1,8 +1,9 @@
 
 const Urls = {
     home: "/", 
-    singUp:"/sign-up",
-    logIn: "/log-in"
+    signUp:"/sign-up",
+    logIn: "/log-in",
+    photo: "/photo"
 }
 
 export default  Urls;
