@@ -2,17 +2,21 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomeScreen from './screens/homeScreen';
 import SignUpScreen from './screens/sign-up/sign-up';
+import LoginScreen from './screens/login/loginScreen';
+import Urls from "./util/urls";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "./styles/App.css";
-import LoginScreen from './screens/login/loginScreen';
+import UploadPhotoScreen from './screens/Uploadphoto/photoScreen';
+
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/sign-up" element={<SignUpScreen />} />
-        <Route path='/log-in' element={<LoginScreen />}/>
+        <Route path={Urls.photo}element={<UploadPhotoScreen/>}/>
+        <Route path={Urls.home} element={<HomeScreen />} />
+        <Route path={Urls.signUp} element={<SignUpScreen />} />
+        <Route path={Urls.logIn} element={<LoginScreen />}/>
       </Routes>
     </Router>
   );

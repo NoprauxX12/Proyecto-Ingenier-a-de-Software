@@ -1,12 +1,21 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../providers/userProvider";
-import axios from "axios"
-import { BaseUrl } from "../util/apiUrl";
+import userData from "../services/user";
+import TownData from "../services/towns";
+
+
+
+const users= {"0": "Seleccione tipo usuario",
+"1": "Freelancer",
+"2":"Cliente"
+}
+
+
 
 const Formulario = () => {
   const {login} = useContext(AuthContext);
-  const [response, setResponse]= useState(null);
   const [step, setStep] = useState(1); 
+  const [err, setErr] = useState(null);
   const [cityes, setCytyes] = useState([]);
   const [formValues, setFormValues] = useState({
     user: "0",
@@ -19,22 +28,38 @@ const Formulario = () => {
     password1: "",
     password2:"",
     idCity: "",
-    rut: null,
-    profilePhoto:"",
     description: "",
   });
 
+  
+
   useEffect(()=>{
-    const fetchCityes= async () =>{
+    const fetchCityes = async () => {
       try {
-        const response= await axios.post(BaseUrl+"/towns");
-        setCytyes(response.data);
+        TownData.fetchCityes((res) => {
+          setCytyes(res); // Aquí accedes a res.data en lugar de res
+        });
       } catch (error) {
         console.log(error);
       }
     };
+    
+    if(formValues.password1 !== formValues.password2){
+      setErr("las contraseñas no coinciden");
+    }else if((!formValues.email.includes("@") || !formValues.email.includes(".com")) && formValues.email.length > 0){
+        setErr("ingrese un email valido por favor");
+    }else if(formValues.cellphone.length < 10 && formValues.cellphone.length > 0){
+        setErr("ingrese un telefono valido");
+    }else if (formValues.cellphone[0]!=="3" && formValues.cellphone.length > 0){
+      setErr("ingrese un telefono valido");
+    } else if(formValues.idCard.length> 0 &&formValues.idCard.length < 4){
+      setErr("ingrese una cedula valida");
+    } else{
+      setErr(null);
+    }
+
     fetchCityes();
-  }, []);
+  }, [formValues]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,33 +67,64 @@ const Formulario = () => {
       ...formValues,
       [name]: value
     });
-      
     
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post(BaseUrl+"/sign-up", formValues
-    ).then((response)=>{
-      setResponse(response.data);
-      if(response.data.result){
-        login( formValues);
-        alert("te has registrado con exito!");
-        window.location.href = "/";
-      }else{
-        alert("oops ha habido un error :(")
-      }
-    });
+    if(err===null){
+      e.preventDefault();
+      userData.signUp(formValues,(res)=>{
+        if(res){
+          login({
+            user: formValues.user,
+            name: formValues.name,
+            idCard: formValues.idCard,
+            email: formValues.email,
+            idCity: formValues.idCity,
+          });
+          alert("te has registrado con exito!");
+          window.location.href = "/";
+        }else{
+          alert("oops ha habido un error :(");
+        }
+      });
+    }
+    
   };
 
   const nextStep = () => {
-      setStep(step + 1);
+
+    switch (step) {
+      case 1:
+        if((formValues.password1.length + formValues.password2.length) < 16){
+          setErr("La contraseña debe contener minimo 8 caracteres.")
+        }else if(err===null){
+          if(formValues.user!=="0"){
+            setErr(null);
+            setStep(step + 1);
+          }else{
+            setErr("debe seleccionar un usuario")
+          }
+        }
+        break;
+
+      case 2:
+        if(formValues.idCity===""){
+          setErr("debe elegir una ciudad");
+        }else if(formValues.adress===""){
+          setErr("debe agregar una dirección");
+        }else if(formValues.cellphone==="" && formValues.telphone===""){
+          setErr("debe agregar almenos un # de contacto");
+        }else{
+          setStep(step+1);
+        }
+      break;
+    
+      default:
+        break;
+    }
+    
   };
-
-  
-
-
-  
   const prevStep = () => {
       setStep(step - 1);
     
@@ -77,7 +133,6 @@ const Formulario = () => {
   
   return (
     <div>
-      {response!==null && (<h2>{response.email}</h2>)}
       <form onSubmit={handleSubmit}>
         {step === 1 && (
           <div>
@@ -96,9 +151,12 @@ const Formulario = () => {
                 <div className="form-group">
                     <label htmlFor="exampleFreelancer/client" className="form-label mt-4">Tipo de Usuario</label>
                     <select className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="exampleFreelancer/client" name="user" onChange={handleChange}>
-                        <option value={0}>Seleccione tipo usuario</option>
-                        <option value={1}>Freelancer</option>
-                        <option value={2}>Cliente</option>
+                        <option value={"0"}>{users[formValues.user]}</option>
+                        <option value={"1"}>Freelancer</option>
+                        <option value={"2"}>Cliente</option>
+                        {formValues.user!=="0" && (
+                          <option value={"0"}>...</option>
+                        )}
                     </select>
             </div>
             <div className="form-group">
@@ -113,7 +171,6 @@ const Formulario = () => {
             <div className="form-group">
             <label htmlFor="exampleInputPassword1" className="form-label mt-4">Confirmar Contraseña</label>
             <input value={formValues.password2}  type="password" name="password2" className="form-control" id="exampleInputPasswordConfirm1" placeholder="Confirmar Contraseña" autoComplete="off" onChange={handleChange}/>
-            {formValues.password1!== formValues.password2 && (<p className="error-message">las contraseñas no coinciden</p>)}
             </div>
         </div>
         </fieldset>
@@ -131,7 +188,7 @@ const Formulario = () => {
                 <div className="form-group">
                     <label htmlFor="cityes" className="form-label mt-4">Ciudad residencia:</label>
                     <select className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="cityes" name="idCity" onChange={handleChange}>
-                    <option value={0}>Seleccione una ciudad</option>
+                    <option value={""}>Seleccione una ciudad</option>
                       {cityes.length>0 && (
                         <>
                           { cityes.map((city)=>(
@@ -216,37 +273,17 @@ const Formulario = () => {
                     placeholder="Cedula"
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="description" className="form-label mt-4">Descripcion</label>
-                    <input
-                    className="form-control" 
-                    type="text"
-                    name="description"
-                    value={formValues.description}
-                    onChange={handleChange}
-                    placeholder="Descripcion"
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="profilePhoto" className="form-label mt-4">agregar url de photo:</label>
-                    <input
-                    className="form-control" 
-                    type="text"
-                    name="profilePhoto"
-                    value={formValues.profilePhoto}
-                    onChange={handleChange}
-                    placeholder="Descripcion"
-                    />
-                </div>
             </div>
             </div>
         )}
+        {err !== null && (<p className="error-message" style={{marginLeft: "3.8em", color: "red"}}>{err}</p>)}
         <div className="buttonsContainer"> 
         {step !== 1 && (
           <button className="btne_dark" type="button" style={{margin: 10, display: "inline"}} onClick={prevStep}>
             Anterior
           </button>
         )}
+        
         {step !== 3 ? (
           <button style={{margin: 10, display: "inline"}} className="btne" type="button" onClick={nextStep}>
             Siguiente

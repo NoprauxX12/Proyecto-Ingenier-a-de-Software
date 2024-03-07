@@ -21,7 +21,6 @@ exports.SignUp= (req, res, next)=>{
 
 
 exports.getFreelancer =(req, res, next)=>{
-    console.log(req.body)
     const params= req.body;
     if(params.keyword!==null){
         FreelancerDAO.fetchByKeyword(params, (result)=>{

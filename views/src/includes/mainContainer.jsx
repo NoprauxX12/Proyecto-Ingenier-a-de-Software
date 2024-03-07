@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useState} from "react";
 import { useEffect } from "react";
-import axios from "axios";
-import { BaseUrl } from "../util/apiUrl";
 import Card from "./card";
 import InfoContainer from "./infoContainer";
+
+//info acces
+import TownData from "../services/towns";
+import userData from "../services/user";
 
 const ClientsMainContainer=()=>{
     const [freelancers, setFreelancers] = useState([]);
@@ -14,21 +16,17 @@ const ClientsMainContainer=()=>{
     const [search, setSearch] = useState(null);
     const text= "Resultados de ";
   useEffect(() => {
-    const fetchCityes= async () =>{
-      try {
-        const response= await axios.post(BaseUrl+"/towns");
-        setCytyes(response.data);
-      } catch (error) {
-        console.log(error);
-      }
+    const fetchCityes = async () => {
+        TownData.fetchCityes((res) => {
+          setCytyes(res); // Aquí accedes a res.data en lugar de res
+        });
+      
     };
+
     const fetchFreelancers = async () => {
-      try {
-        const response = await axios.post(BaseUrl + "/getFreelancers", {keyword: search, city: selectedCity});
-        setFreelancers(response.data);
-      } catch (error) {
-        console.error("Error al obtener freelancers:", error);
-      }
+      userData.fetchFreelancers({keyword: search, city: selectedCity}, (res)=>{
+        setFreelancers(res);
+      })
     };
     fetchCityes();
     fetchFreelancers();
