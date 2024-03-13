@@ -1,7 +1,7 @@
 const mysqlExecute = require("../../util/mysqlConnexion");
-
+const fs= require("fs")
 const bcrypt = require('bcrypt');
-
+const sharp= require("sharp");
 
 
 const hashPassword = async (password) => {
@@ -49,6 +49,60 @@ class FreelancerDAO{
         }
 
             }
+            
+    static async UpdloadPhoto(route, description, id){
+        let sql = "UPDATE freelancer SET profilePhoto = ?, description=? WHERE idFreelancer=?";
+        let fileContent=route;
+        try {
+            if(route!==null) {
+                fileContent = await sharp(route)
+                .resize({ width: 700 })
+                .jpeg({quality: 70})
+                .toBuffer();
+            }
+            const res= await mysqlExecute(sql, [fileContent, description, id]);
+        } catch (error) {
+            console.log(error);
+        }
+        if(route!==null) fs.unlink(route, (error) => {
+            if (error) {
+              console.log(error);
+            }
+          });
+    }
+
+    static async userExist(json, cb){
+        let sql= "select * from  freelancer where idFreelancer=?";
+        try {
+            const res= await mysqlExecute(sql, [json.idCard]);
+            this.emailExist(json, (e)=>{
+                if(e.length===0 && res.length===0){
+                    cb({result: true});
+                }else{
+                    if(e.length!==0){
+                        
+                        cb({result: false, error: "Email registrada anteriormente."});
+                    }else{
+                        cb({result: false, error: "Cedula registrada anteriormente."});
+                    }
+                }
+            })
+
+        } catch (error) {
+            
+        }
+        
+    }
+
+    static async emailExist(json, cb){
+        let sql= "select * from  freelancer where  email=?";
+        try {
+            const res= await mysqlExecute(sql, [json.email])
+            cb(res);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 module.exports = FreelancerDAO;

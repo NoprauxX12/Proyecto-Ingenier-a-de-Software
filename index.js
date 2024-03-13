@@ -7,7 +7,7 @@ const app = express();
 
 //routes
 const userRoutes = require("./routes/users");
-const townRoutes = require("./routes/town");
+const generalRoutes=require("./routes/general")
 
 app.use(session({
     secret:"tu_secreto",
@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 // Ruta de inicio
 app.use(userRoutes);
-app.use(townRoutes);
+app.use(generalRoutes);
 
 // Iniciar el servidor
 app.listen(3200);

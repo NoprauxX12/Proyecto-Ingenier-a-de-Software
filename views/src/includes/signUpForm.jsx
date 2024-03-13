@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../providers/userProvider";
 import userData from "../services/user";
 import TownData from "../services/towns";
+import Urls from "../util/urls";
 
 
 
@@ -30,8 +31,6 @@ const Formulario = () => {
     idCity: "",
     description: "",
   });
-
-  
 
   useEffect(()=>{
     const fetchCityes = async () => {
@@ -75,15 +74,9 @@ const Formulario = () => {
       e.preventDefault();
       userData.signUp(formValues,(res)=>{
         if(res){
-          login({
-            user: formValues.user,
-            name: formValues.name,
-            idCard: formValues.idCard,
-            email: formValues.email,
-            idCity: formValues.idCity,
-          });
+          login(formValues);
           alert("te has registrado con exito!");
-          window.location.href = "/";
+          window.location.href = Urls.photo;
         }else{
           alert("oops ha habido un error :(");
         }
@@ -111,14 +104,17 @@ const Formulario = () => {
       case 2:
         if(formValues.idCity===""){
           setErr("debe elegir una ciudad");
-        }else if(formValues.adress===""){
-          setErr("debe agregar una dirección");
         }else if(formValues.cellphone==="" && formValues.telphone===""){
           setErr("debe agregar almenos un # de contacto");
         }else{
           setStep(step+1);
         }
-      break;
+        break;
+      case 3: 
+        if(formValues.adress===""){
+          setErr("debe agregar una dirección");
+        }
+        break;
     
       default:
         break;
@@ -200,19 +196,6 @@ const Formulario = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="adress" className="form-label mt-4">direccion</label>
-                    
-                    <input
-                    className="form-control" 
-                    type="text"
-                    required
-                    name="adress"
-                    value={formValues.adress}
-                    onChange={handleChange}
-                    placeholder="direccion"
-                    />
-                </div>
-                <div className="form-group">
                     <label htmlFor="cellphone" className="form-label mt-4">celular</label>
                     <input
                     className="form-control" 
@@ -271,6 +254,19 @@ const Formulario = () => {
                     value={formValues.idCard}
                     onChange={handleChange}
                     placeholder="Cedula"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="adress" className="form-label mt-4">direccion</label>
+                    
+                    <input
+                    className="form-control" 
+                    type="text"
+                    required
+                    name="adress"
+                    value={formValues.adress}
+                    onChange={handleChange}
+                    placeholder="direccion"
                     />
                 </div>
             </div>

@@ -19,7 +19,6 @@ const Navbar = ({ links, brandName, logoUrl }) => {
   };
   
   
-  console.log(userData);
    return (
     <header className="main-header">
       <div className='main-nav'>
@@ -50,7 +49,7 @@ const Navbar = ({ links, brandName, logoUrl }) => {
     </>
   ) : (
     <>
-      <p style={{ display: "inline-block", marginRight: "10px", marginTop: "0.7em" }}>{userData.name}</p>
+      <a href={Urls.photo}><p style={{ display: "inline-block", marginRight: "10px", marginTop: "0.7em" }}>{userData.name}</p></a>
       <a href={Urls.home} onClick={(e) => handleLogout(e)}>
         <img src="/images/cerrar-sesion.png" alt="log out" className='icons'/>
       </a>
