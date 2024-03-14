@@ -1,12 +1,13 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
-import axios from 'axios';
 import { AuthContext } from '../../providers/userProvider';
 import MiddleLogoContainer from '../../includes/middleLogoContainer';
 import KnowledgeData from '../../services/knowledges';
-import { BaseUrl } from '../../util/apiUrl';
+import UserData from '../../services/user';
+import Urls from '../../util/urls';
 
 const UploadPhotoScreen = () => {
-  const {userData} = useContext(AuthContext);
+  const {userData, login} = useContext(AuthContext);
+  const { user, name, idCard, email, idCity, telphone, adress, password1, cellphone } = userData;
   // states
   const [photo, setPhoto] = useState(null);
   const [description, setDescription] = useState(null);
@@ -48,11 +49,14 @@ const UploadPhotoScreen = () => {
 
   const addKnowledge=(e)=>{
     e.preventDefault();
-    if(listOfKnowledge.includes(knowledge)) return;
+    if(knowledge!=="00"){
+      if(listOfKnowledge.includes(knowledge)) return;
     const k= [...listOfKnowledge, knowledge];
     console.log(k)
     setListOfKnowledge(k);
-    console.log(listOfKnowledge);
+    }else{
+      alert("debe agregar un conocimiento")
+    }
   }
 
   const deleteKnowledge= (e)=>{
@@ -65,26 +69,46 @@ const UploadPhotoScreen = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(photo===null){
+    if (photo === null) {
       setPhoto("default");
     }
     const formData = new FormData();
     formData.append('photo', photo);
     formData.append("description", description);
     formData.append("knowledge", listOfKnowledge);
-    formData.append("id", userData.idCard);
-    formData.append("user", userData.user)
+    formData.append("idCard", idCard);
+    formData.append("user", user);
+    formData.append("name", name);
+    formData.append("telphone", telphone);
+    formData.append("adress", adress);
+    formData.append("email", email);
+    formData.append("password", password1);
+    formData.append("idCity", idCity);
+    formData.append("cellphone", cellphone);
     try {
-      const response = await axios.post(BaseUrl+"/update-users",  formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log('Photo uploaded:', response.data);
-    } catch (error) {
-      console.error('Error uploading photo:', error);
+      UserData.signUp(formData, (res) => {
+        console.log(res);
+        if (res.result) {
+          login({
+            user: user,
+            name: name,
+            idCard: idCard,
+            email: email,
+            idCity: idCity,
+          });
+          alert("Te has registrado con éxito!");
+          setTimeout(() => {
+            window.location.href = Urls.home;
+          }, 100); // Aquí colocamos el setTimeout
+        } else {
+          alert("Oops, ha habido un error :(");
+        }
+      })
+    } catch (err) {
+      console.log(err);
     }
   };
+  
 
   return (
     <div>
@@ -121,7 +145,7 @@ const UploadPhotoScreen = () => {
                 placeholder="Descripcion"
               />
             </div>
-            {userData.user==="1" && (
+            {user==="1" && (
               <>
               <div className="form-group">
                 

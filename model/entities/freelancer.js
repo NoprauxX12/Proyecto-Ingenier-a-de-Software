@@ -7,13 +7,11 @@
         this.cellphone=json.cellphone;
         this.adress=json.adress;
         this.email=json.email;
-        this.password=json.password1;
+        this.password=json.password;
         this.idCity=parseFloat(json.idCity);
         this.description=json.description;
-        this.rut= json.rut;
         this.profilePhoto= json.profilePhoto;
-       // this.rut=json.rut;
-        //this.technickKnowledge=json.technickKnowledge;
+        this.technickKnowledge=json.technickKnowledge;
     }
 
 

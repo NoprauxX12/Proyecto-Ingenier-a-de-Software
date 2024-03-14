@@ -1,0 +1,51 @@
+.cuadro {
+    margin-top: 200px; /* Ajusta el valor según sea necesario para mover hacia abajo */
+  }
+  
+  /* Ajusta otros estilos según sea necesario */
+  .mb-3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%; /* Puedes ajustar el valor según tus preferencias */
+    margin: 0 auto; /* Centra el elemento horizontalmente */
+  }
+  
+  .Info {
+    text-align: center;
+    font-family: "Fredoka", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: 2rem;
+    font-style: normal;
+  }
+  .t{
+    font-family: "Fredoka", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: 1em;
+    font-style: normal;
+  }
+
+  .s{
+    font-family: "Fredoka", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: 1em;
+    font-style: normal;
+  }
+  
+  .titulo,
+  .description {
+    text-align: center;
+    width: 100%; /* O ajusta según tus preferencias */
+  }
+  
+  button {
+    margin-top: 20px; /* Ajusta el valor según sea necesario para agregar espacio debajo del botón */
+    
+  }
+
+  .enviar{
+    text-align: center;
+  }

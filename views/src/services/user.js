@@ -1,13 +1,13 @@
 import axios from "axios";
 import { BaseUrl } from "../util/apiUrl";
 
-class userData{
+class UserData{
     static async signUp(formValues, cb){
         try {
             const response = await axios.post(BaseUrl+"/sign-up", formValues);
-            cb(response);
+            cb(response.data);
         } catch (error) {
-            cb(false);
+            cb({response: false});
         }
         
     }
@@ -20,6 +20,15 @@ class userData{
             console.error("Error al obtener freelancers:", error);
           }
     }
+
+    static async verifyForSigunUp(params, cb){
+        try {
+            const response = await axios.post(BaseUrl + "/user_exist", params);
+            cb(response.data); 
+        } catch (error) {
+            cb({result: false});
+        }
+    }
 }
 
-export default userData;
+export default UserData;

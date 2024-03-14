@@ -60,24 +60,23 @@ const ClientsMainContainer=()=>{
               <button className="btne dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{ display: "inline", fontSize: "0.5em" }}>
                 {name}
               </button>
-              <ul className="dropdown-menu dropdown-menu-start">
-                {cityes.length>0 ? (
-                  <>
-                  {cityes.map((city)=>(
-                  <>
-                  <li><a className="dropdown-item" href="#" onClick={()=>{ 
-                    setName(city.name);
-                    setSelectedCity(city.idCity);
-                    }}>{city.name}</a></li>
-                  </>
-                  ))}
-                  </>
-                ): (
-                  <>
+              <ul className="dropdown-menu dropdown-menu-start" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+              {cityes.length > 0 ? (
+                cityes.map((city) => (
+                  <li key={city.idCity}>
+                    <a className="dropdown-item" href="#" onClick={() => { 
+                      setName(city.name);
+                      setSelectedCity(city.idCity);
+                    }}>
+                      {city.name}
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <li>No hay ciudades disponibles</li>
+              )}
+            </ul>
 
-                  </>
-                )}
-              </ul>
             </div>
           </h2>
         </div>

@@ -27,8 +27,12 @@ class GeneralDAO{
 
     static async insertKnowledge(knowledges, id){
         let sql = "INSERT INTO academicDegrees (idFreelancer, idTechnicalKnowledge) VALUES (?, ?)";
-
-        knowledges.map((e)=>mysqlExecute(sql, [id, e]))
+        try {
+            knowledges.map((e)=>mysqlExecute(sql, [id, e]))
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
 }
 

@@ -9,7 +9,7 @@ import Urls from "../util/urls";
 const users= {"0": "Seleccione tipo usuario",
 "1": "Freelancer",
 "2":"Cliente"
-}
+};
 
 
 
@@ -29,7 +29,6 @@ const Formulario = () => {
     password1: "",
     password2:"",
     idCity: "",
-    description: "",
   });
 
   useEffect(()=>{
@@ -72,13 +71,12 @@ const Formulario = () => {
   const handleSubmit = (e) => {
     if(err===null){
       e.preventDefault();
-      userData.signUp(formValues,(res)=>{
-        if(res){
+      userData.verifyForSigunUp({idCard: formValues.idCard, user: formValues.user, email: formValues.email},(res)=>{
+        if(res.result){
           login(formValues);
-          alert("te has registrado con exito!");
           window.location.href = Urls.photo;
         }else{
-          alert("oops ha habido un error :(");
+          alert(res.error);
         }
       });
     }
