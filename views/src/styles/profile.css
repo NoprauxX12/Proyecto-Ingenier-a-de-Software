@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "DM Sans", sans-serif;
+    color: #636363;
+}
+
+
+.main-container{
+    justify-content: center;
+}
+
+
+.header-container h1{
+    font-weight: 400;
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #363639;
+}
+
+.content-container{
+    height: fit-content;
+    display: flex;
+    padding: 0 5%;
+    gap: 20px;
+}
+
+.left-container{
+    width: 450px;
+}
+.profile-image{
+    width: 450px;
+    border-radius: 20px;
+}
+
+.mid-container{
+    width: 350px;
+}
+
+
+.right-container{
+    width: 350px;
+}
+
+.content-element{
+    margin-bottom: 8px;
+}
+
+.inside-color{
+    font-weight: 700;
+    font-size: medium;
+    background-color: #EFEFEF;
+    border-radius: 20px;
+    border-color: transparent;
+    padding: 0.5%;
+}
+
+.profession-box{
+    width: 279px;
+}
+
+.description-box{
+    width: 350px;
+    height: 290px;
+    resize: none;
+    padding: 2%;
+}
+
+.phone-box{
+    width: 279px;
+    padding: 0.5%;
+}
+
+.email-box{
+    width: 347px;
+    padding: 0.5%;
+}
+
+.academic-info-box{
+    width: 347px;
+    height: 100px;
+    resize: none;
+    padding: 2%;
+}
+
+.important-info-box{
+    width: 347px;
+    height: 100px;
+    resize: none;
+    padding: 2%;
+}
+
+.password-box1{
+    width: 215px;
+}
+
+.password-box2{
+    width: 190px;
+}
+
+.button-box{
+  display: inline-block;
+  text-decoration: none;
+  font: inherit;
+  color: #FFFF;
+  background: #3D00B7;
+  border-radius: 20px;
+  border: transparent;
+  cursor: pointer;
+  padding: 1.5%;
+}
+
+.button-box:hover{
+  color: #3D00B7;
+  background: #FFFF;
+  border: 1.5px solid #3D00B7;
+}
+
+.portfolio-container{
+    padding: 1.5% 5%;
+}
+
+.button-plus{
+    background: transparent;
+    border: transparent;
+    
+}

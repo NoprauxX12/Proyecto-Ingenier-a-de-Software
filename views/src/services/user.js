@@ -29,6 +29,16 @@ class UserData{
             cb({result: false});
         }
     }
+
+    static async fetchFreelancerById(id, cb){
+        try {
+            const  response = await axios.post( "http://localhost:3200/getFreelancerInfo", {id: id});
+            console.log(response.data);
+            cb(response.data);
+        } catch (error) {
+            cb({response: false});
+        }
+    }
 }
 
 export default UserData;

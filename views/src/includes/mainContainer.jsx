@@ -15,6 +15,7 @@ const ClientsMainContainer=()=>{
     const [selectedCity, setSelectedCity] = useState("5001");
     const [search, setSearch] = useState(null);
     const text= "Resultados de ";
+    
   useEffect(() => {
     const fetchCityes = async () => {
         TownData.fetchCityes((res) => {
@@ -25,14 +26,14 @@ const ClientsMainContainer=()=>{
 
     const fetchFreelancers = async () => {
       userData.fetchFreelancers({keyword: search, city: selectedCity}, (res)=>{
+        console.log(res.profilePhoto);
         setFreelancers(res);
       })
     };
     fetchCityes();
     fetchFreelancers();
     const params = new URLSearchParams(window.location.search);
-    const valor = params.get('search'); // Suponiendo que el parámetro se llama 'nombre'
-    
+    const valor = params.get('search'); 
     // Actualizar el estado con el valor obtenido
     setSearch(valor);
   },[search, selectedCity]); 

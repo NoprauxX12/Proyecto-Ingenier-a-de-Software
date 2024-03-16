@@ -51,9 +51,15 @@ class FreelancerDAO{
     }
 
     static async fetchAll(p,cb){
-        let sql= "select f.idFreelancer, f.name , t.name city, f.description, f.url from freelancer f left join town t using (idCity) where f.idCity=?";
+        let sql= "select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto, f.url from freelancer f left join town t using (idCity) where f.idCity=?";
         try{
             const results= await mysqlExecute(sql, [parseFloat(p.city)]);
+            results.map((freelancer)=>{
+                if(freelancer.profilePhoto){
+                    let photo=freelancer.profilePhoto.toString('base64');
+                    freelancer["profilePhoto"]=photo;
+                } 
+            });
             cb(results);
         }catch(err){
             cb({result: false});
@@ -64,6 +70,12 @@ class FreelancerDAO{
         let sql = "SELECT * FROM freelancer WHERE description LIKE ? or name like ? and idCity=?";
         try {
             const results = await mysqlExecute(sql, [`%${p.keyword}%`, `%${p.keyword}%`, parseFloat(p.city)]);
+            results.map((freelancer)=>{
+                if(freelancer.profilePhoto){
+                    let photo=freelancer.profilePhoto.toString('base64');
+                    freelancer["profilePhoto"]=photo;
+                } 
+            });
             cb(results);
         } catch (err) {
             cb({ result: false });
@@ -98,6 +110,22 @@ class FreelancerDAO{
         try {
             const res= await mysqlExecute(sql, [json.email])
             cb(res);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async fetchById(id, cb){
+        let sql= "select  adress, cellphone, description, idCity, idFreelancer, name, phoneNumber, profilePhoto from freelancer where idFreelancer=?";
+        try {
+            const response= await mysqlExecute(sql, [id]);
+            response.map((e)=>{
+                if(e.profilePhoto){
+                    let photo= e.profilePhoto.toString("base64");
+                    e["profilePhoto"]=photo;
+                }
+            });
+            cb(response[0]);
         } catch (error) {
             console.log(error);
         }
