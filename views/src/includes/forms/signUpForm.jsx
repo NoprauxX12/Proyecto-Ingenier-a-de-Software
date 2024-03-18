@@ -267,8 +267,20 @@ const Formulario = () => {
                     placeholder="direccion"
                     />
                 </div>
+                <div className="form-check">
+                  <input className="form-check-input" type="checkbox" id="termsCheckbox" required />
+                  <label className="form-check-label" htmlFor="termsCheckbox">
+                    Acepto los <a href="/files/termnsAndConditions.pdf" target="_blank" rel="noopener noreferrer">términos y condiciones</a>
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input className="form-check-input" type="checkbox" id="termsCheckbox" required />
+                  <label className="form-check-label" htmlFor="termsCheckbox">
+                    Acepto la poltica de <a href="/files/termnsAndConditions.pdf" target="_blank" rel="noopener noreferrer">tratamiento de datos</a>
+                  </label>
+                </div>
             </div>
-            </div>
+          </div>
         )}
         {err !== null && (<p className="error-message" style={{marginLeft: "3.8em", color: "red"}}>{err}</p>)}
         <div className="buttonsContainer"> 

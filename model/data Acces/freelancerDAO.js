@@ -51,9 +51,9 @@ class FreelancerDAO{
     }
 
     static async fetchAll(p,cb){
-        let sql= "select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto, f.url from freelancer f left join town t using (idCity) where f.idCity=?";
+        let sql=p.city!=="00"?  "select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto, f.url from freelancer f left join town t using (idCity) where f.idCity=?" :"select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto, f.url from freelancer f left join town t using (idCity)";
         try{
-            const results= await mysqlExecute(sql, [parseFloat(p.city)]);
+            const results=p.city!=="00"? await mysqlExecute(sql, [parseFloat(p.city)]): await mysqlExecute(sql);
             results.map((freelancer)=>{
                 if(freelancer.profilePhoto){
                     let photo=freelancer.profilePhoto.toString('base64');
@@ -67,9 +67,9 @@ class FreelancerDAO{
     }
 
     static async fetchByKeyword(p, cb){
-        let sql = "SELECT * FROM freelancer WHERE description LIKE ? or name like ? and idCity=?";
+        let sql =p.city!=="00"? "select f.idFreelancer, f.name name, t.name city, f.description, f.profilePhoto FROM freelancer f left join town t using (idCity) WHERE idCity=? and description LIKE ? or f.name like ? ":  "select f.idFreelancer, f.name name, t.name city, f.description, f.profilePhoto FROM freelancer f left join town t using (idCity) WHERE description LIKE ? or f.name like ? ";
         try {
-            const results = await mysqlExecute(sql, [`%${p.keyword}%`, `%${p.keyword}%`, parseFloat(p.city)]);
+            const results = await mysqlExecute(sql, [parseFloat(p.city),`%${p.keyword}%`, `%${p.keyword}%`]);
             results.map((freelancer)=>{
                 if(freelancer.profilePhoto){
                     let photo=freelancer.profilePhoto.toString('base64');
@@ -78,6 +78,7 @@ class FreelancerDAO{
             });
             cb(results);
         } catch (err) {
+            console.log(err);
             cb({ result: false });
         }
 

@@ -41,7 +41,7 @@ const FormularioLogIn = () => {
   };
 
   return (
-    <div className="form__container" id="formlog">
+    <div className="form__container">
       <form onSubmit={handleSubmit}>
         <fieldset>
           <legend className="log_in">
@@ -49,6 +49,15 @@ const FormularioLogIn = () => {
             <span style={{ color: "#55ACEE" }}>In</span>
           </legend>
           <div>
+          <div className="form-group">
+                    <label htmlFor="exampleFreelancer/client" className="form-label mt-4">Tipo de Usuario</label>
+                    <select className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="exampleFreelancer/client" name="user">
+                        <option value={"0"}>Tipo de usuario</option>
+                        <option value={"1"}>Freelancer</option>
+                        <option value={"2"}>Cliente</option>
+                        
+                    </select>
+            </div>
             <label htmlFor="exampleInputEmail1" className="form-label mt-4">
               Dirección de Email
             </label>
@@ -85,6 +94,7 @@ const FormularioLogIn = () => {
             Confirmar
           </button>
         </fieldset>
+        
       </form>
     </div>
   );

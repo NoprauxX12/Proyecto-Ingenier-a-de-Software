@@ -1,0 +1,39 @@
+.card__item{
+    max-height: 25em;
+    max-width: 18em;
+    position: relative;
+}
+.city-icon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1em;
+    margin-top: 3em; 
+    position: absolute;
+    bottom: 0;
+    left: 50%; /* Opcional: ajusta el centrado horizontal */
+    transform: translateX(-50%); /* Opcional: ajusta el centrado horizontal */
+    margin-bottom: 10px; 
+}
+.card {
+    position: relative;
+}
+
+#cardIm {
+    max-width: 100% ; /* Limita el ancho máximo de la imagen */
+    max-height: calc(13em - 2em) ; /* Limita la altura máxima de la imagen restando el espacio del texto y el icono */
+    min-width: 90%;
+    width: auto ; /* Para mantener la relación de aspecto de la imagen */
+    height: auto ; 
+}
+
+
+.card-body {
+    padding: 1em; 
+    margin-bottom: 2em;/* Espacio interno para el contenido */
+}
+
+
+.city-icon svg {
+    margin-right: 0.5em; /* Espacio entre el ícono y el texto de la ciudad */
+}

@@ -8,6 +8,7 @@ function ProfileScreen(){
     const fileInputRef = useRef();
 
     useLayoutEffect(()=>{
+        document.title="edit-profile";
         const getUserData= async ()=>{
             UserData.fetchFreelancerById(id, (res)=>{
                 setUser(res);
