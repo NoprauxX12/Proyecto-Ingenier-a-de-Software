@@ -21,6 +21,7 @@ function HomeScreen() {
   const [cityes, setCytyes] = useState([]);
   const [name, setName]= useState("CIudad");
   const [selectedCity, setSelectedCity] = useState("00");
+  const mt = (userData===null || userData==="2")? "1em":"3em";
 
   useEffect(() => {
     document.title="Home";
@@ -60,7 +61,7 @@ function HomeScreen() {
         )
       }
       
-      <div className="card text-center shadow-none border-none" style={{width: "95%", margin: "auto"}}>
+      <div className="card text-center shadow-none border-none" style={{width: "95%", margin: "auto", marginTop: mt}}>
           <div className="card-header border-none" style={{paddingLeft: "2em"}}>
             <ul className="nav nav-pills card-header-pills">
               <li className="nav-item">
@@ -91,7 +92,7 @@ function HomeScreen() {
               </li>
             </ul>
           </div>
-        <div className="row row-cols-1 row-cols-md-3 g-4" style={{padding: "2em", }}>
+        <div className="row row-cols-1 row-cols-md-3 g-4" style={{padding: "2em"}}>
               {(userData===null || userData.user==="2")? (<>
                 {freelancers.length>0 ? (
                 <>
