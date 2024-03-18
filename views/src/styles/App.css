@@ -276,8 +276,8 @@ button[class="btne"]:hover{
 .btne:hover,
 .btne:active {
   border: none;
-  background-color: #55ACEE;
-  color: white;
+  background-color: #55ACEE !important;
+  color: #ffffff !important;
   transition: .5s;
 }
 

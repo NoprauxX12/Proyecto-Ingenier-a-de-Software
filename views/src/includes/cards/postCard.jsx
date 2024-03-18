@@ -4,7 +4,7 @@ import React from "react";
 const PostCard= (props)=>{
     const {post} = props;
     return(<>
-    <div className="card">
+    <div className="card" style={{width: "90%", margin:"auto"}}>
         <div className="card-header">
             {post.title}
         </div>

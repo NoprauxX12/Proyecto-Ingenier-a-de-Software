@@ -10,7 +10,7 @@ const Card = (props) => {
     }
     console.log("freelancer.profilePhoto.data")
     return (
-        <div className="card__item card">
+        <div className="card__item card" style={{marginBottom: "0.5em"}}>
           {!freelancer.profilePhoto? (<>
           <a href={Urls.profile+`/?id=${freelancer.idFreelancer}`}>
             <img src="/images/defaultUser.png" className="card-img-top"  alt="usuario por defecto" style={{width: "12em",margin: "auto", cursor: "pointer"}} />
