@@ -88,29 +88,29 @@ const Formulario = () => {
     switch (step) {
       case 1:
         if((formValues.password1.length + formValues.password2.length) < 16){
-          setErr("La contraseña debe contener minimo 8 caracteres.")
+          setErr("La contraseña debe contener mínimo 8 caracteres.")
         }else if(err===null){
           if(formValues.user!=="0"){
             setErr(null);
             setStep(step + 1);
           }else{
-            setErr("debe seleccionar un usuario")
+            setErr("Debe seleccionar un usuario")
           }
         }
         break;
 
       case 2:
         if(formValues.idCity===""){
-          setErr("debe elegir una ciudad");
+          setErr("Debe elegir una ciudad");
         }else if(formValues.cellphone==="" && formValues.telphone===""){
-          setErr("debe agregar almenos un # de contacto");
+          setErr("Debe agregar al menos un número de contacto");
         }else{
           setStep(step+1);
         }
         break;
       case 3: 
         if(formValues.adress===""){
-          setErr("debe agregar una dirección");
+          setErr("Debe agregar una dirección");
         }
         break;
     
@@ -180,7 +180,7 @@ const Formulario = () => {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="cityes" className="form-label mt-4">Ciudad residencia:</label>
+                    <label htmlFor="cityes" className="form-label mt-4">Ciudad de residencia:</label>
                     <select className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="cityes" name="idCity" onChange={handleChange}>
                     <option value={""}>Seleccione una ciudad</option>
                       {cityes.length>0 && (
@@ -194,7 +194,7 @@ const Formulario = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="cellphone" className="form-label mt-4">celular</label>
+                    <label htmlFor="cellphone" className="form-label mt-4">Celular</label>
                     <input
                     className="form-control" 
                     type="text"
@@ -206,7 +206,7 @@ const Formulario = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="telphone" className="form-label mt-4">telefono</label>
+                    <label htmlFor="telphone" className="form-label mt-4">Teléfono</label>
                     <input
                     className="form-control" 
                     type="text"
@@ -243,7 +243,7 @@ const Formulario = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="idCard" className="form-label mt-4">Cedula</label>
+                    <label htmlFor="idCard" className="form-label mt-4">Cédula</label>
                     <input
                     className="form-control" 
                     required
@@ -255,7 +255,7 @@ const Formulario = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="adress" className="form-label mt-4">direccion</label>
+                    <label htmlFor="adress" className="form-label mt-4">Dirección</label>
                     
                     <input
                     className="form-control" 

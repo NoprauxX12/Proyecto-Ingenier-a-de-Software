@@ -30,3 +30,20 @@ img{
     align-self: center;
     font-size: 1.1em;
 }
+
+.circular-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #3D00B7; /* Puedes cambiar el color de fondo según tus preferencias */
+    color: #55ACEE;
+    font-size: 24px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
