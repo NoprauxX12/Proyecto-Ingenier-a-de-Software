@@ -1,10 +1,11 @@
 
 import React, {  useContext, useState } from "react";
-import PostData from "../services/postData";
-import { AuthContext } from "../providers/userProvider";
+import PostData from "../../services/postData";
+import { AuthContext } from "../../providers/userProvider";
 
 const Postform = () => {
     const {userData} = useContext(AuthContext);
+    // eslint-disable-next-line no-unused-vars
     const [response, setResponse] = useState(null);
     const [postValues, setPostValues] = useState({
         title: "",
@@ -12,6 +13,7 @@ const Postform = () => {
         idClient: userData.idCard,
     });
 
+    // eslint-disable-next-line no-unused-vars
     const handleChange = (e) => {
       const { name, value } = e.target;
       setPostValues({

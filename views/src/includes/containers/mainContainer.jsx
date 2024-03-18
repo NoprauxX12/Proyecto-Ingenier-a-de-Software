@@ -1,21 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useState} from "react";
 import { useEffect } from "react";
-import Card from "./card";
-import InfoContainer from "./infoContainer";
+//components
+import Card from "../cards/card";
 
 //info acces
-import TownData from "../services/towns";
-import userData from "../services/user";
+import TownData from "../../services/towns";
+import userData from "../../services/user";
 
-const ClientsMainContainer=()=>{
+const ClientsMainContainer=(props)=>{
     const [freelancers, setFreelancers] = useState([]);
     const [cityes, setCytyes] = useState([]);
     const [name, setName]= useState("Medellin");
     const [selectedCity, setSelectedCity] = useState("5001");
     const [search, setSearch] = useState(null);
     const text= "Resultados de ";
-    
+
   useEffect(() => {
     const fetchCityes = async () => {
         TownData.fetchCityes((res) => {
@@ -39,12 +39,6 @@ const ClientsMainContainer=()=>{
   },[search, selectedCity]); 
     return (
       <div>
-        {search===null && (
-          <>
-          <InfoContainer/>
-          </>
-        )}
-
         <div className="discoberDontainer">
           <h2>
             {search===null ? (

@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../providers/userProvider";
-import userData from "../services/user";
-import TownData from "../services/towns";
-import Urls from "../util/urls";
+import { AuthContext } from "../../providers/userProvider";
+import userData from "../../services/user";
+import TownData from "../../services/towns";
+import Urls from "../../util/urls";
 
 
 

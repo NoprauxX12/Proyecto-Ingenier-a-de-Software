@@ -265,6 +265,11 @@ font-weight: 500;
   color: #3D00B7;
 }
 
+button[class="btne"]:hover{
+  border: none;
+  background-color: inherit;
+  color: white;
+}
 .btne:hover,
 .btne:active {
   border: none;

@@ -1,5 +1,5 @@
 import React from "react";
-import Urls from "../util/urls";
+import Urls from "../../util/urls";
 
 const Card = (props) => {
     const { freelancer } = props;
@@ -11,7 +11,7 @@ const Card = (props) => {
         <div className="card__item card">
           {!freelancer.profilePhoto? (<>
           <a href={Urls.profile+`/?id=${freelancer.idFreelancer}`}>
-            <img src="/images/defaultUser.png" alt="usuario por defecto" style={{width: "10em", margin: "auto", cursor: "pointer"}}/>
+            <img src="/images/defaultUser.png" alt="usuario por defecto" style={{width: "12em", margin: "auto", cursor: "pointer"}}/>
           </a>
           </>):(
             <>

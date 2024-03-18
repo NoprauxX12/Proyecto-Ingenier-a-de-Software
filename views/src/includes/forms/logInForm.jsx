@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../providers/userProvider";
+import { AuthContext } from "../../providers/userProvider";
 import axios from "axios";
-import { BaseUrl } from "../util/apiUrl";
+import { BaseUrl } from "../../util/apiUrl";
 
 const FormularioLogIn = () => {
   const { login } = useContext(AuthContext);

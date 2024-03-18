@@ -36,8 +36,8 @@ const Navbar = ({ links, brandName, logoUrl }) => {
   <div className="col-md-6">
     <form className="d-flex" action='/' method='get'>
       <div className="search-container">
-        <input className="form-control me-2 search__bar" name='search' type="search" placeholder="Buscar..." aria-label="Buscar" />
-        <button className="btn" type="submit"><i className="bi bi-search" /></button>
+        <input className="form-control me-2 search__bar" name='search' id='search' type="search" placeholder="Buscar..." aria-label="Buscar" />
+        <button className="btne" type="submit"><i className="bi bi-search" /></button>
       </div>
     </form>
   </div>

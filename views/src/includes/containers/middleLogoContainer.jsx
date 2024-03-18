@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/register.css";
+import "../../styles/register.css";
 
 const MiddleLogoContainer =(props)=>{
     const {hide}= props;    return (

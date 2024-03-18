@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 
 const InfoContainer=()=>{
@@ -10,7 +11,9 @@ const InfoContainer=()=>{
                 <p>¡Encuentra una amplia gama de servicios para dar solución a tus problemas en nuestra plataforma de freelancers! Conectamos personas, emprendedores y proyectos con expertos independientes listos para ayudarte. ¡Explora, conecta y haz que suceda!</p>
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    <a className="btne_dark" href="/">Buscar Ahora</a>
+                  <label htmlFor="search">
+                    <a className="btne_dark">Buscar Ahora</a>
+                  </label>  
                 </div>
             </div>
             <div className="grid-item" style={{ flexShrink: 0 }}>

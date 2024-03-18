@@ -23,11 +23,11 @@ class FreelancerDAO{
         let link = free.profilePhoto;
         const values = [free.idCard, free.name, free.telphone, free.cellphone, free.adress, free.email, password, parseFloat(free.idCity), free.description];
         let fileContent = null;
-    
+
         try {
             if (link !== null) {
                 fileContent = await sharp(link)
-                    .resize({ width: 700 })
+                    .resize({ width: 800 })
                     .jpeg({ quality: 80 })
                     .toBuffer();
             }

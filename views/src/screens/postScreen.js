@@ -1,9 +1,7 @@
 import React from "react";
-import Postform from "../includes/post";
 import "../styles/post.css"
-
-
-
+//components
+import Postform from "../includes/forms/post";
 
 function PostPage() {
     return(
