@@ -1,22 +1,36 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../providers/userProvider';
+import { useNavigate } from 'react-router-dom'; 
 import "../styles/items.css";
-//data
 import TownData from '../services/towns';
 import UserData from "../services/user"
-//components
+
 import Footer from '../includes/Footer';
 import ClientsMainContainer from '../includes/containers/mainContainer';
 import InfoContainer from "../includes/containers/infoContainer";
 import Navbar from '../includes/Navbar';
+import { FaPlus } from 'react-icons/fa';
 import Card from '../includes/cards/freelancerCard';
 import PostCard from '../includes/cards/postCard';
 
 function HomeScreen() {
+  const navigate = useNavigate(); 
   const params = new URLSearchParams(window.location.search);
-  const {userData} = useContext(AuthContext);
-  const [search, setSearch] = useState(params.get('search')); 
+  const { userData, isLoggedIn } = useContext(AuthContext);
+  const [search, setSearch] = useState(params.get('search'));
+
+  useEffect(() =>{
+    if(!isLoggedIn){
+      navigate('/'); 
+    }
+  }, [isLoggedIn, navigate]); 
+
+  const handleButtonClick = () => {
+    if(isLoggedIn){
+      navigate('/post'); 
+    }
+  };
+  
   const [freelancers, setFreelancers] = useState([]);
   const [cityes, setCytyes] = useState([]);
   const [name, setName]= useState("CIudad");
@@ -47,17 +61,17 @@ function HomeScreen() {
   },[search, selectedCity, userData]); 
   
   return (
-    <div>
+    <div style={{ position: 'relative', minHeight: '100vh' }}>
 
-      <Navbar/>
-      {(search===null && userData===null) && (
-          <>
-          <InfoContainer/>
-          </>
-        )}
+      <Navbar />
+      {(search === null && userData === null) && (
+        <>
+          <InfoContainer />
+        </>
+      )}
       {
-        (userData===null || userData.user==="2") &&(
-          <ClientsMainContainer search={search}/>
+        (userData === null || userData.user === "2") && (
+          <ClientsMainContainer  search={search}/>
         )
       }
       
@@ -111,10 +125,17 @@ function HomeScreen() {
           </div>
 
         </div>
-      <Footer/> 
+      <Footer />
+      {(userData && userData.user === '2') && (<> <div 
+        style={{ position: 'fixed', bottom: '20px', right: '20px' }}>
+        <button className="circular-button" onClick={handleButtonClick}>
+          <FaPlus style={{ color: '#55ACEE' }} />
+        </button>
+      </div>
+      </>)}
+      
     </div>
   );
 }
 
 export default HomeScreen;
- 

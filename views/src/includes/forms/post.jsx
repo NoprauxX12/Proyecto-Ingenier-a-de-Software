@@ -1,38 +1,36 @@
-
-import React, {  useContext, useState } from "react";
-import PostData from "../../services/postData";
+import React, { useContext, useState } from "react";
+import PostData from "../../services/postData"; 
 import { AuthContext } from "../../providers/userProvider";
 
+
 const Postform = () => {
-    const {userData} = useContext(AuthContext);
-    // eslint-disable-next-line no-unused-vars
+    const { userData } = useContext(AuthContext);
     const [response, setResponse] = useState(null);
     const [postValues, setPostValues] = useState({
         title: "",
         description: "",
-        idClient: userData.idCard,
     });
 
-    // eslint-disable-next-line no-unused-vars
     const handleChange = (e) => {
       const { name, value } = e.target;
       setPostValues({
         ...postValues,
         [name]: value
       });
-      
     };
 
     const handlePost = (e) => {
-      PostData(postValues, (arg)=>{
+      e.preventDefault();
+      PostData.createPost({ ...postValues, idClient: userData.idCard }, (arg)=>{
         if(arg.result){
-          alert("el post se ha creado correctamnete");
-        }else{
-          alert("oops ha habido un error :(");
-        }
-      })
-    };
+          alert("El post se ha creado correctamente");
+          window.location.href = '/';
 
+        }else{
+          alert("Oops, ha habido un error :(");
+        }
+      });
+    };
 
   return (
    <div>
@@ -50,8 +48,10 @@ const Postform = () => {
                 type="text"
                 className="form-control"
                 id="titulo"
+                name="title"
                 placeholder="Ingrese el título de servicio"
                 value={postValues.title}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -64,27 +64,15 @@ const Postform = () => {
               <textarea
                 className="form-control"
                 id="descripcion"
+                name="description"
                 rows="3"
                 placeholder="Ingrese la descripción de servicio"
                 value={postValues.description}
+                onChange={handleChange}
               ></textarea>
             </div>
           </div>
 
-          <div className="mb-3">
-            <div>
-              <label htmlFor="cedula" className="form-label">
-                Cédula del Cliente
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="cedula"
-                placeholder="Ingrese la cédula del cliente"
-                value={postValues.idClient}
-              />
-            </div>
-          </div>
           <div className="enviar">
             <button type="submit" className="btn btn-primary">
                 Enviar

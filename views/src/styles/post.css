@@ -1,14 +1,14 @@
 .cuadro {
-    margin-top: 200px; /* Ajusta el valor según sea necesario para mover hacia abajo */
+    margin-top: 200px; 
   }
   
-  /* Ajusta otros estilos según sea necesario */
+
   .mb-3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 80%; /* Puedes ajustar el valor según tus preferencias */
-    margin: 0 auto; /* Centra el elemento horizontalmente */
+    width: 80%; 
+    margin: 0 auto; 
   }
   
   .Info {
@@ -38,14 +38,15 @@
   .titulo,
   .description {
     text-align: center;
-    width: 100%; /* O ajusta según tus preferencias */
+    width: 50%; 
   }
   
   button {
-    margin-top: 20px; /* Ajusta el valor según sea necesario para agregar espacio debajo del botón */
+    margin-top: 20px; 
     
   }
 
   .enviar{
     text-align: center;
+    margin-left: 48%;
   }
