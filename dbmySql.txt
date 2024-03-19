@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `el_que_sabe`.`client` (
   `email` TEXT NULL,
   `password` TEXT NULL,
   `idCity` FLOAT UNSIGNED NOT NULL,
-  `profilePhoto` BLOB NULL,
+  `profilePhoto` LONGBLOB NULL,
   `description` VARCHAR(300) NULL,
   PRIMARY KEY (`idClient`),
   INDEX `fk_client_department_idx` (`idCity` ASC) ,
@@ -77,8 +77,8 @@ CREATE TABLE IF NOT EXISTS `el_que_sabe`.`freelancer` (
   `email` TEXT NULL,
   `password` TEXT NULL,
   `idCity` FLOAT UNSIGNED NOT NULL,
-  `rut` BLOB NULL,
-  `profilePhoto` BLOB NULL,
+  `rut` LONGBLOB NULL,
+  `profilePhoto` LONGBLOB NULL,
   `description` VARCHAR(300) NULL,
   PRIMARY KEY (`idFreelancer`),
   INDEX `fk_freelancer_department1_idx` (`idCity` ASC) ,
@@ -94,7 +94,7 @@ ENGINE = InnoDB;
 -- Table `el_que_sabe`.`technicalKnowledge`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `el_que_sabe`.`technicalKnowledge` (
-  `idTechnicalKnowledge` INT NOT NULL,
+  `idTechnicalKnowledge` INT NOT NULL AUTO_INCREMENT,
   `title` TEXT NULL,
   PRIMARY KEY (`idTechnicalKnowledge`))
 ENGINE = InnoDB;
@@ -172,9 +172,9 @@ ENGINE = InnoDB;
 -- Table `el_que_sabe`.`imagesPW`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `el_que_sabe`.`imagesPW` (
-  `idImagesPW` INT NOT NULL,
+  `idImagesPW` INT NOT NULL AUTO_INCREMENT,
   `idPreviousWork` INT NOT NULL,
-  `image` BLOB NULL,
+  `image` LONGBLOB NULL,
   PRIMARY KEY (`idImagesPW`),
   INDEX `fk_imagesPW_previousWork1_idx` (`idPreviousWork` ASC) ,
   CONSTRAINT `fk_imagesPW_previousWork1`
@@ -189,7 +189,7 @@ ENGINE = InnoDB;
 -- Table `el_que_sabe`.`contractOffer`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `el_que_sabe`.`contractOffer` (
-  `idContractOffer` INT NOT NULL,
+  `idContractOffer` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(45) NULL,
   `title` VARCHAR(45) NULL,
   `idClient` VARCHAR(15) NOT NULL,
@@ -207,8 +207,8 @@ ENGINE = InnoDB;
 -- Table `el_que_sabe`.`imegesCO`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `el_que_sabe`.`imegesCO` (
-  `idImagesHO` INT NOT NULL,
-  `image` BLOB NULL,
+  `idImagesHO` INT NOT NULL AUTO_INCREMENT,
+  `image` LONGBLOB NULL,
   `idContractOffer` INT NOT NULL,
   PRIMARY KEY (`idImagesHO`),
   INDEX `fk_imegesHO_hireOffer1_idx` (`idContractOffer` ASC) ,
@@ -224,7 +224,7 @@ ENGINE = InnoDB;
 -- Table `el_que_sabe`.`contract`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `el_que_sabe`.`contract` (
-  `idContract` INT NOT NULL,
+  `idContract` INT NOT NULL AUTO_INCREMENT,
   `value` VARCHAR(45) NULL,
   `idFreelancer` VARCHAR(15) NOT NULL,
   `idClient` VARCHAR(15) NOT NULL,
@@ -257,28 +257,6 @@ CREATE TABLE IF NOT EXISTS `el_que_sabe`.`review` (
   CONSTRAINT `fk_review_contract1`
     FOREIGN KEY (`idContract`)
     REFERENCES `el_que_sabe`.`contract` (`idContract`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `el_que_sabe`.`view`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `el_que_sabe`.`view` (
-  `idFreelancer` VARCHAR(15) NOT NULL,
-  `idClient` VARCHAR(15) NOT NULL,
-  `idView` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`idView`),
-  INDEX `fk_view_client1_idx` (`idClient` ASC) ,
-  CONSTRAINT `fk_view_freelancer1`
-    FOREIGN KEY (`idFreelancer`)
-    REFERENCES `el_que_sabe`.`freelancer` (`idFreelancer`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_view_client1`
-    FOREIGN KEY (`idClient`)
-    REFERENCES `el_que_sabe`.`client` (`idClient`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

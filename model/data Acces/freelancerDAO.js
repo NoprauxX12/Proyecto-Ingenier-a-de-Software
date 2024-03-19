@@ -23,11 +23,11 @@ class FreelancerDAO{
         let link = free.profilePhoto;
         const values = [free.idCard, free.name, free.telphone, free.cellphone, free.adress, free.email, password, parseFloat(free.idCity), free.description];
         let fileContent = null;
-    
+
         try {
             if (link !== null) {
                 fileContent = await sharp(link)
-                    .resize({ width: 700 })
+                    .resize({ width: 800 })
                     .jpeg({ quality: 80 })
                     .toBuffer();
             }
@@ -51,9 +51,15 @@ class FreelancerDAO{
     }
 
     static async fetchAll(p,cb){
-        let sql= "select f.idFreelancer, f.name , t.name city, f.description, f.url from freelancer f left join town t using (idCity) where f.idCity=?";
+        let sql=p.city!=="00"?  "select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto, f.url from freelancer f left join town t using (idCity) where f.idCity=?" :"select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto, f.url from freelancer f left join town t using (idCity)";
         try{
-            const results= await mysqlExecute(sql, [parseFloat(p.city)]);
+            const results=p.city!=="00"? await mysqlExecute(sql, [parseFloat(p.city)]): await mysqlExecute(sql);
+            results.map((freelancer)=>{
+                if(freelancer.profilePhoto){
+                    let photo=freelancer.profilePhoto.toString('base64');
+                    freelancer["profilePhoto"]=photo;
+                } 
+            });
             cb(results);
         }catch(err){
             cb({result: false});
@@ -61,11 +67,18 @@ class FreelancerDAO{
     }
 
     static async fetchByKeyword(p, cb){
-        let sql = "SELECT * FROM freelancer WHERE description LIKE ? or name like ? and idCity=?";
+        let sql =p.city!=="00"? "select f.idFreelancer, f.name name, t.name city, f.description, f.profilePhoto FROM freelancer f left join town t using (idCity) WHERE idCity=? and description LIKE ? or f.name like ? ":  "select f.idFreelancer, f.name name, t.name city, f.description, f.profilePhoto FROM freelancer f left join town t using (idCity) WHERE description LIKE ? or f.name like ? ";
         try {
-            const results = await mysqlExecute(sql, [`%${p.keyword}%`, `%${p.keyword}%`, parseFloat(p.city)]);
+            const results = await mysqlExecute(sql, [parseFloat(p.city),`%${p.keyword}%`, `%${p.keyword}%`]);
+            results.map((freelancer)=>{
+                if(freelancer.profilePhoto){
+                    let photo=freelancer.profilePhoto.toString('base64');
+                    freelancer["profilePhoto"]=photo;
+                } 
+            });
             cb(results);
         } catch (err) {
+            console.log(err);
             cb({ result: false });
         }
 
@@ -98,6 +111,22 @@ class FreelancerDAO{
         try {
             const res= await mysqlExecute(sql, [json.email])
             cb(res);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async fetchById(id, cb){
+        let sql= "select  adress, cellphone, description, idCity, idFreelancer, name, phoneNumber, profilePhoto from freelancer where idFreelancer=?";
+        try {
+            const response= await mysqlExecute(sql, [id]);
+            response.map((e)=>{
+                if(e.profilePhoto){
+                    let photo= e.profilePhoto.toString("base64");
+                    e["profilePhoto"]=photo;
+                }
+            });
+            cb(response[0]);
         } catch (error) {
             console.log(error);
         }

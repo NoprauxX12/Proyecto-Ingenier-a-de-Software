@@ -62,3 +62,10 @@ exports.verifyUserExistence=(req, res, next)=>{
         });
     }
 };
+
+exports.fetchFreelancerId=(req,res,next)=>{
+    FreelancerDAO.fetchById(req.body.id,(result)=>{
+        res.json(result);
+
+    })
+};

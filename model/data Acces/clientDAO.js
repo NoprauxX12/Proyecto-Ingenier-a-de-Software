@@ -26,7 +26,7 @@ class ClientDAO{
         try {
             if (link !== null) {
                 fileContent = await sharp(link)
-                    .resize({ width: 700 })
+                    .resize({ width: 800 })
                     .jpeg({ quality: 80 })
                     .toBuffer();
             }

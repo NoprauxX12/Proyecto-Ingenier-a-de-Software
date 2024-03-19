@@ -9,5 +9,8 @@ router.post("/sign-up", upload.single('photo'), usersControllers.SignUp);
 router.post("/getFreelancers", usersControllers.getFreelancer);
 
 router.post("/user_exist", usersControllers.verifyUserExistence);
+
+router.post("/getFreelancerInfo",usersControllers.fetchFreelancerId);
+
 module.exports= router;
 

@@ -1,9 +1,10 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import { AuthContext } from '../../providers/userProvider';
-import MiddleLogoContainer from '../../includes/middleLogoContainer';
-import KnowledgeData from '../../services/knowledges';
 import UserData from '../../services/user';
 import Urls from '../../util/urls';
+//componets
+import MiddleLogoContainer from '../../includes/containers/middleLogoContainer';
+import KnowledgeData from '../../services/knowledges';
 
 const UploadPhotoScreen = () => {
   const {userData, login} = useContext(AuthContext);

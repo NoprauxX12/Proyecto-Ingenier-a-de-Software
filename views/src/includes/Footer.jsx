@@ -31,11 +31,9 @@ const Footer=()=>{
                     </form>
                 </div>
                 </div>
-                <div className="row">
-                <div className="col">
-                    <p className="text-center">copyright © 2024 El Que Sabe.</p>
-                </div>
-                </div>
+            </div>
+            <div className="col" style={{display: "block"}}>
+                <p className="text-center">copyright © 2024 El Que Sabe.</p>
             </div>
             </footer>
         </>

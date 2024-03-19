@@ -1,13 +1,14 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import { AuthContext } from '../providers/userProvider';
 import Urls from '../util/urls';
 
 
 // Función para manejar el clic en el enlace de logout
 
-const Navbar = ({ links, brandName, logoUrl }) => {
-  
-  const { isLoggedIn, userData, logout} = useContext(AuthContext)
+const Navbar = () => {
+  const params= new URLSearchParams(window.location.search);
+  const { isLoggedIn, userData, logout} = useContext(AuthContext);
+  const [searchVal, setSearchVal] = useState(params.get("search"));
   const handleLogout = (e) => {
     e.preventDefault(); // Evitar el comportamiento predeterminado del enlace
     logout(); // Realizar la lógica de logout
@@ -36,8 +37,10 @@ const Navbar = ({ links, brandName, logoUrl }) => {
   <div className="col-md-6">
     <form className="d-flex" action='/' method='get'>
       <div className="search-container">
-        <input className="form-control me-2 search__bar" name='search' type="search" placeholder="Buscar..." aria-label="Buscar" />
-        <button className="btn" type="submit"><i className="bi bi-search" /></button>
+        <input onChange={(e)=>{
+          setSearchVal(e.target.value);
+        }} value={searchVal} className="form-control me-2 search__bar" name='search' id='search' type="search" placeholder="Buscar..." aria-label="Buscar" />
+        <button className="btne" type="submit"><i className="bi bi-search" /></button>
       </div>
     </form>
   </div>

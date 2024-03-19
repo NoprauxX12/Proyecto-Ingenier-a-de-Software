@@ -239,6 +239,7 @@ font-weight: 500;
   background: rgb(255, 255, 255);
   border-radius: 20px;
   cursor: pointer;
+  transition: .5s;
 }
 
 .btne_dark {
@@ -250,6 +251,7 @@ font-weight: 500;
   background: #3D00B7;
   border-radius: 20px;
   cursor: pointer;
+  transition: .5s;
 }
 
 .btne, .btne_dark {
@@ -263,13 +265,20 @@ font-weight: 500;
   border: 1px solid #3D00B7;
   background-color: #ffffff;
   color: #3D00B7;
+  transition: .5s;
 }
 
+button[class="btne"]:hover{
+  border: none;
+  background-color: inherit;
+  color: white;
+}
 .btne:hover,
 .btne:active {
   border: none;
-  background-color: #55ACEE;
-  color: white;
+  background-color: #55ACEE !important;
+  color: #ffffff !important;
+  transition: .5s;
 }
 
 @media (min-width: 768px) {
@@ -470,4 +479,13 @@ button[type=submit]:hover{
   margin-bottom: 1em;
   color: #000000;
   font-weight: 700;
+}
+
+a{
+  text-decoration: none;
+  color: #3D00B7;
+}
+
+.form-check{
+  margin: 0.8em 0;
 }
