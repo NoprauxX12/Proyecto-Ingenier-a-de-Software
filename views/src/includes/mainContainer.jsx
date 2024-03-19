@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import { useEffect } from "react";
 import Card from "./card";
 import InfoContainer from "./infoContainer";
+import 'semantic-ui-css/semantic.min.css'
 
 //info acces
 import TownData from "../services/towns";

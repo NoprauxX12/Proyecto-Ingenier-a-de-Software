@@ -9,6 +9,8 @@ const app = express();
 const userRoutes = require("./routes/users");
 const generalRoutes=require("./routes/general")
 const postRoutes = require("./routes/post");
+
+
 app.use(session({
     secret:"tu_secreto",
     resave: false,
