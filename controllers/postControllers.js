@@ -8,3 +8,9 @@ exports.createPost = (req, res, next)=>{
     })
     
 };
+
+exports.fetchPost= (req, res)=>{
+    PostDAO.fetchAll(req.body.city , (resp)=>{
+        res.json(resp);
+    });
+};

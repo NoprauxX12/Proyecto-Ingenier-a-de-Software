@@ -1,15 +1,17 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../providers/userProvider';
 import { useNavigate } from 'react-router-dom'; 
 import "../styles/items.css";
+//data
 import TownData from '../services/towns';
-import UserData from "../services/user"
-
+import UserData from "../services/user";
+import PostData from "../services/postData";
+//components
 import Footer from '../includes/Footer';
 import ClientsMainContainer from '../includes/containers/mainContainer';
 import InfoContainer from "../includes/containers/infoContainer";
 import Navbar from '../includes/Navbar';
-import { FaPlus } from 'react-icons/fa';
 import Card from '../includes/cards/freelancerCard';
 import PostCard from '../includes/cards/postCard';
 
@@ -30,15 +32,16 @@ function HomeScreen() {
       navigate('/post'); 
     }
   };
-  
+  const [posts, setPosts] = useState([]);
   const [freelancers, setFreelancers] = useState([]);
   const [cityes, setCytyes] = useState([]);
-  const [name, setName]= useState("CIudad");
+  const [name, setName]= useState("Ciudad");
   const [selectedCity, setSelectedCity] = useState("00");
   const mt = (userData===null || userData==="2")? "1em":"3em";
 
   useEffect(() => {
     document.title="Home";
+    
     const fetchCityes = async () => {
         TownData.fetchCityes((res) => {
           setCytyes(res); // Aquí accedes a res.data en lugar de res
@@ -52,7 +55,17 @@ function HomeScreen() {
         setFreelancers(res);
       })
     };
-    fetchCityes();
+
+    const FetchPosts = async ()=>{
+      PostData.getPost(selectedCity!=="00"? selectedCity: null, (res)=>{
+        if(res) setPosts(res);
+      });
+    }
+    if(userData === null || userData.user === "2"){
+      fetchCityes();
+    }else{
+      FetchPosts();
+    }
     fetchFreelancers();
     const params = new URLSearchParams(window.location.search);
     const valor = params.get('search'); 
@@ -87,10 +100,18 @@ function HomeScreen() {
                     {name}
                   </button>
                   <ul className="dropdown-menu dropdown-menu-start" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                    {selectedCity!=="00" && (<>
+                      <li key={"00"}>
+                        <a className="dropdown-item" onClick={() => { 
+                            setName("Ciudad");
+                            setSelectedCity("00");
+                          }}>Todas</a>
+                      </li>
+                    </>)} 
                     {cityes.length > 0 ? (
                       cityes.map((city) => (
                         <li key={city.idCity}>
-                          <a className="dropdown-item" href="#" onClick={() => { 
+                          <a className="dropdown-item" onClick={() => { 
                             setName(city.name);
                             setSelectedCity(city.idCity);
                           }}>
@@ -117,9 +138,20 @@ function HomeScreen() {
               </>
               ): (
               <>
+              <h2 style={{margin: "4em 0"}}>No se han encontrado freelancers</h2>
               </>)}
               </>):(<>
-                <PostCard post={{title: "eso"}}/>
+                {posts.length>0 ? (
+                <>
+                {posts.map((post) => (
+                    <PostCard post={post}/>  
+                ))}
+                
+                </>
+                ): (
+                <>
+                <h2 style={{margin: "4em 0"}}>No se han encontrado posts</h2>
+                </>)}
               </>)}
               
           </div>
@@ -129,7 +161,8 @@ function HomeScreen() {
       {(userData && userData.user === '2') && (<> <div 
         style={{ position: 'fixed', bottom: '20px', right: '20px' }}>
         <button className="circular-button" onClick={handleButtonClick}>
-          <FaPlus style={{ color: '#55ACEE' }} />
+          <i className="bx bx-plus-medical" style={{color: '#ffffff'}} />
+
         </button>
       </div>
       </>)}

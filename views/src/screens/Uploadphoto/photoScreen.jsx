@@ -35,6 +35,7 @@ const UploadPhotoScreen = () => {
   };
 
   useEffect(()=>{
+    if(!userData.password1) window.location.href =Urls.home;
     const GetKnowledge= async ()=>{
       try {
         KnowledgeData.fetchAll((data)=>{
@@ -46,7 +47,7 @@ const UploadPhotoScreen = () => {
       
     };
     GetKnowledge();
-  }, []);
+  }, [userData]);
 
   const addKnowledge=(e)=>{
     e.preventDefault();

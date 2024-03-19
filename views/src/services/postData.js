@@ -11,6 +11,15 @@ class PostData{
         }
         
     }
+
+    static async getPost(city, cb){
+        try {
+            let response= await axios.post(BaseUrl+"/get-posts", {city:city});
+            cb(response.data);
+        } catch (error) {
+            cb({result: false});
+        }
+    }
 }
 
  export default PostData;
