@@ -69,7 +69,7 @@ class FreelancerDAO{
     static async fetchByKeyword(p, cb){
         let sql =p.city!=="00"? "select f.idFreelancer, f.name name, t.name city, f.description, f.profilePhoto FROM freelancer f left join town t using (idCity) WHERE idCity=? and description LIKE ? or f.name like ? ":  "select f.idFreelancer, f.name name, t.name city, f.description, f.profilePhoto FROM freelancer f left join town t using (idCity) WHERE description LIKE ? or f.name like ? ";
         try {
-            const results = await mysqlExecute(sql, [parseFloat(p.city),`%${p.keyword}%`, `%${p.keyword}%`]);
+            const results = p.city!=="00"? await mysqlExecute(sql, [parseFloat(p.city),`%${p.keyword}%`, `%${p.keyword}%`]): await mysqlExecute(sql, [`%${p.keyword}%`, `%${p.keyword}%`]);
             results.map((freelancer)=>{
                 if(freelancer.profilePhoto){
                     let photo=freelancer.profilePhoto.toString('base64');
