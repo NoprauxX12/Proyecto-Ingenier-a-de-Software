@@ -15,6 +15,7 @@ function App() {
   return (
     <Router>
       <Routes>
+
         <Route path={Urls.photo}element={<UploadPhotoScreen/>}/>
         <Route path={Urls.home} element={<HomeScreen />} />
         <Route path={Urls.signUp} element={<SignUpScreen />} />
