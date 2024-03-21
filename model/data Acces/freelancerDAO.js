@@ -117,7 +117,7 @@ class FreelancerDAO{
     }
 
     static async fetchById(id, cb){
-        let sql= "select  adress, cellphone, description, idCity, idFreelancer, name, phoneNumber, profilePhoto from freelancer where idFreelancer=?";
+        let sql= "select cellphone, email,cellphone, description, idCity, idFreelancer,  phoneNumber, profilePhoto, name from freelancer where idFreelancer=?";
         try {
             const response= await mysqlExecute(sql, [id]);
             response.map((e)=>{
@@ -126,7 +126,15 @@ class FreelancerDAO{
                     e["profilePhoto"]=photo;
                 }
             });
-            cb(response[0]);
+            sql="select title from academicdegrees join technicalknowledge using(idTechnicalKnowledge) where idFreelancer=?";
+            const knowledge= await mysqlExecute(sql, [id]);
+            let user=response[0];
+            const list= [];
+            knowledge.map((e)=>{
+                list.push(e.title);
+            })
+            user["knowledge"]= list.join(", ");
+            cb(user);
         } catch (error) {
             console.log(error);
         }
