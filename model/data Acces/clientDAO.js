@@ -11,10 +11,16 @@ const hashPassword = async (password) => {
     return hashedPassword;
   };
 
-  const comparePassword = async (password, hashedPassword) => {
-    const match = await bcrypt.compare(password, hashedPassword);
-    return match;
-  };
+  const comparePassword = async (password, hashedPassword, cb) => {
+    try {
+      const match = await bcrypt.compare    (password, hashedPassword);
+      cb(match);
+    } catch (error) {
+      // Manejar el error, si ocurre
+      console.error("Error al comparar contraseñas:", error);
+      return false;
+    }
+  }; 
 
 class ClientDAO{
     static async createClient(client, cb) {
@@ -80,6 +86,31 @@ class ClientDAO{
           console.log(error);
       }
   }
+
+
+  static async logIn(json, cb){
+    let sql = "SELECT name, idClient, email, idCity, password from client where email = ?";
+    try{
+        const response = await mysqlExecute(sql, [ json.email]);
+        if (response.length === 0) {
+            cb({login: false});    
+        } else{
+            comparePassword(json.password, response[0]["password"], (match)=>{
+            if(match) {
+                let user = response[0];
+                user["user"]="2";
+                user["password"]=null;
+                cb({login : true, user : user})
+            } else {
+                cb({login: false});
+            }
+            });
+            
+        } 
+    } catch (error){
+        console.log(error);
+    }
+}
 }
 
 module.exports= ClientDAO;

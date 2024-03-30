@@ -1,44 +1,45 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
+import UserData from "../../services/user";
 import { AuthContext } from "../../providers/userProvider";
-import axios from "axios";
-import { BaseUrl } from "../../util/apiUrl";
+
+const users = {
+  "0": "Seleccione tipo usuario",
+  "1": "Freelancer",
+  "2": "Cliente"
+};
 
 const FormularioLogIn = () => {
-  const { login } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {login} = useContext(AuthContext);
+  const [formValues, setFormValues] = useState({
+    user: "0",  
+    email: "",
+    password: "",  
+  });
 
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value
+    });   
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formValues);
+    UserData.logIn(formValues, (args)=>{
+      console.log(args)
+      if (args.login){
+        login(args.user);
+        alert("Bienvenido usuario");
 
-    const formValues = {
-      email: email,
-      password: password,
-    };
+        window.location.href= "/"
 
-
-    const apiUrl = `${BaseUrl}/login`;
-    console.log("Api URL:", apiUrl)
-
-
-    axios.post(`${BaseUrl}/log-in`, formValues).then((response) => {
-      if (response.data.result) {
-        login(formValues);
-        alert("¡Inicio de sesión exitoso!");
-        window.location.href = "/";
-      } else {
-        alert("¡Oops! Ha habido un error :(");
+      }else{
+        alert("Usuario no encontrado")
       }
     });
-  };
+  }
 
   return (
     <div className="form__container">
@@ -49,27 +50,34 @@ const FormularioLogIn = () => {
             <span style={{ color: "#55ACEE" }}>In</span>
           </legend>
           <div>
-          <div className="form-group">
-                    <label htmlFor="exampleFreelancer/client" className="form-label mt-4">Tipo de Usuario</label>
-                    <select className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="exampleFreelancer/client" name="user">
-                        <option value={"0"}>Tipo de usuario</option>
-                        <option value={"1"}>Freelancer</option>
-                        <option value={"2"}>Cliente</option>
-                        
-                    </select>
+            <div className="form-group">
+              <label htmlFor="exampleFreelancer/client" className="form-label mt-4">Tipo de Usuario</label>
+              <select 
+                className="form-control" 
+                style={{ backgroundColor: 'rgb(236, 236, 236)' }} 
+                id="exampleFreelancer/client" 
+                name="user" 
+                onChange={handleChange}
+                value={formValues.user}
+              >
+                {Object.entries(users).map(([key, value]) => (
+                  <option key={key} value={key}>{value}</option>
+                ))}
+              </select>
             </div>
             <label htmlFor="exampleInputEmail1" className="form-label mt-4">
               Dirección de Email
             </label>
             <input
-              type="email"
+              type="email" 
               className="form-control"
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               placeholder="Ingrese Email"
-              value={email}
-              onChange={handleEmail}
+              name="email"
+              value={formValues.email}
               required
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -77,13 +85,14 @@ const FormularioLogIn = () => {
               Contraseña
             </label>
             <input
-              type="password"
+              type="password" 
               className="form-control"
               id="exampleInputPassword1"
               placeholder="Contraseña"
-              value={password}
-              onChange={handlePassword}
-              autoComplete="off"
+              name="password"
+              required
+              value={formValues.password}
+              onChange={handleChange}
             />
           </div>
           <button
@@ -94,7 +103,6 @@ const FormularioLogIn = () => {
             Confirmar
           </button>
         </fieldset>
-        
       </form>
     </div>
   );
