@@ -55,7 +55,7 @@ const ThirdStep = ({formValues, handleChange, step})=>{
                         <div className="form-check">
                         <input className="form-check-input" type="checkbox" id="termsCheckbox" required />
                         <label className="form-check-label" htmlFor="termsCheckbox">
-                            Acepto la poltica de <a href="/files/termnsAndConditions.pdf" target="_blank" rel="noopener noreferrer">tratamiento de datos</a>
+                            Acepto la poltica de <a href="/files/dataPolicy.pdf" target="_blank" rel="noopener noreferrer">tratamiento de datos</a>
                         </label>
                         </div>
                     </div>
