@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import UserData from "../../services/user";
 import { AuthContext } from "../../providers/userProvider";
 
+import Alert from "../alert";
+
 const users = {
   "0": "Seleccione tipo usuario",
   "1": "Freelancer",
@@ -15,6 +17,12 @@ const FormularioLogIn = () => {
     email: "",
     password: "",  
   });
+  const [showAlert, setShowAlert] = useState(false);
+  const [message, setMesage]= useState("");
+
+  const toggleAlert = () => {
+    setShowAlert(!showAlert);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,18 +39,22 @@ const FormularioLogIn = () => {
       console.log(args)
       if (args.login){
         login(args.user);
-        alert("Bienvenido usuario");
-
         window.location.href= "/"
-
       }else{
-        alert("Usuario no encontrado")
+        setMesage("Usuario o contraseña incorrecto");
+        toggleAlert();
       }
     });
   }
 
   return (
     <div className="form__container">
+      {showAlert && (
+        <Alert
+          message={message}
+          onClose={toggleAlert}
+        />
+      )}
       <form onSubmit={handleSubmit}>
         <fieldset>
           <legend className="log_in">

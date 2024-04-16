@@ -14,6 +14,8 @@ router.post("/getFreelancerInfo",usersControllers.fetchFreelancerId);
 
 router.post("/log-in", usersControllers.logIn);
 
+router.post("/profile-photo", usersControllers.fetchPhoto);
+
 
 module.exports= router;
 

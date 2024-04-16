@@ -11,7 +11,8 @@ import PostData from "../services/postData";
 import Footer from '../includes/Footer';
 import ClientsMainContainer from '../includes/containers/mainContainer';
 import InfoContainer from "../includes/containers/infoContainer";
-import Navbar from '../includes/Navbar';
+import Navbar from '../includes/navs/Navbar';
+import SiderBar from '../includes/navs/SiderBar';
 import Card from '../includes/cards/freelancerCard';
 import PostCard from '../includes/cards/postCard';
 
@@ -21,12 +22,6 @@ function HomeScreen() {
   const { userData, isLoggedIn } = useContext(AuthContext);
   const [search, setSearch] = useState(params.get('search'));
   
-
-  useEffect(() =>{
-    if(!isLoggedIn){
-      navigate('/'); 
-    }
-  }, [isLoggedIn, navigate]); 
 
   const handleButtonClick = () => {
     if(isLoggedIn){
@@ -52,7 +47,6 @@ function HomeScreen() {
 
     const fetchFreelancers = async () => {
       UserData.fetchFreelancers({keyword: search, city: selectedCity}, (res)=>{
-        console.log(res.profilePhoto);
         setFreelancers(res);
       })
     };
@@ -76,8 +70,12 @@ function HomeScreen() {
   
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
-
-      <Navbar />
+      {userData === null || userData.user==="2" ? (<>
+        <Navbar />
+      </>):(<>
+        <SiderBar/>
+      </>)}
+      
       {(search === null && userData === null) && (
         <>
           <InfoContainer />
@@ -88,7 +86,6 @@ function HomeScreen() {
           <ClientsMainContainer  search={search}/>
         )
       }
-      
       <div className="card text-center shadow-none border-none" style={{width: "95%", margin: "auto", marginTop: mt}}>
           <div className="card-header border-none" style={{paddingLeft: "2em"}}>
             <ul className="nav nav-pills card-header-pills">

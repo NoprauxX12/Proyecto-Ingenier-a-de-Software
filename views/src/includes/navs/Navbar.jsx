@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
-import { AuthContext } from '../providers/userProvider';
-import Urls from '../util/urls';
+import { AuthContext } from '../../providers/userProvider';
+import Urls from '../../util/urls';
 
 
 // Función para manejar el clic en el enlace de logout

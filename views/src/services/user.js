@@ -48,6 +48,16 @@ class UserData{
             cb({response: false});
         }
     }
+
+    static async fetchProfilePhoto(json, cb){
+        try{
+            const response = await axios.post(`${BaseUrl}/profile-photo`, json);
+            cb(response.data);    
+        }catch (error){
+            cb({response: false});
+        }
+    }
+
 }
 
 export default UserData;

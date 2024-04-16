@@ -2,7 +2,6 @@ const Freelancer = require("../model/entities/freelancer")
 const FreelancerDAO = require("../model/data Acces/freelancerDAO")
 const client = require("../model/entities/client")
 const ClientDAO = require("../model/data Acces/clientDAO")
-const GeneralDAO = require("../model/data Acces/generalDAO")
 
 exports.SignUp= (req, res, next)=>{
     let link=null;
@@ -82,3 +81,13 @@ exports.logIn =(req,res, next)=>{
         })
     }
 }
+
+exports.fetchPhoto= (req, res)=>{
+    if(parseInt(req.body.user)===1){
+        FreelancerDAO.getProfilePhotoById(req.body.id, (result)=>{
+            res.json(result);
+        })
+    }else if(parseInt(req.body.user)=== 2){
+        //ClientDAO(req.body);
+    }
+};

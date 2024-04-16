@@ -1,0 +1,247 @@
+
+
+.user-img{
+    border-radius: 100%;
+    border: 1px solid #f8f8f8;
+    width: 2.8rem !important;
+}
+.sidebar.active .user-img{
+    width: 3.5rem !important;
+}
+.sidebar{
+    box-shadow: 0 0.5rem 0.5rem rgba(66, 66, 66, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 80px;
+    z-index: 1000; 
+    background-color: #3D00B7;
+    padding: .4rem .8rem;
+    transition: all 0.5s ease;
+}
+
+.sidebar.active ~ .navBar {
+    margin-left: 100px;
+    transition: margin-left 0.3s ease-in-out; 
+}
+
+.sidebar.active{
+    transform: translateX(0);
+    width: 250px;
+}
+
+
+.sidebar #btn{
+    position: absolute;
+    color: #ffffff;
+    top: .4rem;
+    left: 50%;
+    font-size: 1.2rem;
+    line-height: 50px;
+    transform: translateX(-50%);
+    cursor: pointer;
+}
+
+.sidebar.active #btn{
+    left: 90%;
+}
+
+.sidebar .top .logo{
+    color: #fff;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.sidebar .top .logo span{
+    color: #fff;
+}
+
+.sidebar.active .top .logo{
+    opacity: 1;
+}
+
+.top .logo i{
+    font-size: 2.3rem;
+    margin-right: 5px;
+}
+
+
+.user{
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.user p{
+    color: #000000;
+    opacity: 1;
+    margin-left: 1rem;
+}
+
+.bold{
+    font-weight: 800;
+    font-size: 1.3em;
+}
+
+.sidebar p{
+    opacity: 0;
+}
+
+.sidebar.active p{
+    opacity: 1;
+}
+
+.sidebar ul li{
+    position: relative;
+    list-style: none;
+    height: 50%;
+    width: 90%;
+    margin: 0.8rem -1.5em;
+    line-height: 50px;
+}
+
+.sidebar ul li a {
+    color: #ffffff !important;
+    width: 3em;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 0.5rem;
+}
+
+.sidebar ul li a span{
+    color: #ffffff !important;
+}
+
+
+.sidebar ul li a i{
+    color: #ffffff !important;
+}
+
+.sidebar ul li a:hover span {
+    color: #000 !important; /* Color al pasar el cursor sobre el enlace */
+}
+
+
+.sidebar ul li a:hover i {
+    color: #000 !important; /* Color al pasar el cursor sobre el enlace */
+}
+
+.sidebar.active ul li a{
+    width: 89%;
+}
+
+.sidebar ul li a:hover{
+    background-color: #FFF;
+    color: #000;
+}
+
+.sidebar ul li a i{
+    font-size: 1.5rem;
+    min-width: 50px;
+    text-align: center;
+    height: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+}
+
+.sidebar .nav-item{
+    opacity: 0;
+}
+
+
+.sidebar.active .nav-item{
+    opacity: 1;
+}
+
+.sidebar ul li .tooltip{
+    position: absolute;
+    color: #fff;
+    left: 125px;
+    background-color: #55ACEE;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0.5rem 0.5rem rgba(0, 0, 0, 0.2);
+    border-radius: 0.6rem;
+    padding: .4rem 1.2rem;
+    line-height: 1.8rem;
+    z-index: 20;
+    font-weight: 600;
+    opacity: 0;
+}
+
+.sidebar ul li:hover .tooltip{
+    opacity: 1;
+}
+
+.sidebar.active ul li .tooltip{
+    display: none;
+}
+
+.main-content{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    min-height: 100vh;
+    top: 0;
+    left: 80px;
+    transition: all 0.5s ease;
+    padding: 1rem;
+    width: calc(100%-80px);
+}
+
+
+.pageTitle a{
+  font-size: 0.9em;
+  text-decoration: none;
+}
+
+
+.pageTitle{
+  text-decoration: none;
+  color: #3D00B7 ;
+  margin-right: 1.5em;
+  font-weight: 700;
+  font-family: "Fredoka", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* estilos del navbar */
+
+.navBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: rgb(250, 250, 250);
+    margin-left: -5em;
+    padding-left: 5em;
+}
+
+.searchBox {
+    position: relative;
+}
+
+.searchInput {
+    padding: 8px 30px 8px 10px; /* Ajusta el padding según sea necesario */
+    border-radius: 20px; /* Bordess redondeados */
+    border: 1px solid #ccc; /* Borde */
+    outline: none; /* Elimina el borde al hacer clic */
+    width: 20em; /* Ajusta el ancho según sea necesario */
+    margin-right: 5em;
+}
+
+.searchIcon {
+    position: absolute;
+    margin-right: 5em;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666; /* Color del icono */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el icono */
+}

@@ -3,6 +3,7 @@ import { AuthContext } from '../../providers/userProvider';
 import UserData from '../../services/user';
 import Urls from '../../util/urls';
 //componets
+import Alert from '../../includes/alert';
 import MiddleLogoContainer from '../../includes/containers/middleLogoContainer';
 import KnowledgeData from '../../services/knowledges';
 
@@ -20,6 +21,12 @@ const UploadPhotoScreen = () => {
   const fileInputRef = useRef();
   const addButtonRef = useRef();
   const deleteButtonRef = useRef();
+  const [showAlert, setShowAlert] = useState(false);
+  const [message, setMesage]= useState("");
+
+  const toggleAlert = () => {
+    setShowAlert(!showAlert);
+  };
   
 
   const handleChange = (e) => {
@@ -57,7 +64,8 @@ const UploadPhotoScreen = () => {
     console.log(k)
     setListOfKnowledge(k);
     }else{
-      alert("debe agregar un conocimiento")
+      setMesage("debe agregar un conocimiento");
+        toggleAlert();
     }
   }
 
@@ -98,12 +106,14 @@ const UploadPhotoScreen = () => {
             email: email,
             idCity: idCity,
           });
-          alert("Te has registrado con éxito!");
+          setMesage("Te has registrado con éxito!");
+          toggleAlert();
           setTimeout(() => {
             window.location.href = Urls.home;
           }, 100); // Aquí colocamos el setTimeout
         } else {
-          alert("Oops, ha habido un error :(");
+          setMesage("Oops, ha habido un error :(");
+          toggleAlert();
         }
       })
     } catch (err) {
@@ -114,6 +124,12 @@ const UploadPhotoScreen = () => {
 
   return (
     <div>
+      {showAlert && (
+        <Alert
+          message={message}
+          onClose={toggleAlert}
+        />
+      )}
       <MiddleLogoContainer hide={true} />
       <fieldset>
         <div className="form__container">

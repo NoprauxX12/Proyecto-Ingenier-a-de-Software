@@ -3,6 +3,7 @@ const fs= require("fs")
 const bcrypt = require('bcrypt');
 const sharp= require("sharp");
 const GeneralDAO = require("./generalDAO");
+const { response } = require("express");
 
 const hashPassword = async (password) => {
     const saltRounds = 10; // Número de rondas de salado
@@ -170,7 +171,21 @@ class FreelancerDAO{
         }
     }
     
-    
+    static async getProfilePhotoById(id, cb){
+        let sql= "select profilePhoto from  freelancer where  idFreelancer=?";
+        try {
+            const res= await mysqlExecute(sql, [id]);
+            if(res[0].profilePhoto){
+                let photo= res[0].profilePhoto.toString("base64");
+                cb({profilePhoto: photo, response: true});
+            }else{
+                cb({response: false});
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 module.exports = FreelancerDAO;
