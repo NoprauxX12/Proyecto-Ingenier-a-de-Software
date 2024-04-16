@@ -20,6 +20,7 @@ function HomeScreen() {
   const params = new URLSearchParams(window.location.search);
   const { userData, isLoggedIn } = useContext(AuthContext);
   const [search, setSearch] = useState(params.get('search'));
+  
 
   useEffect(() =>{
     if(!isLoggedIn){

@@ -29,7 +29,7 @@ exports.SignUp= (req, res, next)=>{
         console.log(req.body);
         const c = new client(req.body);
         ClientDAO.createClient(c ,(result)=>{
-            res.json(result);   
+            res.json(result)
         } )
     }
 }
@@ -70,15 +70,14 @@ exports.fetchFreelancerId=(req,res,next)=>{
     })
 };
 
+exports.login = (req, res) =>{
+    FreelancerDAO.logIn(req.body,(result)=>{
+        res.json(result);
+    })
+}
 
-exports.logIn =(req,res, next)=>{
-    if(parseInt(req.body.user)===1){
-        FreelancerDAO.logIn(req.body, (result)=>{
-            res.json(result);
-        })
-    }else if(parseInt(req.body.user)=== 2){
-        ClientDAO.logIn(req.body, (result)=>{
-            res.json(result);
-        })
-    }
+exports.logIn =(req, res) =>{
+    ClientDAO.logIn(req.body, (result)=>{
+        res.json(result);
+    })
 }

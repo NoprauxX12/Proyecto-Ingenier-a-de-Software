@@ -2,13 +2,12 @@ import React, { useContext, useState } from "react";
 import PostData from "../../services/postData"; 
 import { AuthContext } from "../../providers/userProvider";
 
-
 const Postform = () => {
     const { userData } = useContext(AuthContext);
-    const [response, setResponse] = useState(null);
+    const [response] = useState(null);
     const [postValues, setPostValues] = useState({
         title: "",
-        description: "",
+        description: "",  
     });
 
     const handleChange = (e) => {
@@ -54,7 +53,7 @@ const Postform = () => {
                 onChange={handleChange}
               />
             </div>
-          </div>
+          </div>  
 
           <div className="mb-3">
             <div className="description">
@@ -66,7 +65,7 @@ const Postform = () => {
                 id="descripcion"
                 name="description"
                 rows="3"
-                placeholder="Ingrese la descripción de servicio"
+                placeholder="Ingrese descripción de su problema, donde es el problema, que tiene, etc"
                 value={postValues.description}
                 onChange={handleChange}
               ></textarea>

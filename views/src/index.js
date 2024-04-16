@@ -11,3 +11,4 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root') // Conecta el componente al elemento con id 'root' en el HTML
 );
+  

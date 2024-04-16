@@ -39,6 +39,15 @@ class UserData{
             cb({response: false});
         }
     }
+    static async logIn(json, cb){
+        try{
+            const response = await axios.post(`${BaseUrl}/log-in`, json);
+            cb(response.data);    
+              
+        }catch (error){
+            cb({response: false});
+        }
+    }
 }
 
 export default UserData;

@@ -12,5 +12,8 @@ router.post("/user_exist", usersControllers.verifyUserExistence);
 
 router.post("/getFreelancerInfo",usersControllers.fetchFreelancerId);
 
+router.post("/log-in", usersControllers.logIn);
+
+
 module.exports= router;
 
