@@ -10,6 +10,8 @@ import "./styles/profile.css"
 import UploadPhotoScreen from './screens/Uploadphoto/photoScreen';
 import PostPage from './screens/postScreen'
 import ProfileScreen from './screens/profile/profileScreen';
+import Chat from './screens/chat/chat'
+import Screenchat from './screens/chat/screenchat';
 
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
         <Route path={Urls.signUp} element={<SignUpScreen />} />
         <Route path={Urls.logIn} element={<LoginScreen />}/>
         <Route path='/post' element = {<PostPage />}/>
+        <Route path='/chat' element = {<Chat/>}/>
+        <Route path={Urls.Screenchat} element = {<Screenchat/>}/>
 
       </Routes>
     </Router>
