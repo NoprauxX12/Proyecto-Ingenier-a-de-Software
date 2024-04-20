@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import UserData from "../../services/user";
 import { AuthContext } from "../../providers/userProvider";
 
-import Alert from "../alert";
+import Alert from "../overlays/alert";
 
 const users = {
   "0": "Seleccione tipo usuario",

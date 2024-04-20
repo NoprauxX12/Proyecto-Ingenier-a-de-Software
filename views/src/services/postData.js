@@ -12,9 +12,9 @@ class PostData{
         
     }
 
-    static async getPost(city, cb){
+    static async getPost(city, search, cb){
         try {
-            let response= await axios.post(BaseUrl+"/get-posts", {city:city});
+            let response= await axios.post(BaseUrl+"/get-posts", {city:city, search: search});
             cb(response.data);
         } catch (error) {
             cb({result: false});

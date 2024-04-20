@@ -4,6 +4,7 @@
     border-radius: 100%;
     border: 1px solid #f8f8f8;
     width: 2.8rem !important;
+    height: 2.8rem !important;
 }
 .sidebar.active .user-img{
     width: 3.5rem !important;

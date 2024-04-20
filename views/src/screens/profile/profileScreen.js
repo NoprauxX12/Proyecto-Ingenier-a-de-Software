@@ -22,6 +22,11 @@ function ProfileScreen(){
       <>
         <div className="main-container">
           <div className="header-container">
+          <a href="/" style={{display: "inline-block"}}> 
+              <div className="back">
+                <i class='bx bx-chevron-left' style={{color: '#7d7d7d', fontSize: "4em"}} ></i>
+              </div>
+            </a>
             <h1>{user.name}</h1>
           </div>
           <div className="content-container">

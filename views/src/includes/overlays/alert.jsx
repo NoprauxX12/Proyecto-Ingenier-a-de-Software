@@ -1,6 +1,6 @@
 // Alert.js
 import React from 'react';
-
+import "../../styles/overlays.css";
 
 
 function Alert({ message, onClose }) {
@@ -9,7 +9,7 @@ function Alert({ message, onClose }) {
       <div className="alert-box">
         <h2 style={{color:"black"}}>El Que Sabe</h2>
         <p>{message}</p>
-        <button onClick={onClose}>Cerrar</button>
+        <button className="botn" id="button" onClick={onClose}>Cerrar</button>
       </div>
     </div>
   );

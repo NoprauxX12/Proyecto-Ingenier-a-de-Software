@@ -21,7 +21,6 @@ function HomeScreen() {
   const params = new URLSearchParams(window.location.search);
   const { userData, isLoggedIn } = useContext(AuthContext);
   const [search, setSearch] = useState(params.get('search'));
-  
 
   const handleButtonClick = () => {
     if(isLoggedIn){
@@ -52,13 +51,14 @@ function HomeScreen() {
     };
 
     const FetchPosts = async ()=>{
-      PostData.getPost(selectedCity!=="00"? selectedCity: null, (res)=>{
+      PostData.getPost(selectedCity!=="00"? selectedCity: null, search, (res)=>{
         if(res) setPosts(res);
       });
     }
     if(userData === null || userData.user === "2"){
       fetchCityes();
     }else{
+      fetchCityes();
       FetchPosts();
     }
     fetchFreelancers();
@@ -130,7 +130,7 @@ function HomeScreen() {
                 {freelancers.length>0 ? (
                 <>
                 {freelancers.map((freelancer) => (
-                  <Card freelancer={freelancer}/>    
+                  <Card freelancer={freelancer}/> 
                 ))}
                 
               </>

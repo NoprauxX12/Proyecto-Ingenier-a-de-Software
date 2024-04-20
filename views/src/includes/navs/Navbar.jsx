@@ -54,7 +54,7 @@ const Navbar = () => {
     <>
       <a href={Urls.photo}><p style={{ display: "inline-block", marginRight: "10px", marginTop: "0.7em" }}>{userData.name}</p></a>
       <a href={Urls.home} onClick={(e) => handleLogout(e)}>
-        <img src="/images/cerrar-sesion.png" alt="log out" className='icons'/>
+        <i className="bx bx-log-in-circle" style={{color: '#7d7d7d', fontSize: "2em"}} />
       </a>
     </>
 )}

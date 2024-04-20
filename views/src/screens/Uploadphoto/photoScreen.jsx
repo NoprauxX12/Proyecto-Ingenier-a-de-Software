@@ -3,7 +3,7 @@ import { AuthContext } from '../../providers/userProvider';
 import UserData from '../../services/user';
 import Urls from '../../util/urls';
 //componets
-import Alert from '../../includes/alert';
+import Alert from '../../includes/overlays/alert';
 import MiddleLogoContainer from '../../includes/containers/middleLogoContainer';
 import KnowledgeData from '../../services/knowledges';
 

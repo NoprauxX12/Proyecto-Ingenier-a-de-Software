@@ -10,7 +10,14 @@ exports.createPost = (req, res, next)=>{
 };
 
 exports.fetchPost= (req, res)=>{
-    PostDAO.fetchAll(req.body.city , (resp)=>{
-        res.json(resp);
-    });
+    if(req.body.search!==null){
+        PostDAO.fetchByKeyword(req.body.city, req.body.search, (result)=>{
+            res.json(result);
+        })
+    }else{
+        PostDAO.fetchAll(req.body.city , (resp)=>{
+            res.json(resp);
+        });
+    }
+    
 };
