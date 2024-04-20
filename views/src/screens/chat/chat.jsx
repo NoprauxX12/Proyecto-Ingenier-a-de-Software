@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { AuthContext } from "../../providers/userProvider";
 import io from 'socket.io-client';
 import Screenchat from "./screenchat";
-import { FormField, Button, Form, Input, CardContent, Card, Icon } from 'semantic-ui-react';
 import axios from 'axios';
+import NoChatsFoundScreen from "./notFoundChat";
 
 const socket = io.connect("http://localhost:3001");
 
@@ -11,11 +12,18 @@ function Chat() {
   const [showChat, setShowChat] = useState(false);
   const [username, setUsername] = useState("");
   const [rooms, setRooms] = useState([]);
+  const { userData } = useContext(AuthContext);
 
-  const fetchUserInfo = async() => {
+  useEffect(() => {
+    if (userData && userData.idCard) {
+      setUserId(userData.idCard);
+    }
+  }, [userData]); // Ejecutar solo cuando userData cambie
+
+  const fetchUserInfo = async () => {
     console.log("entro a fetchuserinfo")
     await axios.get(`http://localhost:3001/user/${userId}`)
-      .then(response=>setUsername(response.data.name))
+      .then(response => setUsername(response.data.name))
       .catch(error => console.error('Error fetching username', error))
   };
 
@@ -43,9 +51,9 @@ function Chat() {
         });
     }
   };
-  
+
   const searchMessages = async (roomId) => {
-    let _messages = null; 
+    let _messages = null;
     try {
       const response = await axios.get(`http://localhost:3001/messages/${roomId}`);
       _messages = response.data;
@@ -53,48 +61,24 @@ function Chat() {
       console.error('Error fetching messages:', error);
     }
     return _messages;
-  };   
-  
-  useEffect (() => {
-    if(userId !== ""){
-      fetchUserInfo()
+  };
+
+  useEffect(() => {
+    joinRoom();
+    if (userId !== "") {
+      fetchUserInfo();
     }
-  })
+  }, [userId]); // Ejecutar cuando userId cambie
 
   return (
-    <div style={{overflow:'hidden'}}>
+    <div style={{ overflow: 'hidden' }}>
       {!showChat ? (
-        <Card className="w-full max-w-lg mx-auto my-8">
-          <CardContent className="bg-gray-200 p-4">
-            <h2 className="text-xl mb-4">Join Chat</h2>
-            <Form>
-              <FormField className="mb-4">
-                <label className="block mb-2">User ID</label>
-                <Input 
-                  type='text' 
-                  placeholder='User ID:' 
-                  onChange={e => setUserId(e.target.value)}
-                  className="w-full py-2 px-4 rounded bg-white border border-gray-300 focus:outline-none focus:border-teal-500"
-                />
-              </FormField>
-              <Button className="py-2 px-4 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded shadow" onClick={joinRoom}>
-                Join
-              </Button>
-            </Form>
-          </CardContent>
-          <CardContent extra className="bg-gray-300 py-2 px-4 flex items-center justify-between">
-            <span className="flex items-center">
-              <Icon name='user' />
-            </span>
-          </CardContent>
-        </Card>
+        <NoChatsFoundScreen></NoChatsFoundScreen>
       ) : (
-        <Screenchat socket={socket} username={username} rooms={rooms} mesgs={searchMessages} usId = {userId} ></Screenchat>
+        <Screenchat socket={socket} username={username} rooms={rooms} mesgs={searchMessages} usId={userId}></Screenchat>
       )}
     </div>
   );
-}  
+}
 
 export default Chat;
-
-// recuerdas que mandamos era la funcion? szs, creo que la podemo usar alla, hagamos eso

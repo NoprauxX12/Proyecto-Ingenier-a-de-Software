@@ -3,13 +3,12 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faPaperPlane, faCamera } from '@fortawesome/free-solid-svg-icons';
-import {Buffer} from 'buffer'
 import '@fontsource/comfortaa'
+import MenuChat from "./menuChat";
 
 const Screenchat = ({ socket, username, rooms, mesgs, usId }) => {
     const [currentMessage, setCurrentMessage] = useState("");
     const [messages, setMessages] = useState([]);
-    const [usersOnline, setUsersOnline] = useState(0);
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [cameraAvailable, setCameraAvailable] = useState(true);
     const contact = rooms.find(room => room.id === selectedRoom)
@@ -96,7 +95,6 @@ const Screenchat = ({ socket, username, rooms, mesgs, usId }) => {
                 time: `${new Date(Date.now()).getHours()}:${new Date(Date.now()).getMinutes()}`,
             };
             
-            // Si se ven cuando los cargas pero no cuando se envian, donde es la logica de enviar los mensajes?
             socket.emit("send_message", info); // Emitir el mensaje al servidor    
 
             console.log(info)
@@ -105,7 +103,6 @@ const Screenchat = ({ socket, username, rooms, mesgs, usId }) => {
                 .then(response => {
                     console.log('Foto enviada correctamente:', response.data);
                     fetchMessages(selectedRoom);
-                    //setMessages(prevMessages => [...prevMessages, info]);
                     scrollToBottom();
                     snd.play();
                     snd.currentTime = 0;
@@ -135,21 +132,12 @@ const Screenchat = ({ socket, username, rooms, mesgs, usId }) => {
         return () => socket.off("recive_message", messageHandle);
     }, [socket, messageHandle]);
 
-    useEffect(() => {
-        socket.on("users_changed", (numUsers) => {
-            setUsersOnline(numUsers); // Actualiza el estado con el nuevo número de usuarios
-        });
 
-        return () => {
-            socket.off("users_changed");
-        };
-    }, [socket]);
 
     return (
         <div style={{ display: 'flex', height: '100vh' }}>
-            <div style={{ flex: '0.6', backgroundColor: '#805ad5' }}> 
-            </div>
-            <div style={{ flex: '3', backgroundColor: '#white', position: 'relative' }}>
+                <MenuChat/>
+            <div style={{ flex: '2.70', backgroundColor: '#white', position: 'relative' }}>
                 <div style={{ padding: '0.23rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h2 style={{ margin: '0', fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>Chats</h2>
                     <button style={{ border: 'none', background: 'none', cursor: 'pointer', margin:'0' }}>
@@ -175,26 +163,27 @@ const Screenchat = ({ socket, username, rooms, mesgs, usId }) => {
                     <div>
                         <div style={{ position: 'absolute', top: '0', right: '0', width: '71.4%', maxWidth: '71.4%', backgroundColor: '#ffffff', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999' }}>
                             <div style={{ width: '40px', height: '31.55px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' }}>
-                                <img src={'http://localhost:3000/images/profiledf.png'} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                {
+
+                                    <img src={'http://localhost:3000/images/profiledf.png'} alt="No se pudo cargar la foto" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                }
                             </div>
                             <span style={{ fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>
                                 {contact.name_client === username ? contact.name_freelancer : contact.name_client}
                             </span>
                         </div>
-                        <div style={{position: 'absolute', height:'100%', overflow:'hidden'}}>
+                        <div>
                             <div style={{
-                                 backgroundImage: "url('http://localhost:3000/images/borrosa.jpg')",
+                                 backgroundImage: "url('http://localhost:3000/images/fondoChat.png')",
                                  backgroundSize: 'cover',
-                                 height: 'calc(100vh)',
+                                 height: '100vh',
                                  overflowY: 'scroll',
                                  WebkitOverflowScrolling: 'touch',
                                  msOverflowStyle: 'none', 
                                  scrollbarWidth: 'none', 
                                  boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.1)',
                                  borderRadius: '0.5rem',
-                                 padding: '1rem',
-                                 paddingRight: '17px', 
-                                 boxSizing: 'content-box' 
+                                 padding:'1rem',
                             }}>
                                 <div style={{ marginTop: '100px', marginBottom: '55px' }}>
                                     
