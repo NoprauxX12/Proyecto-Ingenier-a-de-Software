@@ -12,6 +12,7 @@ import PostPage from './screens/postScreen'
 import ProfileScreen from './screens/profile/profileScreen';
 import Chat from './screens/chat/chat'
 import Screenchat from './screens/chat/screenchat';
+import HomeChatBot from './screens/chat/chatBot/homeChatbot';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path='/post' element = {<PostPage />}/>
         <Route path='/chat' element = {<Chat/>}/>
         <Route path={Urls.Screenchat} element = {<Screenchat/>}/>
+        <Route path='/chatBot' element = {<HomeChatBot/>}/>
 
       </Routes>
     </Router>

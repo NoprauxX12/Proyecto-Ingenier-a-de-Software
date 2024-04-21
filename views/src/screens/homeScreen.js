@@ -15,6 +15,7 @@ import Navbar from '../includes/navs/Navbar';
 import SiderBar from '../includes/navs/SiderBar';
 import Card from '../includes/cards/freelancerCard';
 import PostCard from '../includes/cards/postCard';
+import ElQueSabeChatbot from './chat/chatBot/homeChatbot';
 
 function HomeScreen() {
   const navigate = useNavigate(); 
@@ -164,7 +165,7 @@ function HomeScreen() {
         </button>
       </div>
       </>)}
-      
+      <ElQueSabeChatbot/>
     </div>
   );
 }

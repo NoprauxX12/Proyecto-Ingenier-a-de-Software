@@ -63,9 +63,11 @@ app.get("/user/:userId", (req, res) => {
           if (freelancerData || clientData) {
             if (freelancerData !== undefined){
               res.json(freelancerData);
+              console.log(freelancerData)
             }
             else if(clientData !== undefined){
               res.json(clientData)
+              console.log(clientData)
             }
           } else {
               // Ninguna de las consultas devolvió resultados
