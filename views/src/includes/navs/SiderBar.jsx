@@ -90,7 +90,8 @@ const SiderBar = () => {
                 </li>
             </ul>
         </div>
-        <div className="navBar">
+        {document.title!=="chat"&& (<>
+            <div className="navBar">
             <h1 className="pageTitle" style={{color: '#3D00B7'}}>El Que <span style={{color: '#55ACEE'}}>Sabe</span></h1>
             <div className="searchBox">
                 <form action="/" method='GET'>
@@ -104,6 +105,7 @@ const SiderBar = () => {
                 </form>
             </div>
         </div>
+        </>)}  
     </div>
 
         );

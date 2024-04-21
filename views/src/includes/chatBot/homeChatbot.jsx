@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { ThemeProvider } from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRobot } from '@fortawesome/free-solid-svg-icons';
 
 const theme = {
   background: '#f5f8fb',
@@ -227,7 +225,7 @@ export default class ElQueSabeChatbot extends Component {
           onMouseOut={this.toggleTooltip}
         >
           {showTooltip && <span style={{ position: 'absolute', bottom: 'calc(100% + 10px)', left: '50%', transform: 'translateX(-50%)', background: '#fff', padding: '5px 10px', borderRadius: 5 }}>Hugo Asistente virtual</span>}
-          <FontAwesomeIcon icon={faRobot} style={{margin:0}}/>
+          <i class='bx bx-bot' style={{color: "#fff", fontSize:"1.6em"}}></i>
         </button>
       </div>
     );

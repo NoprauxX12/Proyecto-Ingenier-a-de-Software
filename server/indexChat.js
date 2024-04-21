@@ -15,9 +15,9 @@ const rooms = {};
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'el_que_sabe',
-    port: 3306
+    password: '0000000',
+    database: 'el_que_sabe1',
+    port: 3300
   });
 
 const io = new Server(server, {

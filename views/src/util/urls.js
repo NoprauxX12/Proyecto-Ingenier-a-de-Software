@@ -5,7 +5,8 @@ const Urls = {
     logIn: "/log-in",
     photo: "/last-step",
     profile: "/profile",
-    post: '/post'
+    post: '/post',
+    chat: "/chat"
     
 }
 
