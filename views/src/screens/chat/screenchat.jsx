@@ -6,7 +6,7 @@ import { faPaperPlane, faCamera } from '@fortawesome/free-solid-svg-icons';
 import '@fontsource/comfortaa'
 import MenuChat from "./menuChat";
 
-const Screenchat = ({ socket, username, rooms, mesgs, usId }) => {
+const Screenchat = ({ socket, username, rooms, mesgs, contactInfo, userId }) => {
     const [currentMessage, setCurrentMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
@@ -163,10 +163,12 @@ const Screenchat = ({ socket, username, rooms, mesgs, usId }) => {
                     <div>
                         <div style={{ position: 'absolute', top: '0', right: '0', width: '71.4%', maxWidth: '71.4%', backgroundColor: '#ffffff', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999' }}>
                             <div style={{ width: '40px', height: '31.55px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' }}>
-                                {
-
-                                    <img src={'http://localhost:3000/images/profiledf.png'} alt="No se pudo cargar la foto" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                }
+                                    {/*aqui va la logica de traer la info de las fotos (recordar)*/}                           
+                                    {contact.profilePhoto !==null? (<>
+                                        <img src={`data:image/jpeg;base64,${contact.profilePhoto}`} alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    </>):(<>
+                                        <img src={'http://localhost:3000/images/profiledf.png'} alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    </>)}               
                             </div>
                             <span style={{ fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>
                                 {contact.name_client === username ? contact.name_freelancer : contact.name_client}
@@ -174,7 +176,7 @@ const Screenchat = ({ socket, username, rooms, mesgs, usId }) => {
                         </div>
                         <div>
                             <div style={{
-                                 backgroundImage: "url('http://localhost:3000/images/fondoChat.png')",
+                                 backgroundImage: "url('http://localhost:3000/images/borrosa.jpg')",
                                  backgroundSize: 'cover',
                                  height: '100vh',
                                  overflowY: 'scroll',
@@ -199,8 +201,8 @@ const Screenchat = ({ socket, username, rooms, mesgs, usId }) => {
                                                         (   
                                                             (() => {
                                                                 console.log("aaa");
-                                                                return <img src={message.attachment}></img>
-                                                            })() // puede ser tambien
+                                                                return <img src={message.attachment} alt="No se pudo cargar la imagen"></img>
+                                                            })()
                                                         ) : 
                                                         message.content
                                                     }

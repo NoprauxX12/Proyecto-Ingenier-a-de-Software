@@ -21,10 +21,20 @@ function Chat() {
   }, [userData]); // Ejecutar solo cuando userData cambie
 
   const fetchUserInfo = async () => {
-    console.log("entro a fetchuserinfo")
     await axios.get(`http://localhost:3001/user/${userId}`)
       .then(response => setUsername(response.data.name))
       .catch(error => console.error('Error fetching username', error))
+  };
+
+  const fetchContactInfo = async () => {
+    let contacInfo = null;
+    try{
+    const response = await axios.get(`http://localhost:3001/user/${userId}`)
+    contacInfo = response.data
+    } catch(error){
+      console.error("Error buscando datos de usuario", error)
+    }
+    return contacInfo;
   };
 
   const fetchRooms = () => {
@@ -75,7 +85,7 @@ function Chat() {
       {!showChat ? (
         <NoChatsFoundScreen></NoChatsFoundScreen>
       ) : (
-        <Screenchat socket={socket} username={username} rooms={rooms} mesgs={searchMessages} usId={userId}></Screenchat>
+        <Screenchat socket={socket} username={username} rooms={rooms} mesgs={searchMessages} contact={fetchContactInfo} user={userId}></Screenchat>
       )}
     </div>
   );

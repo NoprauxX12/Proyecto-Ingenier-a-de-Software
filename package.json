@@ -27,11 +27,14 @@
     "mysql2": "^3.9.1",
     "nodemon": "^3.1.0",
     "react-scroll-to-bottom": "^4.2.0",
+    "react-simple-chatbot": "^0.5.0",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",
     "sharp": "^0.33.2",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
-    "tailwindcss": "^3.4.1"
+    "styled-components": "^4.4.1",
+    "tailwindcss": "^3.4.1",
+    "wikipedia": "^2.1.2"
   }
 }
