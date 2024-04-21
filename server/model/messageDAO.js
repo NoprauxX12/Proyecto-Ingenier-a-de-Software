@@ -1,9 +1,8 @@
 const connection= require("../DAL/mysqlCon");
 
 
-exports.getMessages = async (roomId) =>{
+exports.getMessages = async (roomId, cb) =>{
     console.log(roomId)
-  
     connection.query('SELECT id, content, author, room_id, attachment, DATE_FORMAT(time, "%H:%i") AS time FROM messages WHERE room_id = ?', [roomId], (err, results) => {
       if (err) {
         console.error('Error al obtener los mensajes asociadas a la sala: ', err.message);
@@ -11,7 +10,7 @@ exports.getMessages = async (roomId) =>{
         return;
       }
       if (results.length === 0) {
-        cb({error: 400})
+        cb({messages: []})
         return;
       }
       cb({ messages : results });

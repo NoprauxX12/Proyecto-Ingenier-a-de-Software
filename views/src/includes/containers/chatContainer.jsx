@@ -4,12 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faCamera } from '@fortawesome/free-solid-svg-icons';
 
 
-const ChatContainer = (socket, rooms, username, mesgs)=>{
+const ChatContainer = (socket, rooms, username, mesgs, selectedRoom)=>{
     const [currentMessage, setCurrentMessage] = useState("");
     const [messages, setMessages] = useState([]);
-    const [selectedRoom, setSelectedRoom] = useState(null);
     const [cameraAvailable, setCameraAvailable] = useState(true);
-    const contact = rooms.find(room => room.id === selectedRoom)
+    const contact = rooms[0];
     const messagesEndRef = useRef(null);
     let photo = 'http://localhost:3000/images/profiledf.png';
     var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
@@ -19,6 +18,7 @@ const ChatContainer = (socket, rooms, username, mesgs)=>{
     const scrollToBottom = () => {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     } 
+    
     
     const fetchMessages = async (roomId) => {
         const roomMessages = await mesgs(roomId);
@@ -112,10 +112,12 @@ const ChatContainer = (socket, rooms, username, mesgs)=>{
 
     return(<>
        <div>
-            <div style={{ position: 'absolute', top: '0', right: '0', width: '71.4%', maxWidth: '71.4%', backgroundColor: '#ffffff', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999' }}>
+            {contact && (<>
+            
+                <div style={{ position: 'absolute', top: '0', right: '0', width: '71.4%', maxWidth: '71.4%', backgroundColor: '#ffffff', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999' }}>
                 <div style={{ width: '40px', height: '31.55px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' }}>
                                     {}                           
-                                    {contact.profilePhoto !==null? (<>
+                                    {contact.profilePhoto? (<>
                                         <img src={`data:image/jpeg;base64,${contactPhoto}`} alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     </>):(<>
                                         <img src={photo} alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -248,6 +250,8 @@ const ChatContainer = (socket, rooms, username, mesgs)=>{
                     </div>
                 </div>
             </div>                      
+
+            </>)}
         </div>
     </>);
 }

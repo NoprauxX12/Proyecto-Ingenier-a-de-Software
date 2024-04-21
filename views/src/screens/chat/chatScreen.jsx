@@ -11,7 +11,6 @@ function Chat() {
   const [userId, setUserId] = useState("");
   const [showChat, setShowChat] = useState(false);
   const [username, setUsername] = useState("");
-  const [rooms, setRooms] = useState([]);
   const { userData } = useContext(AuthContext);
 
   useEffect(() => {
@@ -37,11 +36,7 @@ function Chat() {
     return contacInfo;
   };
 
-  const fetchRooms = () => {
-    axios.get(`http://localhost:3001/rooms/${userId}`)
-      .then(response => setRooms(response.data.rooms))
-      .catch(error => console.error('Error fetching rooms:', error));
-  };
+  
 
   const joinRoom = () => {
     if (userId !== "") {
@@ -50,7 +45,7 @@ function Chat() {
         .then(response => {
           // Si la respuesta es exitosa, significa que la ID de usuario es válida
           setShowChat(true);
-          fetchRooms(); // Fetch de las salas disponibles
+           // Fetch de las salas disponibles
           searchMessages(); // Fetch de los mensajes
           socket.emit("join_room");
         })
@@ -86,7 +81,7 @@ function Chat() {
       {!showChat ? (
         <NoChatsFoundScreen></NoChatsFoundScreen>
       ) : (
-        <Screenchat socket={socket} username={username} rooms={rooms} mesgs={searchMessages} contact={fetchContactInfo} user={userId}></Screenchat>
+        <Screenchat socket={socket} username={username}  mesgs={searchMessages} contact={fetchContactInfo} user={userId}></Screenchat>
       )}
     </div>
   );

@@ -1,20 +1,44 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState, useCallback, useContext } from "react";
 import '@fontsource/comfortaa'
 import SiderBar from "../../includes/navs/SiderBar";
 import ChatList from "../../includes/containers/chatList";
 import ChatContainer from "../../includes/containers/chatContainer";
 import NotChosenChat from "../../includes/containers/notChosenChat";
+import axios from "axios";
+import { AuthContext } from "../../providers/userProvider";
+import Alert from "../../includes/overlays/alert";
 
-const Screenchat = ({ socket, username, rooms, mesgs, contactInfo, userId }) => {
+
+const Screenchat = ({ socket, username, mesgs }) => {
+    const {userData} = useContext(AuthContext);
+    const {idCard} = userData;
+    const messagesEndRef = useRef(null);
     const [messages, setMessages] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
-    const messagesEndRef = useRef(null);
     var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
     snd.volume = 0.05;
+    const [rooms, setRooms] = useState([]);
 
     const scrollToBottom = () => {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     } 
+
+    const fetchMessages = async (roomId) => {
+        const roomMessages = await mesgs(roomId);
+        if (!roomMessages)
+            setMessages([]);
+        else
+            setMessages(roomMessages.messages);
+    }
+
+
+
+    async function  handleChatClick(roomId){
+        await fetchMessages(roomId);
+        setSelectedRoom(roomId);
+        console.log(`Abrir chat con ID: ${roomId}`);
+        scrollToBottom();
+    };
 
     const messageHandle = useCallback((data) => {
         setMessages(prevMessages => [...prevMessages, data]);
@@ -22,9 +46,21 @@ const Screenchat = ({ socket, username, rooms, mesgs, contactInfo, userId }) => 
     }, []);
 
     useEffect(() => {
+        const fetchRooms = () => {
+            axios.get(`http://localhost:3001/rooms/${idCard}`)
+                .then(response => setRooms(response.data.rooms))
+                .catch(error => console.error('Error fetching rooms:', error));
+        };
+
+        if (rooms.length === 0) {
+
+            fetchRooms();
+        }else{
+            console.log(rooms)
+        }
         document.title="chat";
         setMessages(mesgs);
-    }, [mesgs]);
+    }, [mesgs, idCard, rooms]);
 
     useEffect(() => {
         socket.on("recive_message", messageHandle);
@@ -37,11 +73,13 @@ const Screenchat = ({ socket, username, rooms, mesgs, contactInfo, userId }) => 
         <div style={{ display: 'flex', height: '100vh' }}>
                 <SiderBar/>
             <div style={{ flex: '2.70', backgroundColor: '#white', position: 'relative' }}>
-                <ChatList rooms={rooms} username={username} mesgs={mesgs}/>
+                <ChatList rooms={rooms} username={username} handler={handleChatClick} />
             </div>
             <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}> {/* Columna principal */}
                 {selectedRoom ? (
-                    <ChatContainer socket={socket} rooms={rooms} username={username} mesgs={mesgs} ></ChatContainer>
+                        <Alert onClose={()=>{
+                            setSelectedRoom(null);
+                        }} message={"hello"}/>
                 ) : (
                     <NotChosenChat/>
                 )}
