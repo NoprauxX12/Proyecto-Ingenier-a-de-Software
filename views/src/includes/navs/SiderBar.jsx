@@ -75,7 +75,7 @@ const SiderBar = () => {
                     <span className="tooltip">Contratos</span>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="http://localhost:3000/chat">
                     <i className="bx bx-message-square-dots" />
                     <span className="nav-item">Mensajes</span>
                     </a>
