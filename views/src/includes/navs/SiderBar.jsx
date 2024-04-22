@@ -88,7 +88,7 @@ const SiderBar = ({user}) => {
                     <span className="tooltip">Contratos</span>
                 </li>
                 <li>
-                    <a href="http://localhost:3000/chat">
+                    <a href={Urls.chat}>
                     <i className="bx bx-message-square-dots" />
                     <span className="nav-item">Mensajes</span>
                     </a>

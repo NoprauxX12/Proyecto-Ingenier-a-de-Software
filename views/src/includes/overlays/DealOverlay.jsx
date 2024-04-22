@@ -1,8 +1,9 @@
 import React, { useState, useRef, useContext, useEffect} from "react";
 import "../../styles/overlays.css";
 import { AuthContext } from "../../providers/userProvider";
+import EstimateData from "../../services/estimate";
 
-function DealOverlay({onClose, cities}){
+function DealOverlay({onClose, cities, idFreelancer}){
   const {userData} = useContext(AuthContext);
   const [selectedCity, setSelectedCity] = useState("");
   const [step, setStep] = useState(1);
@@ -24,12 +25,20 @@ function DealOverlay({onClose, cities}){
     // Crear un FormData para enviar los datos del formulario y la imagen
     const formData = new FormData();
     formData.append('city', formValues.city);
+    formData.append("user", userData.user);
+    formData.append("idClient", userData.idCard);
+    formData.append("idFreelancer", idFreelancer);
     formData.append('place', formValues.place);
     formData.append('description', formValues.description);
     formData.append('dateStart', formValues.dateStart);
     formData.append('img', img);
-    console.log("succes"+ formValues.city);
-    onClose();
+
+    EstimateData.Create(formData,(res)=>{
+      console.log(formData)
+      console.log(res);
+    })
+    setTimeout(onClose,500)
+    
     
   };
 
@@ -42,11 +51,6 @@ function DealOverlay({onClose, cities}){
     
   };
 
-
-  const handleIconClick = () => {
-    // Simular un clic en el input de tipo file cuando se hace clic en el icono
-    fileInputRef.current.click();
-  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -152,7 +156,6 @@ function DealOverlay({onClose, cities}){
                 onChange={handleFileChange}
               />
               <div>
-                
               </div>
               <label
                 htmlFor="img"
@@ -165,7 +168,7 @@ function DealOverlay({onClose, cities}){
                   <i
                   className="bx bxs-image-add"
                   style={{ color: '#55acee', fontSize: '4em', cursor: 'pointer' }}
-                  onClick={handleIconClick} // Manejar el clic en el icono
+                  
                 />
                 </>)}
                 

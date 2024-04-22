@@ -89,7 +89,7 @@ class ClientDAO{
 
 
   static async logIn(json, cb){
-    let sql = "SELECT name, idClient, email, idCity, password, adress from client where email = ?";
+    let sql = "SELECT name, idClient idCard, email, idCity, password, adress from client where email = ?";
     try{
         const response = await mysqlExecute(sql, [ json.email]);
         if (response.length === 0) {

@@ -1,18 +1,18 @@
-import React, { useRef, useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import '@fontsource/comfortaa'
 import SiderBar from "../../includes/navs/SiderBar";
 import ChatList from "../../includes/containers/chatList";
 import ChatContainer from "../../includes/containers/chatContainer";
 import NotChosenChat from "../../includes/containers/notChosenChat";
 import axios from "axios";
+import EstimateData from "../../services/estimate";
 import { AuthContext } from "../../providers/userProvider";
 
-const Screenchat = ({ socket, username, }) => {
+const Chat = ({ socket, username }) => {
     const {userData} = useContext(AuthContext);
-    const {idCard} = userData;
     const [messages, setMessages] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
-    const [rooms, setRooms] = useState([]);
+    const [estimates, setEstimates] = useState([]);
     
 
     const searchMessages = async (roomId) => {
@@ -34,20 +34,20 @@ const Screenchat = ({ socket, username, }) => {
     }
 
     useEffect(() => {
-        const fetchRooms = () => {
-            axios.get(`http://localhost:3001/rooms/${idCard}`)
-                .then(response => setRooms(response.data.rooms))
-                .catch(error => console.error('Error fetching rooms:', error));
+        const fetchestimates = () => {
+            EstimateData.getEstimates(userData.user, userData.idCard, (res)=>{
+                setEstimates(res);
+            })
         };
 
-        if (rooms.length === 0) { //poner cuidado con un ciclo inf
-            fetchRooms();
+        if (estimates.length === 0) { //poner cuidado con un ciclo inf
+            fetchestimates();
         }else{
-            console.log(rooms)
+            console.log(estimates)
         }
         document.title="chat";
         setMessages(searchMessages(selectedRoom));
-    }, [idCard, rooms]);
+    }, [estimates, selectedRoom, userData]);
 
 
 
@@ -55,11 +55,11 @@ const Screenchat = ({ socket, username, }) => {
         <div style={{ display: 'flex', height: '100vh' }}>
                 <SiderBar/>
             <div style={{ flex: '2.70', backgroundColor: '#white', position: 'relative' }}>
-                <ChatList rooms={rooms} username={username} handler={handleChatClick} />
+                <ChatList estimates={estimates} username={username} handler={handleChatClick} />
             </div>
             <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}> {/* Columna principal */}
                 {selectedRoom ? (
-                    <ChatContainer socket={socket} rooms={rooms} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
+                    <ChatContainer socket={socket} estimates={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
                 ) : (
                     <NotChosenChat/>
                 )}
@@ -68,4 +68,4 @@ const Screenchat = ({ socket, username, }) => {
     );
 };
 
-export default Screenchat;
+export default Chat;

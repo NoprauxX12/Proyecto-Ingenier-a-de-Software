@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 // routes
 const chatRoutes= require("./routes/message");
-const roomsRoutes= require("./routes/rooms");
+const roomsRoutes= require("./routes/estimate");
 
 const server = http.createServer(app)
 const rooms = {};
@@ -19,7 +19,7 @@ const rooms = {};
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "*",
         methods: ["GET", "POST"]
     }
 })
@@ -32,10 +32,12 @@ connection.connect((err) => {
     console.log('Conexión a la base de datos establecida correctamente');
   });
 
+
+
 // Agrega una ruta para obtener información sobre un usuario por su ID
 app.get("/user/:userId", (req, res) => {
   const userId = req.params.userId;
-  
+  console.log("user id"+userId)
   // Variables para almacenar los resultados de las consultas
   let freelancerData = null;
   let clientData = null;
@@ -60,7 +62,7 @@ app.get("/user/:userId", (req, res) => {
           if (freelancerData || clientData) {
             if (freelancerData !== null){
               res.json(freelancerData);
-              console.log(freelancerData)
+              console.log(freelancerData);
             }
             else if(clientData !== null){
               res.json(clientData)
@@ -74,9 +76,10 @@ app.get("/user/:userId", (req, res) => {
   });
 });
 
-app.use(chatRoutes);
-// Agregar una ruta para obtener las salas asociadas a un usuario por su ID
+
 app.use(roomsRoutes);
+
+app.use(chatRoutes);
   // Manejar la ruta 404 (Not Found)
 app.use((req, res) => {
   res.status(404).send("Ruta no encontrada");

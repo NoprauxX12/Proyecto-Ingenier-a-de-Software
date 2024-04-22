@@ -32,7 +32,7 @@ const Card = (props) => {
           <SignUpAlert onClose={toggleOverlay} />
         </>)}
       {showDealOverlay && (<>
-          <DealOverlay cities={cities} onClose={toggleOverlay}/>
+          <DealOverlay idFreelancer={freelancer.idFreelancer} cities={cities} onClose={toggleOverlay}/>
         </>)}
       
       <div className="card__item card" style={{marginBottom: "0.5em"}}>

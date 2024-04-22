@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../providers/userProvider";
 import io from 'socket.io-client';
-import Screenchat from "./chat";
+import Chat from "./chat";
 import axios from 'axios';
 import NoChatsFoundScreen from "./notFoundChat";
 
 const socket = io.connect("http://localhost:3001");
 
-function Chat() {
+function ChatScreen() {
   const [userId, setUserId] = useState("");
   const [showChat, setShowChat] = useState(false);
   const [username, setUsername] = useState("");
@@ -68,10 +68,10 @@ function Chat() {
       {!showChat ? (
         <NoChatsFoundScreen></NoChatsFoundScreen>
       ) : (
-        <Screenchat socket={socket} username={username} ></Screenchat>
+        <Chat socket={socket} username={username} ></Chat>
       )}
     </div>
   );
 }
 
-export default Chat;
+export default ChatScreen;
