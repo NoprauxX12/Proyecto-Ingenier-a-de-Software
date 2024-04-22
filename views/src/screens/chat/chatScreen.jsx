@@ -45,8 +45,6 @@ function Chat() {
         .then(response => {
           // Si la respuesta es exitosa, significa que la ID de usuario es válida
           setShowChat(true);
-           // Fetch de las salas disponibles
-          searchMessages(); // Fetch de los mensajes
           socket.emit("join_room");
         })
         .catch(error => {
@@ -55,17 +53,6 @@ function Chat() {
           alert('La ID de usuario ingresada no es válida. Por favor, intenta nuevamente.');
         });
     }
-  };
-
-  const searchMessages = async (roomId) => {
-    let _messages = null;
-    try {
-      const response = await axios.get(`http://localhost:3001/messages/${roomId}`);
-      _messages = response.data;
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-    return _messages;
   };
 
   useEffect(() => {
@@ -81,7 +68,7 @@ function Chat() {
       {!showChat ? (
         <NoChatsFoundScreen></NoChatsFoundScreen>
       ) : (
-        <Screenchat socket={socket} username={username}  mesgs={searchMessages} contact={fetchContactInfo} user={userId}></Screenchat>
+        <Screenchat socket={socket} username={username} ></Screenchat>
       )}
     </div>
   );

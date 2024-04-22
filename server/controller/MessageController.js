@@ -26,7 +26,7 @@ exports.getMessages=(req, res) => {
     if (!content || !author || !room_id || !time) {
       return res.status(400).json({ error: 'Faltan campos obligatorios en el mensaje' });
     }
-    insterMessage(author, room_id, time, (result)=>{
+    insterMessage(content, author, room_id, time, (result)=>{
         const {error} =  result;
         if(error){
             res.status(500).json({ error: 'Error al guardar el mensaje en la base de datos' });
