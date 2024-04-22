@@ -32,7 +32,7 @@ connection.connect((err) => {
     console.log('Conexión a la base de datos establecida correctamente');
   });
 
-// Agregar una ruta para obtener información sobre un usuario por su ID
+// Agrega una ruta para obtener información sobre un usuario por su ID
 app.get("/user/:userId", (req, res) => {
   const userId = req.params.userId;
   
@@ -40,7 +40,7 @@ app.get("/user/:userId", (req, res) => {
   let freelancerData = null;
   let clientData = null;
   
-  // Realizar la consulta para obtener datos de la tabla 'freelancer'
+  // Realiza la consulta para obtener datos de la tabla 'freelancer'
   connection.query('SELECT idFreelancer, name, profilePhoto FROM freelancer WHERE idFreelancer = ?', userId, (err, freelancerResults) => {
       if (err) {
           console.error('Error al obtener datos del freelancer:', err.message);
@@ -48,7 +48,7 @@ app.get("/user/:userId", (req, res) => {
           freelancerData = freelancerResults[0];
       }
       
-      // Realizar la consulta para obtener datos de la tabla 'client'
+      // Realiza la consulta para obtener datos de la tabla 'client'
       connection.query('SELECT idClient, name, profilePhoto FROM client WHERE idClient = ?', userId, (err, clientResults) => {
           if (err) {
               console.error('Error al obtener datos del cliente:', err.message);
@@ -58,11 +58,11 @@ app.get("/user/:userId", (req, res) => {
           
           // Verificar si alguna de las consultas devolvió resultados
           if (freelancerData || clientData) {
-            if (freelancerData !== undefined){
+            if (freelancerData !== null){
               res.json(freelancerData);
               console.log(freelancerData)
             }
-            else if(clientData !== undefined){
+            else if(clientData !== null){
               res.json(clientData)
               console.log(clientData)
             }

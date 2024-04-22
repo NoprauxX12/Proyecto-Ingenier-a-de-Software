@@ -1,10 +1,10 @@
-import React, {useState,useRef}  from "react";
+import React, {useState,useRef,useEffect,useCallback}  from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faCamera } from '@fortawesome/free-solid-svg-icons';
 
 
-const ChatContainer = (socket, rooms, username, mesgs, selectedRoom)=>{
+const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
     const [currentMessage, setCurrentMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [cameraAvailable, setCameraAvailable] = useState(true);
@@ -21,6 +21,7 @@ const ChatContainer = (socket, rooms, username, mesgs, selectedRoom)=>{
     
     
     const fetchMessages = async (roomId) => {
+        console.log("Consulta chatcontainer")
         const roomMessages = await mesgs(roomId);
         if (!roomMessages)
             setMessages([]);
@@ -40,17 +41,17 @@ const ChatContainer = (socket, rooms, username, mesgs, selectedRoom)=>{
 
             socket.emit("send_message", info); // Emitir el mensaje al servidor    
 
-            axios.post('http://localhost:3001/messages', info)
-                .then(response => {
-                    console.log('Mensaje enviado correctamente:', response.data);
-                    setMessages(prevMessages => [...prevMessages, info]);
-                    scrollToBottom();
-                    snd.play();
-                    snd.currentTime = 0;
-                })
-                .catch(error => {
-                    console.error('Error al enviar el mensaje:', error);
-                });
+            try {
+                const response = axios.post('http://localhost:3001/messages', info);
+                console.log('Mensaje enviado correctamente:', response.data);
+                setMessages(prevMessages => [...prevMessages, info]);
+                scrollToBottom();
+                snd.play();
+                snd.currentTime = 0;
+            } catch (error) {
+                console.error('Error al enviar el mensaje:', error);
+            }
+            
 
             setCurrentMessage(""); // Limpiar el campo de mensaje
         }
@@ -91,17 +92,17 @@ const ChatContainer = (socket, rooms, username, mesgs, selectedRoom)=>{
 
             console.log(info)
 
-            axios.post('http://localhost:3001/photo', info)
-                .then(response => {
-                    console.log('Foto enviada correctamente:', response.data);
-                    fetchMessages(selectedRoom);
-                    scrollToBottom();
-                    snd.play();
-                    snd.currentTime = 0;
-                })
-                .catch(error => {
-                    console.error('Error al enviar la foto', error);
-                });
+            try {
+                const response = axios.post('http://localhost:3001/photo', info);
+                console.log('Foto enviada correctamente:', response.data);
+                fetchMessages(selectedRoom);
+                scrollToBottom();
+                snd.play();
+                snd.currentTime = 0;
+            } catch (error) {
+                console.error('Error al enviar la foto', error);
+            }
+            
 
             setCurrentMessage(""); // Limpiar el campo de mensaje
         }
@@ -109,6 +110,27 @@ const ChatContainer = (socket, rooms, username, mesgs, selectedRoom)=>{
             alert("No se envio la foto")
         }
     };
+
+    useEffect(() => {
+        console.log("Consulta useefect")
+        if (selectedRoom) {
+            fetchMessages(selectedRoom);
+        }
+    }, [selectedRoom]);
+
+    const messageHandle = useCallback((data) => {
+        setMessages(prevMessages => [...prevMessages, data]);
+        scrollToBottom();
+    }, []);
+
+    useEffect(() => {
+        socket.on("recive_message", messageHandle);
+        return () => socket.off("recive_message", messageHandle);
+    }, [socket, messageHandle]);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);    
 
     return(<>
        <div>
@@ -153,7 +175,7 @@ const ChatContainer = (socket, rooms, username, mesgs, selectedRoom)=>{
                                                 {message.content === null ? 
                                                         (   
                                                             (() => {
-                                                                console.log("aaa");
+
                                                                 return <img src={message.attachment} alt="No se pudo cargar la imagen"></img>
                                                             })()
                                                         ) : 

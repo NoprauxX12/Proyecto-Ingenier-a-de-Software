@@ -3,7 +3,7 @@ import React from 'react';
 const NoChatsFoundScreen = () => {
   return (
     <div style={styles.container}>
-      <p>No se encontraron tus chats :(</p>
+      <p>Ups... No se encontraron tus chats :(</p>
       <div style={styles.sadFace}></div>
     </div>
   );

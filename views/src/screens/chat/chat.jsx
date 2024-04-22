@@ -6,44 +6,32 @@ import ChatContainer from "../../includes/containers/chatContainer";
 import NotChosenChat from "../../includes/containers/notChosenChat";
 import axios from "axios";
 import { AuthContext } from "../../providers/userProvider";
-import Alert from "../../includes/overlays/alert";
 
-
-const Screenchat = ({ socket, username, mesgs }) => {
+const Screenchat = ({ socket, username, }) => {
     const {userData} = useContext(AuthContext);
     const {idCard} = userData;
-    const messagesEndRef = useRef(null);
     const [messages, setMessages] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
-    var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
-    snd.volume = 0.05;
     const [rooms, setRooms] = useState([]);
+    
 
-    const scrollToBottom = () => {
-        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    } 
-
-    const fetchMessages = async (roomId) => {
-        const roomMessages = await mesgs(roomId);
-        if (!roomMessages)
-            setMessages([]);
-        else
-            setMessages(roomMessages.messages);
-    }
-
-
+    const searchMessages = async (roomId) => {
+        let _messages = null;
+        console.log("Consulta principal")
+        try {
+          const response = await axios.get(`http://localhost:3001/messages/${roomId}`);
+          _messages = response.data;
+        } catch (error) {
+          console.error('Error fetching messages:', error);
+        }
+        return _messages;
+      };
 
     async function  handleChatClick(roomId){
-        await fetchMessages(roomId);
+        await setMessages(searchMessages(roomId));
         setSelectedRoom(roomId);
         console.log(`Abrir chat con ID: ${roomId}`);
-        scrollToBottom();
-    };
-
-    const messageHandle = useCallback((data) => {
-        setMessages(prevMessages => [...prevMessages, data]);
-        scrollToBottom();
-    }, []);
+    }
 
     useEffect(() => {
         const fetchRooms = () => {
@@ -52,20 +40,14 @@ const Screenchat = ({ socket, username, mesgs }) => {
                 .catch(error => console.error('Error fetching rooms:', error));
         };
 
-        if (rooms.length === 0) {
-
+        if (rooms.length === 0) { //poner cuidado con un ciclo inf
             fetchRooms();
         }else{
             console.log(rooms)
         }
         document.title="chat";
-        setMessages(mesgs);
-    }, [mesgs, idCard, rooms]);
-
-    useEffect(() => {
-        socket.on("recive_message", messageHandle);
-        return () => socket.off("recive_message", messageHandle);
-    }, [socket, messageHandle]);
+        setMessages(searchMessages(selectedRoom));
+    }, [idCard, rooms]);
 
 
 
@@ -77,9 +59,7 @@ const Screenchat = ({ socket, username, mesgs }) => {
             </div>
             <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}> {/* Columna principal */}
                 {selectedRoom ? (
-                        <Alert onClose={()=>{
-                            setSelectedRoom(null);
-                        }} message={"hello"}/>
+                    <ChatContainer socket={socket} rooms={rooms} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
                 ) : (
                     <NotChosenChat/>
                 )}
