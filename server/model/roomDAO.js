@@ -2,7 +2,7 @@ const connection= require("../DAL/mysqlCon");
 
 exports.getUserRommsById= async (userId, cb) =>{
   console.log("usuario"+userId);
-    connection.query('SELECT * FROM rooms WHERE client_id = ? OR freelancer_id = ?', [userId, userId], (err, results) => {
+    connection.query('SELECT * FROM estimate WHERE client_id = ? OR freelancer_id = ?', [userId, userId], (err, results) => {
         if (err) {
           console.error('Error al obtener las salas asociadas al usuario:', err.message);
           cb({error:500});
@@ -10,7 +10,7 @@ exports.getUserRommsById= async (userId, cb) =>{
           // Si no se encuentran salas asociadas al usuario, devolver un error 404
           cb({error:404});
         }else{
-          cb({ rooms: results });
+          cb({ estimate: results });
         }
         
       });

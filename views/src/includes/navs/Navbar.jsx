@@ -9,6 +9,7 @@ const Navbar = () => {
   const params= new URLSearchParams(window.location.search);
   const { isLoggedIn, userData, logout} = useContext(AuthContext);
   const [searchVal, setSearchVal] = useState(params.get("search"));
+  
   const handleLogout = (e) => {
     e.preventDefault(); // Evitar el comportamiento predeterminado del enlace
     logout(); // Realizar la lógica de logout

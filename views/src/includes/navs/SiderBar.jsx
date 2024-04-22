@@ -6,7 +6,7 @@ import UserData from '../../services/user';
 
 import "../../styles/siderBar.css"
 
-const SiderBar = () => {
+const SiderBar = ({user}) => {
     
     const [isActive, setIsActive] = useState(false);
     const params= new URLSearchParams(window.location.search);
@@ -59,7 +59,9 @@ const SiderBar = () => {
                     <p style={{color: "#fff"}}>carpintera</p>
                 </div>
             </div>
-            <ul>
+            <ul> 
+                
+                {user==="1" ? (<>
                 <li>
                     <a href={Urls.home}>
                     <i className="bx bx-cog" />
@@ -67,6 +69,17 @@ const SiderBar = () => {
                     </a>
                     <span className="tooltip">Ofertas</span>
                 </li>
+                </>):(<>
+                <li>
+                    <a href={Urls.home}>
+                    <i className="bx bx-home-alt-2" style={{color: 'rgba(255,255,255,0.29)'}} />
+
+                    <span className="nav-item">Home</span>
+                    </a>
+                    <span className="tooltip">Home</span>
+                </li>
+                </>)}
+                
                 <li>
                     <a href="#">
                     <i className="bx bx-notepad" />

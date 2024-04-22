@@ -105,6 +105,7 @@ const UploadPhotoScreen = () => {
             idCard: idCard,
             email: email,
             idCity: idCity,
+            adress: adress
           });
           setMesage("Te has registrado con éxito!");
           toggleAlert();

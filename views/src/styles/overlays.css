@@ -53,7 +53,7 @@
   .deal-box{
     background-color: white;
     width: 70%;
-    height: 60%;
+    height: 80%;
     padding: 20px 100px;
     padding-left: 30px;
     border-radius: 10px;
@@ -66,7 +66,7 @@
 }
 
 .expanded{
-    height: 7em;
+    height: 5.6em;
 }
 
 .expanded::placeholder {
@@ -76,4 +76,9 @@
     padding: 10px; /* Ajusta el padding según sea necesario */
     color: inherit; /* Color del texto del placeholder */
     pointer-events: none; /* Evita la interacción del usuario */
+  }
+
+  #pasos{
+    color: #3D00B7;
+    font-weight: 800;
   }

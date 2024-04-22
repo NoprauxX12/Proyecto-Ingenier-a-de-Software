@@ -58,7 +58,7 @@ class FreelancerDAO{
     }
 
     static async fetchAll(p,cb){
-        let sql=p.city!=="00"?  "select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto, f.url from freelancer f left join town t using (idCity) where f.idCity=?" :"select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto, f.url from freelancer f left join town t using (idCity)";
+        let sql=p.city!=="00"?  "select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto from freelancer f left join town t using (idCity) where f.idCity=?" :"select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto from freelancer f left join town t using (idCity)";
         try{
             const results=p.city!=="00"? await mysqlExecute(sql, [parseFloat(p.city)]): await mysqlExecute(sql);
             results.map((freelancer)=>{
@@ -69,6 +69,7 @@ class FreelancerDAO{
             });
             cb(results);
         }catch(err){
+            console.log(err);
             cb({result: false});
         }
     }
@@ -148,7 +149,7 @@ class FreelancerDAO{
     }
 
     static async logIn(json, cb){
-        let sql = "SELECT name, idFreelancer idCard, email, idCity, password from freelancer where email = ?";
+        let sql = "SELECT name, idFreelancer idCard, email, idCity, adress, password from freelancer where email = ?";
         try{
             const response = await mysqlExecute(sql, [ json.email]);
             if (response.length === 0) {

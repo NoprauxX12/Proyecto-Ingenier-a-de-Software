@@ -71,10 +71,10 @@ function HomeScreen() {
   
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
-      {userData === null || userData.user==="2" ? (<>
+      {userData === null ? (<>
         <Navbar />
       </>):(<>
-        <SiderBar/>
+        <SiderBar user={userData.user}/>
       </>)}
       
       {(search === null && userData === null) && (
@@ -131,7 +131,7 @@ function HomeScreen() {
                 {freelancers.length>0 ? (
                 <>
                 {freelancers.map((freelancer) => (
-                  <Card freelancer={freelancer}/> 
+                  <Card freelancer={freelancer} cities={cityes}/> 
                 ))}
                 
               </>

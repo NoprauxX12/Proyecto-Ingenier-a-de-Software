@@ -8,7 +8,7 @@ import DealOverlay from "../overlays/DealOverlay";
 import SignUpAlert from "../overlays/singUpSugerence";
 
 const Card = (props) => {
-    const { freelancer } = props;
+    const { freelancer, cities } = props;
     const [showDealOverlay, setShowDealOverlay]= useState(false);
     const [showSingUpSugerence, setShowSingUpSugerence]= useState(false);
     const {userData} = useContext(AuthContext);
@@ -32,7 +32,7 @@ const Card = (props) => {
           <SignUpAlert onClose={toggleOverlay} />
         </>)}
       {showDealOverlay && (<>
-          <DealOverlay onClose={toggleOverlay}/>
+          <DealOverlay cities={cities} onClose={toggleOverlay}/>
         </>)}
       
       <div className="card__item card" style={{marginBottom: "0.5em"}}>
