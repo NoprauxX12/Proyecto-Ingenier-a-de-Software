@@ -5,8 +5,6 @@ import ChatList from "../../includes/containers/chatList";
 import ChatContainer from "../../includes/containers/chatContainer";
 import NotChosenChat from "../../includes/containers/notChosenChat";
 import axios from "axios";
-import EstimateData from "../../services/estimate";
-import EstimateContainer from "../../includes/containers/stimateContainer";
 import { AuthContext } from "../../providers/userProvider";
 
 const Screenchat = ({ socket, username }) => {
@@ -28,10 +26,10 @@ const Screenchat = ({ socket, username }) => {
     };
 
     useEffect(() => {
-        const fetchestimates = () => {
-            EstimateData.getEstimates(userData.user, userData.idCard, (res)=>{
-                setEstimates(res);
-            })
+        const fetchRooms = () => {
+            axios.get(`http://localhost:3001/rooms/${idCard}`)
+                .then(response => setRooms(response.data.rooms))
+                .catch(error => console.error('Error fetching rooms:', error));
         };
 
         if (rooms.length === 0) {
@@ -79,7 +77,7 @@ const Screenchat = ({ socket, username }) => {
             </div>
             <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}>
                 {selectedRoom ? (
-                    <EstimateContainer socket={socket} estimates={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
+                    <ChatContainer socket={socket} rooms={rooms} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
                 ) : (
                     <NotChosenChat />
                 )}
@@ -88,4 +86,4 @@ const Screenchat = ({ socket, username }) => {
     );
 };
 
-export default Chat;
+export default Screenchat;
