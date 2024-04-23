@@ -1,9 +1,8 @@
 const connection= require("../DAL/mysqlCon");
 
-
 exports.getMessages = async (roomId, cb) =>{
     console.log(roomId)
-    connection.query('SELECT id, content, author, room_id, attachment, DATE_FORMAT(time, "%H:%i") AS time FROM messages WHERE room_id = ?', [roomId], (err, results) => {
+    connection.query('SELECT id, content, autor, estimateid, attachment, DATE_FORMAT(time, "%H:%i") AS time FROM messages WHERE estimateid = ?', [roomId], (err, results) => {
       if (err) {
         console.error('Error al obtener los mensajes asociadas a la sala: ', err.message);
         cb({error: 500});
@@ -18,19 +17,22 @@ exports.getMessages = async (roomId, cb) =>{
     })
     }
 
-exports.insterMessage= async (content, author, room_id, time, cb)=>{
-    connection.query('INSERT INTO messages (content, author, room_id, time) VALUES (?, ?, ?, ?)', [content, author, room_id, time], (err, result) => {
+exports.insterMessage= async (content, autor, estimateid, time, cb)=>{
+    connection.query('INSERT INTO messages (content, autor, estimateid, time) VALUES (?, ?, ?, ?)', [content, autor, estimateid, time], (err, result) => {
         if (err) {
           console.error('Error al guardar el mensaje:', err);
           cb({error: 500})
-        }else{  
+        }else{ 
             console.log('Mensaje guardado correctamente en la base de datos');
         }
       });
 }
 
-exports.insertImages= async (attachment, author, room_id, time, cb)=>{
-    connection.query('INSERT INTO messages (attachment, author, room_id, time) VALUES (?, ?, ?, ?)', [attachment, author, room_id, time], (err, result) => {
+exports.insertImages= async (attachment, autor, estimateid, time, cb)=>{
+
+  
+  
+    connection.query('INSERT INTO messages (attachment, autor, estimateid, time) VALUES (?, ?, ?, ?)', [attachment, autor, estimateid, time], (err, result) => {
         if (err) {
           console.error('Error al guardar el mensaje:', err); 
         }

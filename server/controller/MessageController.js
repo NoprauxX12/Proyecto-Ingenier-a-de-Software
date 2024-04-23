@@ -20,13 +20,13 @@ exports.getMessages=(req, res) => {
 
   exports.createMessage=(req, res) => {
     // Extraer los datos del cuerpo de la solicitud
-    const { content, author, room_id, time } = req.body;
+    const { content, autor, room_id, time } = req.body;
   
     // Verificar si se recibieron todos los campos necesarios
-    if (!content || !author || !room_id || !time) {
+    if (!content || !autor || !room_id || !time) {
       return res.status(400).json({ error: 'Faltan campos obligatorios en el mensaje' });
     }
-    insterMessage(content, author, room_id, time, (result)=>{
+    insterMessage(content, autor, room_id, time, (result)=>{
         const {error} =  result;
         if(error){
             res.status(500).json({ error: 'Error al guardar el mensaje en la base de datos' });
@@ -40,14 +40,14 @@ exports.getMessages=(req, res) => {
 
   exports.inserImages=(req, res) => {
     // Extraer los datos del cuerpo de la solicitud
-    const { attachment, author, room_id, time } = req.body;
+    const { attachment, autor, room_id, time } = req.body;
   
     // Verificar si se recibieron todos los campos necesarios
-    if (!attachment || !author || !room_id || !time) {
+    if (!attachment || !autor || !room_id || !time) {
       return res.status(400).json({ error: 'Faltan campos obligatorios en el mensaje' });
     }
     // Insertar el mensaje en la base de datos
-    insertImages(attachment, author, room_id, time, (result)=>{
+    insertImages(attachment, autor, room_id, time, (result)=>{
         const {error}= result;
         if(error){
             res.status(500).json({ error: 'Error al guardar el mensaje en la base de datos' });

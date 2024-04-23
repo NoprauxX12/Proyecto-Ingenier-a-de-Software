@@ -7,7 +7,7 @@ const NotChosenChat = () => {
         position: 'relative',
         backgroundSize: 'cover',
         minHeight: '100vh',
-        backgroundColor: "#EEEEEE",
+        backgroundColor: "#fff",
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
