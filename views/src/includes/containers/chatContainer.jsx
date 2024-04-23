@@ -140,8 +140,8 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
        <div>
             {contact && (<>
             
-                <div style={{ position: 'absolute', top: '0', right: '0', width: '71.4%', maxWidth: '71.4%', backgroundColor: '#ffffff', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999' }}>
-                <div style={{ width: '40px', height: '31.55px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' }}>
+                <div style={{ position: 'absolute', top: '0', right: '0', width: '71.6%', maxWidth: '72.4%', backgroundColor: '#ffffff', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' , border:"1px solid #000"}}>
                                     {}                           
                                     {contact.profilePhoto? (<>
                                         <img src={`data:image/jpeg;base64,${contactPhoto}`} alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -149,7 +149,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                                         <img src={photo} alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     </>)}               
                 </div>
-                    <span style={{ fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>
+                    <span style={{ fontSize: '1.rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>
                                 {contact.name}
                     </span>
             </div>
@@ -175,12 +175,12 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                                                 textAlign: isOwnMessage ? 'right' : 'left',
                                                 marginBottom: '1rem',
                                             }}>
-                                                <div style={{ backgroundColor: isOwnMessage ? '#3D00B7' : '#EE35A4', color: '#ffffff', padding: '0.5rem 1rem', borderRadius: '0.9rem', maxWidth: '70%', marginLeft: isOwnMessage ? 'auto' : 'none', marginRight: isOwnMessage ? 'none' : 'auto', position: 'relative' }}>
+                                                <div style={{ backgroundColor: isOwnMessage ? '#3D00B7' : '#EE35A4', color: '#ffffff', padding: '0.5rem 1rem', borderRadius: '0.9rem', maxWidth: '70%', marginLeft: isOwnMessage ? 'auto' : 'none', marginRight: isOwnMessage ? 'none' : 'auto', position: 'relative'}}>
                                                 {message.content === null ? 
                                                         (   
                                                             (() => {
 
-                                                                return <img src={message.attachment} alt="No se pudo cargar la imagen"></img>
+                                                                return <img src={message.attachment} alt="No se pudo cargar la imagen" style={{maxHeight: "150px"}} ></img>
                                                             })()
                                                         ) : 
                                                         message.content

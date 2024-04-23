@@ -9,9 +9,6 @@ exports.fetchAllEstimates= async (userId,user, cb) =>{
         if (err) {
           console.error('Error al obtener las salas asociadas al usuario:', err.message);
           cb({error:500});
-        }else if (results.length === 0) {
-          // Si no se encuentran salas asociadas al usuario, devolver un error 404
-          cb({error:404});
         }else{
           cb({ estimate: results });
         }
@@ -46,8 +43,41 @@ exports.createEstimate= async (json, cb)=>{
       console.error('Error al crear estimacion', err.message);
       cb({result:false });
     }else{
-      cb({result: false });
+      cb({result: true });
     }
     
+  });
+}
+
+exports.getById= async (json, cb)=>{
+  const {estimateId} =json;
+
+  let sql= "select sendDate, estimateId, `idClient`, `idFreelancer`, e.description, e.adress, t.name city, `sendedBy`, `state_stateId` state, `dateStart`, `dercriptiveImg`, c.name clientName, f.name freelancerName, cost from estimate e join client c using(idClient) join freelancer f using(idFreelancer) join town t on e.idCity=t.idCity where estimateId=?";
+  connection.query(sql, [parseInt(estimateId)], (err, results) => {
+    if (err) {
+      console.error('Error al crear estimacion', err.message);
+      cb({result: false });
+    }else{
+      cb(results[0]);
+    }
+  });
+
+}
+
+exports.setState= async (state, id,cost, cb)=>{
+  const values = [
+    parseInt(state), 
+    parseInt(id)
+  ];
+  if(cost) values.splice(1 ,0, parseFloat(cost));
+  console.log(values)
+  let sql =cost===null? "update estimate set state_stateId=? where estimateId=?": "update estimate set state_stateId=?, cost=? where estimateId=?";
+  connection.query(sql, values, (err, results) => {
+    if (err) {
+      console.error('Error al crear estimacion', err.message);
+      cb({result: false });
+    }else{
+      cb(results[0]);
+    }
   });
 }

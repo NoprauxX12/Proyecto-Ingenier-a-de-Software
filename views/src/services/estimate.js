@@ -16,8 +16,19 @@ class EstimateData{
     }
     static async getEstimates(user, idCard, cb){
         const res= await axios.post(`http://localhost:3001/rooms`, {id: idCard, user: user})
-                cb(res.data.estimate);
+        cb(res.data.estimate);
+    }
+
+    static async getEstimateById(idestimate, cb){
+        const res= await axios.post(`http://localhost:3001/estimate-by-id`, {estimateId:idestimate});
+        cb(res.data);
+    }
+
+    static async setState(json, cb){
+        const res= await axios.post(`http://localhost:3001/set-estimate-state`, json);
+        cb(res.data);
     }
 }
+
 
 export default EstimateData;

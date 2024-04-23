@@ -11,9 +11,14 @@ import { AuthContext } from "../../providers/userProvider";
 
 const Chat = ({ socket, username }) => {
     const {userData} = useContext(AuthContext);
+    const [showchat, setShowChat]= useState(false);
     const [messages, setMessages] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [estimates, setEstimates] = useState([]);
+
+    function toggleChats(){
+        setShowChat(!showchat);
+    }
     
     const searchMessages = async (roomId) => {
         let _messages = null;
@@ -31,6 +36,7 @@ const Chat = ({ socket, username }) => {
     async function  handleChatClick(roomId){
         await setMessages(searchMessages(roomId));
         setSelectedRoom(roomId);
+        setShowChat(false);
         console.log(`Abrir chat con ID: ${roomId}`);
     }
 
@@ -59,9 +65,13 @@ const Chat = ({ socket, username }) => {
                 <ChatList estimates={estimates} username={username} handler={handleChatClick} />
             </div>
             <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}> {/* Columna principal */}
-                {selectedRoom ? (
-                    <ChatContainer socket={socket} rooms={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
-                ) : (
+                {selectedRoom ? (<>
+                    {showchat? (<>
+                        <ChatContainer socket={socket} rooms={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
+                    </>): (<>
+                        <EstimateContainer estimateId={selectedRoom} toggleChat={toggleChats}/>
+                    </>)}
+                </> ) : (
                     <NotChosenChat/>
                 )}
             </div>

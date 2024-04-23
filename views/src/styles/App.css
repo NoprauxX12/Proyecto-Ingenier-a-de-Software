@@ -500,6 +500,7 @@ a{
 }
 
 .contentBox{
+  width: 100%;
   margin-top: 6em;
   padding: 1em;
   overflow: auto;
@@ -510,4 +511,17 @@ a{
   margin-right: 4em;
   text-align: justify;
   
+}
+
+#estimatesList::-webkit-scrollbar {
+  width: 0px; /* Oculta la barra de desplazamiento en navegadores webkit */
+}
+
+#estimatesList {
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.5rem; 
+  max-height: calc(100vh - 4rem); 
+  overflow-y: auto;
+  scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores que admiten la propiedad scrollbar-width */
 }

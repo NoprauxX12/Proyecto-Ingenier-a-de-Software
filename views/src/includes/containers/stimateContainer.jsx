@@ -1,6 +1,59 @@
-import React from "react"
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, {useEffect, useState, useContext} from "react";
+import EstimateData from "../../services/estimate";
+import SendEstimateOv from "../overlays/sendEstimateOv";
+import { AuthContext } from "../../providers/userProvider";
+const mesesDelAnio = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre"
+];
 
-const EstimateContainer =()=>{
+const EstimateContainer =({toggleChat, estimateId})=>{
+    const [estimate, setEstimate] = useState({});
+    const [showRealizar, setShowRealizar]= useState(false);
+    const {userData} = useContext(AuthContext);
+
+
+        useEffect(() => {
+            const getEst = () => {
+                EstimateData.getEstimateById(estimateId, (res) => {
+                    setEstimate(res);
+                    const { sendDate, dateStart } = res; // Cambiado de estimate a res
+        
+                    if (sendDate) {
+                        let date = new Date(sendDate);
+                        setEstimate((prevEstimate) => ({
+                            ...prevEstimate,
+                            sendDate: `${date.getDate()} - ${mesesDelAnio[date.getMonth()]} de ${date.getFullYear()}`, // Obtener el día del mes
+                        }));
+                    }
+        
+                    if (dateStart) {
+                        let date = new Date(dateStart);
+                        setEstimate((prevEstimate) => ({
+                            ...prevEstimate,
+                            dateStart: `${date.getDate()} - ${mesesDelAnio[date.getMonth()]} de ${date.getFullYear()}` , // Obtener el día del mes
+                        }));
+                    }
+                });
+            };
+            getEst();
+        }, [estimateId]); // Eliminado estimate de las dependencias del efecto
+            
+        function onSend(){
+            setShowRealizar(!showRealizar);
+        }
+
     return (<>
         <div style={{
             position: 'absolute',
@@ -15,21 +68,35 @@ const EstimateContainer =()=>{
                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' }}>        
                     <img src="/images/defaultUser.png" alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />                            
                 </div>
-                <span style={{ fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>santiago</span>
-                <span><i className="bx bx-message-dots" style={{color: '#4f4f4f', fontSize: "2.5em"}} /></span>
+                <span style={{ fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>{userData.user==="2"? estimate.freelancerName : estimate.clientName}</span>
+                {userData.user==="1"? (<>
+                    {1===parseInt(estimate.state)&& (<>
+                        <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={onSend}>Realizar Cotizacion</a>
+                    </>)}
+                </>): (<>
+                    {3===parseInt(estimate.state)&& (<>
+                        <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} href="/">Aceptar Cotizacion</a>
+                    </>)}
+                </>)}
+                <span onClick={toggleChat} style={{cursor: "pointer"}}><i className="bx bx-message-dots" style={{color: '#4f4f4f', fontSize: "2.5em"}} /></span>
                 <span><i class='bx bx-dots-vertical-rounded' style={{color: '#4f4f4f', fontSize: "2.5em", marginLeft: "1em"}}></i></span>
             </div>
             <div className="contentBox">
-                <p style={{float: "right"}}>1 de mayo</p>
-                <h5 style={{marginBottom: "2em"}}>Medellin -  barrio laureles</h5>
+                <p style={{float: "right"}}>{estimate.sendDate}</p>
+                <h5 style={{}}>{estimate.city} - {estimate.adress}</h5>
+                {3===parseInt(estimate.state) && (<>
+                    <h1 style={{color: "#3D00B7", fontWeight: "bold", marginBottom: "1em"}}>Valor: <span style={{float: "right", marginRight:"1em",color: "#3D00B7"}}>{estimate.cost}</span></h1>
+                </>)}
+                {showRealizar && (<>
+                <SendEstimateOv onClose={onSend} estimateId={estimateId}/>
+                </>)}
                 <h3>Descripción:</h3>
-                <p className="textDescriptio">Anim voluptate dolor excepteur ipsum mollit incididunt deserunt deserunt. Ea cupidatat sit culpa nisi non incididunt et id sunt ex voluptate velit consequat est. Nostrud veniam reprehenderit reprehenderit ea sint sunt proident. Ut consectetur culpa magna ullamco reprehenderit anim occaecat mollit. Irure consectetur laboris velit dolore. Ipsum officia tempor proident nostrud excepteur dolore anim consequat. Ex pariatur magna labore commodo amet.</p>
+                <p className="textDescriptio">{estimate.description}</p>
                 <h3>Fecha inicio:</h3>
-                <p className="textDescriptio">No espeificada</p>
+                <p className="textDescriptio">{estimate.dateStart==="" || estimate.dateStart===null? "No espeificada": estimate.dateStart }</p>
                 <h3>Foto:</h3>
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBDcdFBcZWFO_lMPIUCjtQT75VopMSYsu4pG-t89B3cA&s" alt="" />
-                <a className="btne_dark" style={{display: "block", width: "max-content", marginTop: "3em", fontSize: "1.1em"}} href="/">Aceptar Cotizacion</a>
-            </div>
+                </div>
         </div>
         </>)
 }

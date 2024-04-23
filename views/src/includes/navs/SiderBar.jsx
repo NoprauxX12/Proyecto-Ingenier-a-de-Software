@@ -64,7 +64,7 @@ const SiderBar = ({user}) => {
             </div>
             <ul> 
                 
-                {user==="1" ? (<>
+                {userData.user==="1" ? (<>
                 <li>
                     <a href={Urls.home}>
                     <i className="bx bx-cog" />

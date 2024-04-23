@@ -32,6 +32,7 @@
   
   #button {
     background-color: #3D00B7;
+    margin-left: 1em;
   }
 
   .botn{
@@ -54,7 +55,7 @@
     background-color: white;
     width: 70%;
     height: 80%;
-    padding: 20px 100px;
+    padding: 20px ;
     padding-left: 30px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
@@ -82,3 +83,70 @@
     color: #3D00B7;
     font-weight: 800;
   }
+
+  .App {
+    padding-bottom: 50px;
+  }
+  
+  input[type= radio]{
+    display: none;
+  }
+  
+  
+  .star{
+    cursor: pointer;
+  }
+  
+
+  
+  button:hover {
+    background-color: #5f259f;
+  }
+  
+  .Titulo{
+    font-family: "Fredoka", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: 2rem;
+    font-style: normal;
+  }
+
+  .App {
+    padding-bottom: 50px;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  textarea {
+    margin-top: 20px;
+    width: 40%; /* Reducir el ancho */
+    height: 150px; /* Reducir la altura */  
+    padding: 5px; /* Reducir el padding */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 1em;
+  }
+  
+  .botn1 {
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 1em;
+  }
+  
+  #button_b {
+    background-color: #55ACEE;
+  }
+  

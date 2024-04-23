@@ -1,4 +1,4 @@
-const { fetchAllEstimates , createEstimate } = require("../model/estimateDAO");
+const { fetchAllEstimates , createEstimate, getById, setState } = require("../model/estimateDAO");
 
 exports.getUserEstimates = (req, res) => {
     const {id, user} = req.body;
@@ -29,6 +29,19 @@ exports.creatEstimate = (req, res, next)=>{
         }
     req.body["photo"]=link;
     createEstimate(req.body, (response)=>{
+        res.json(response);
+    })
+}
+
+exports.getEstimateById=(req,res)=>{
+    getById(req.body, (response)=>{
+        res.json(response)
+    })
+}
+
+exports.setStateStimate=(req, res)=>{
+    const {state, id,cost}= req.body;
+    setState(state, id,cost, (response)=>{
         res.json(response);
     })
 }

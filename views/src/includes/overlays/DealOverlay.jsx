@@ -174,7 +174,7 @@ function DealOverlay({onClose, cities, idFreelancer}){
               </label>
               </>)}
             {step===1 ? (
-            <button type="button" className="botn" id="button" onClick={onClose}>Cerrar</button>
+              <button type="button" className="botn" id="button" onClick={onClose}>Cerrar</button>
             ) : (
               <button type="button" className="botn" id="button" onClick={back}>atras</button>
             )}
