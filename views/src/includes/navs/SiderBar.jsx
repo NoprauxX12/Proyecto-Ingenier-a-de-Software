@@ -30,8 +30,11 @@ const SiderBar = ({user}) => {
                 if(res.response) setPhoto(res.profilePhoto);
             })
         }
-        setName(userData.name.split(" "));
-        getPhoto();
+        if(userData){
+            setName(userData.name.split(" "));
+            getPhoto();
+        }
+        
     },[photo, userData])
 
     const toggleSidebar = () => {
@@ -90,9 +93,9 @@ const SiderBar = ({user}) => {
                 <li>
                     <a href={Urls.chat}>
                     <i className="bx bx-message-square-dots" />
-                    <span className="nav-item">Mensajes</span>
+                    <span className="nav-item">Cotizaciones</span>
                     </a>
-                    <span className="tooltip">Mensajes</span>
+                    <span className="tooltip">Cotizaciones</span>
                 </li>
                 <li>
                     <a href='/' onClick={(e) => handleLogout(e)}>

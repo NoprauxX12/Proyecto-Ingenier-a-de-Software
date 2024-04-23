@@ -2,7 +2,7 @@ import React  from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
-const ChatList = ({username, handler, estimates})=>{
+const ChatList = ({handler, estimates})=>{
     let photo = 'http://localhost:3000/images/profiledf.png';
 
     return(<>

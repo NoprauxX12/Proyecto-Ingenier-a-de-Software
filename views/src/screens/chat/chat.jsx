@@ -6,6 +6,7 @@ import ChatContainer from "../../includes/containers/chatContainer";
 import NotChosenChat from "../../includes/containers/notChosenChat";
 import axios from "axios";
 import EstimateData from "../../services/estimate";
+import EstimateContainer from "../../includes/containers/stimateContainer";
 import { AuthContext } from "../../providers/userProvider";
 
 const Chat = ({ socket, username }) => {
@@ -14,7 +15,6 @@ const Chat = ({ socket, username }) => {
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [estimates, setEstimates] = useState([]);
     
-
     const searchMessages = async (roomId) => {
         let _messages = null;
         console.log("Consulta principal")
@@ -26,6 +26,7 @@ const Chat = ({ socket, username }) => {
         }
         return _messages;
       };
+    
 
     async function  handleChatClick(roomId){
         await setMessages(searchMessages(roomId));
@@ -59,7 +60,7 @@ const Chat = ({ socket, username }) => {
             </div>
             <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}> {/* Columna principal */}
                 {selectedRoom ? (
-                    <ChatContainer socket={socket} estimates={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
+                    <EstimateContainer socket={socket} estimates={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
                 ) : (
                     <NotChosenChat/>
                 )}

@@ -498,3 +498,16 @@ a{
 .form-check{
   margin: 0.8em 0;
 }
+
+.contentBox{
+  margin-top: 6em;
+  padding: 1em;
+  overflow: auto;
+}
+
+.textDescriptio{
+  margin: 2em;
+  margin-right: 4em;
+  text-align: justify;
+  
+}

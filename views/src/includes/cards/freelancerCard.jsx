@@ -6,18 +6,24 @@ import "../../styles/card.css";
 
 import DealOverlay from "../overlays/DealOverlay";
 import SignUpAlert from "../overlays/singUpSugerence";
+import Alert from "../overlays/alert";
 
 const Card = (props) => {
     const { freelancer, cities } = props;
+    const [showAlert, setShowAlert] = useState(false);
+    const [message, setMessage]= useState("se ha enviado la cotizacion");
     const [showDealOverlay, setShowDealOverlay]= useState(false);
     const [showSingUpSugerence, setShowSingUpSugerence]= useState(false);
     const {userData} = useContext(AuthContext);
 
-    const toggleOverlay=()=>{
+    const toggleOverlay=(res=true)=>{
       if(userData!==null){
         setShowDealOverlay(!showDealOverlay);
       }else{
         setShowSingUpSugerence(!showSingUpSugerence);
+        if(!res){
+          setMessage("oops, ha habido un error :(")
+        }
       }
     }
 
@@ -34,7 +40,11 @@ const Card = (props) => {
       {showDealOverlay && (<>
           <DealOverlay idFreelancer={freelancer.idFreelancer} cities={cities} onClose={toggleOverlay}/>
         </>)}
-      
+        {showAlert&& (<>
+          <Alert message={message} onClose={()=>{
+            setShowAlert(false);
+          }}/>
+          </>)}
       <div className="card__item card" style={{marginBottom: "0.5em"}}>
           {!freelancer.profilePhoto? (<>
           <a href={Urls.profile+`/?id=${freelancer.idFreelancer}`}>

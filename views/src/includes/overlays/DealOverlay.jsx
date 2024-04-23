@@ -23,6 +23,7 @@ function DealOverlay({onClose, cities, idFreelancer}){
     event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
     
     // Crear un FormData para enviar los datos del formulario y la imagen
+    if(step===2){
     const formData = new FormData();
     formData.append('city', formValues.city);
     formData.append("user", userData.user);
@@ -34,10 +35,13 @@ function DealOverlay({onClose, cities, idFreelancer}){
     formData.append('img', img);
 
     EstimateData.Create(formData,(res)=>{
-      console.log(formData)
-      console.log(res);
+      setTimeout(onClose(res),500);
     })
-    setTimeout(onClose,500)
+  }else{
+    setTimeout(()=>{
+      next();
+    },100);
+  }
     
     
   };
@@ -80,12 +84,6 @@ function DealOverlay({onClose, cities, idFreelancer}){
     }
   };
 
-  const handleNextClick = (e) => {
-    e.preventDefault();
-    setTimeout(()=>{
-      next();
-    },100)
-  };
 
   const back =()=>{
     if(step>1){
@@ -105,6 +103,7 @@ function DealOverlay({onClose, cities, idFreelancer}){
   }, [cities, formValues, selectedCity, userData])
     return (
         <div className="overlay">
+          
           <div className="deal-box">
           <h3 style={{color:"black"}}>Realizar solicitud cotizacion</h3>
           <h5 id="pasos">Paso {step} de 2</h5>
@@ -180,7 +179,7 @@ function DealOverlay({onClose, cities, idFreelancer}){
               <button type="button" className="botn" id="button" onClick={back}>atras</button>
             )}
              {step ===1 ? (
-                <button type="button" className="botn" id="button_b" onClick={(e)=>handleNextClick(e)}>Siguiente</button>
+                <button type="submit" className="botn" id="button_b">Siguiente</button>
               ) : (
                 <button type="submit" className="botn" id="button_b" >Enviar</button>
               )}

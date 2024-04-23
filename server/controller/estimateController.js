@@ -22,9 +22,8 @@ exports.getUserEstimates = (req, res) => {
 
 exports.creatEstimate = (req, res, next)=>{
     let link=null;
-    console.log(req.body)
         try {
-            link=req.img.path;
+            link=req.file.path;
         } catch (error) {
             console.log(error+"\n en el arhivo estimateController");
         }
