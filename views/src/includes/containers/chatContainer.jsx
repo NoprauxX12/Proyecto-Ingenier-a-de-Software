@@ -8,7 +8,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
     const [currentMessage, setCurrentMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [cameraAvailable, setCameraAvailable] = useState(true);
-    const contact = rooms[0];
+    const contact = rooms.find(room => room.id === selectedRoom);
     const messagesEndRef = useRef(null);
     let photo = 'http://localhost:3000/images/profiledf.png';
     var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
@@ -130,7 +130,11 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages]);    
+    }, [messages]);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, []);
 
     return(<>
        <div>

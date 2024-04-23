@@ -9,30 +9,23 @@ import EstimateData from "../../services/estimate";
 import EstimateContainer from "../../includes/containers/stimateContainer";
 import { AuthContext } from "../../providers/userProvider";
 
-const Chat = ({ socket, username }) => {
-    const {userData} = useContext(AuthContext);
+const Screenchat = ({ socket, username }) => {
+    const { userData } = useContext(AuthContext);
+    const { idCard } = userData;
     const [messages, setMessages] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
-    const [estimates, setEstimates] = useState([]);
-    
-    const searchMessages = async (roomId) => {
-        let _messages = null;
-        console.log("Consulta principal")
-        try {
-          const response = await axios.get(`http://localhost:3001/messages/${roomId}`);
-          _messages = response.data;
-        } catch (error) {
-          console.error('Error fetching messages:', error);
-        }
-        return _messages;
-      };
-    
+    const [rooms, setRooms] = useState([]);
+    const [contactInfo, setContactInfo] = useState({});
 
-    async function  handleChatClick(roomId){
-        await setMessages(searchMessages(roomId));
-        setSelectedRoom(roomId);
-        console.log(`Abrir chat con ID: ${roomId}`);
-    }
+    const searchMessages = async (roomId) => {
+        try {
+            const response = await axios.get(`http://localhost:3001/messages/${roomId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+            return null;
+        }
+    };
 
     useEffect(() => {
         const fetchestimates = () => {
@@ -41,28 +34,54 @@ const Chat = ({ socket, username }) => {
             })
         };
 
-        if (estimates.length === 0) { //poner cuidado con un ciclo inf
-            fetchestimates();
-        }else{
-            console.log(estimates)
+        if (rooms.length === 0) {
+            fetchRooms();
+        } else {
+            console.log(rooms);
         }
-        document.title="chat";
+        document.title = "chat";
         setMessages(searchMessages(selectedRoom));
-    }, [estimates, selectedRoom, userData]);
+    }, [idCard, rooms]);
 
+    useEffect(() => {
+        const loadContactInfo = () => {
+            const contactInfoObj = {};
+            for (const room of rooms) {
+                const contactId = room.client_id === idCard ? room.freelancer_id : room.client_id;
+                try {
+                    const response = axios.get(`http://localhost:3001/user/${contactId}`);
+                    contactInfoObj[room.id] = response.data;
+                    
+                    console.log(contactInfoObj[room.id])
+                } catch (error) {
+                    console.error("Error fetching contact info:", error);
+                }
+            }
+            setContactInfo(contactInfoObj);
+        };
 
+        if (rooms.length > 0) {
+            loadContactInfo();
+        }
+    }, [idCard, rooms]);
+
+    const handleChatClick = async (roomId) => {
+        await setMessages(searchMessages(roomId));
+        setSelectedRoom(roomId);
+        console.log(`Abrir chat con ID: ${roomId}`);
+    };
 
     return (
         <div style={{ display: 'flex', height: '100vh' }}>
-                <SiderBar/>
+            <SiderBar />
             <div style={{ flex: '2.70', backgroundColor: '#white', position: 'relative' }}>
-                <ChatList estimates={estimates} username={username} handler={handleChatClick} />
+                <ChatList rooms={rooms} username={username} handler={handleChatClick} contactInfo={contactInfo} />
             </div>
-            <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}> {/* Columna principal */}
+            <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}>
                 {selectedRoom ? (
                     <EstimateContainer socket={socket} estimates={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
                 ) : (
-                    <NotChosenChat/>
+                    <NotChosenChat />
                 )}
             </div>
         </div>

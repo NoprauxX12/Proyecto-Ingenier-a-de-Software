@@ -35,6 +35,7 @@ connection.connect((err) => {
 
 
 // Agrega una ruta para obtener información sobre un usuario por su ID
+// Agregar una ruta para obtener información sobre un usuario por su ID
 app.get("/user/:userId", (req, res) => {
   const userId = req.params.userId;
   console.log("user id"+userId)
@@ -42,7 +43,7 @@ app.get("/user/:userId", (req, res) => {
   let freelancerData = null;
   let clientData = null;
   
-  // Realiza la consulta para obtener datos de la tabla 'freelancer'
+  // Realizar la consulta para obtener datos de la tabla 'freelancer'
   connection.query('SELECT idFreelancer, name, profilePhoto FROM freelancer WHERE idFreelancer = ?', userId, (err, freelancerResults) => {
       if (err) {
           console.error('Error al obtener datos del freelancer:', err.message);
@@ -50,7 +51,7 @@ app.get("/user/:userId", (req, res) => {
           freelancerData = freelancerResults[0];
       }
       
-      // Realiza la consulta para obtener datos de la tabla 'client'
+      // Realizar la consulta para obtener datos de la tabla 'client'
       connection.query('SELECT idClient, name, profilePhoto FROM client WHERE idClient = ?', userId, (err, clientResults) => {
           if (err) {
               console.error('Error al obtener datos del cliente:', err.message);
@@ -60,13 +61,11 @@ app.get("/user/:userId", (req, res) => {
           
           // Verificar si alguna de las consultas devolvió resultados
           if (freelancerData || clientData) {
-            if (freelancerData !== null){
+            if (freelancerData !== undefined){
               res.json(freelancerData);
-              console.log(freelancerData);
             }
-            else if(clientData !== null){
+            else if(clientData !== undefined){
               res.json(clientData)
-              console.log(clientData)
             }
           } else {
               // Ninguna de las consultas devolvió resultados
@@ -77,6 +76,8 @@ app.get("/user/:userId", (req, res) => {
 });
 
 
+app.use(chatRoutes);
+// Agregar una ruta para obtener las salas asociadas a un usuario por su ID
 app.use(roomsRoutes);
 
 app.use(chatRoutes);

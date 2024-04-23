@@ -23,24 +23,12 @@ function ChatScreen() {
     await axios.get(`http://localhost:3001/user/${userId}`)
       .then(response => setUsername(response.data.name))
       .catch(error => console.error('Error fetching username', error))
-  };
-
-  const fetchContactInfo = async (contactId) => {
-    let contacInfo = null;
-    try{
-    const response = await axios.get(`http://localhost:3001/user/${contactId}`)
-    contacInfo = response.data
-    } catch(error){
-      console.error("Error buscando datos de usuario", error)
-    }
-    return contacInfo;
-  };
-
-  
+  };  
 
   const joinRoom = () => {
     if (userId !== "") {
       // Verificar si la ID de usuario es válida
+      console.log(userId)
       axios.get(`http://localhost:3001/user/${userId}`)
         .then(response => {
           // Si la respuesta es exitosa, significa que la ID de usuario es válida
