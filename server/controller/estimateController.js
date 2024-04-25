@@ -38,8 +38,8 @@ exports.getEstimateById=(req,res)=>{
 }
 
 exports.setStateStimate=(req, res)=>{
-    const {state, id,cost}= req.body;
-    setState(state, id,cost, (response)=>{
+    console.log(req.body);
+    setState(req.body, (response)=>{
         res.json(response);
     })
 }

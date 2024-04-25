@@ -5,22 +5,22 @@ import Urls from "../../util/urls"
 const InfoContainer=()=>{
     return(
         <>
-        <div className="container">
-            <div className="grid-container" style={{ flex: "1" }}>
-                <div className="grid-item">
-                <h2>Descubre y conecta con freelancers</h2>
-                <p style={{textAlign: "justify"}} >¡Encuentra una amplia gama de servicios para dar solución a tus problemas en nuestra plataforma de freelancers! Conectamos personas, emprendedores y proyectos con expertos independientes listos para ayudarte. ¡Explora, conecta y haz que suceda!</p>
-                </div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <label htmlFor="search">
-                    <a className="btne_dark">Buscar Ahora</a>
-                  </label>  
-                </div>
+       <div className="container-1">
+        <div className="grid-container" style={{ display: "flex", alignItems: "center" }}>
+          <div className="grid-item" style={{ flex: "1", maxWidth: "50%"}}>
+            <h2 >Descubre y conecta con freelancers</h2>
+            <p style={{ textAlign: "justify" }}>¡Encuentra una amplia gama de servicios para dar solución a tus problemas en nuestra plataforma de freelancers! Conectamos personas, emprendedores y proyectos con expertos independientes listos para ayudarte. ¡Explora, conecta y haz que suceda!</p>
+            <div style={{ display: "flex", justifyContent: "center", textAlign: "jutify" }}>
+              <label htmlFor="search">
+                <a className="btne_dark">Buscar Ahora</a>
+              </label>
             </div>
-            <div className="grid-item" style={{ flexShrink: 0 }}>
-                <img src="/images/free.png" alt=""/>
-            </div>
+          </div>
+          <div className="grid-item" style={{ flexShrink: 0, marginLeft: "20px" }}>
+            <img src="/images/free.png" alt="" />
+          </div>
         </div>
+      </div>
         <div className="container-1">
           <h2 style={{margin: "0.5em"}} >Encuentra toda clase de oficios en un sólo lugar</h2>
           <div className="grid-container-1">

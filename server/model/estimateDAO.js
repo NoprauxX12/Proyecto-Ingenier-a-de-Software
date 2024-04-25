@@ -3,13 +3,19 @@ const fs = require("fs");
 const sharp = require("sharp");
 
 exports.fetchAllEstimates= async (userId,user, cb) =>{
-    let sql= user==="2"? "select estimateId id, f.name name, e.description, f.profilePhoto, sendedBy user from estimate e join freelancer f using(idFreelancer) where idClient=?"
-    : "select estimateId id, c.name name, e.description, c.profilePhoto, sendedBy user from estimate e join client c using( idClient) where idFreelancer=?";
+    let sql= user==="2"? "select estimateId id, f.name name, e.description, f.profilePhoto, sendedBy user, state_stateId state from estimate e join freelancer f using(idFreelancer) where idClient=? order by sendDate desc"
+    : "select estimateId id, c.name name, e.description, c.profilePhoto, sendedBy user, state_stateId state from estimate e join client c using( idClient) where idFreelancer=? order by sendDate desc";
     connection.query(sql, [userId], (err, results) => {
         if (err) {
           console.error('Error al obtener las salas asociadas al usuario:', err.message);
           cb({error:500});
         }else{
+          results.map((estimate)=>{
+            if(estimate.profilePhoto){
+                let photo=estimate.profilePhoto.toString('base64');
+                estimate["profilePhoto"]=photo;
+            } 
+        });
           cb({ estimate: results });
         }
         
@@ -50,27 +56,42 @@ exports.createEstimate= async (json, cb)=>{
 }
 
 exports.getById= async (json, cb)=>{
-  const {estimateId} =json;
+  const {estimateId, user} =json;
 
-  let sql= "select sendDate, estimateId, `idClient`, `idFreelancer`, e.description, e.adress, t.name city, `sendedBy`, `state_stateId` state, `dateStart`, `dercriptiveImg`, c.name clientName, f.name freelancerName, cost from estimate e join client c using(idClient) join freelancer f using(idFreelancer) join town t on e.idCity=t.idCity where estimateId=?";
+  let sql=user==="1"? "select sendDate, estimateId, `idClient`, `idFreelancer`, e.description, e.adress, t.name city, `sendedBy`, `state_stateId` state, `dateStart`, `dercriptiveImg`, c.name clientName, f.name freelancerName, cost, c.profilePhoto profilePhoto from estimate e join client c using(idClient) join freelancer f using(idFreelancer) join town t on e.idCity=t.idCity where estimateId=?": 
+  "select sendDate, estimateId, `idClient`, `idFreelancer`, e.description, e.adress, t.name city, `sendedBy`, `state_stateId` state, `dateStart`, `dercriptiveImg`, c.name clientName, f.name freelancerName, cost, f.profilePhoto profilePhoto from estimate e join client c using(idClient) join freelancer f using(idFreelancer) join town t on e.idCity=t.idCity where estimateId=?";
   connection.query(sql, [parseInt(estimateId)], (err, results) => {
     if (err) {
       console.error('Error al crear estimacion', err.message);
       cb({result: false });
     }else{
-      cb(results[0]);
+    const estimate = results[0];
+    if(estimate.profilePhoto){
+      let photo=estimate.profilePhoto.toString('base64');
+      estimate["profilePhoto"]=photo;
+    } 
+    if(estimate.dercriptiveImg){
+      let photo=estimate.dercriptiveImg.toString('base64');
+      estimate["dercriptiveImg"]=photo;
+    } 
+      cb(estimate);
     }
   });
 
 }
 
-exports.setState= async (state, id,cost, cb)=>{
+exports.setState= async (json, cb)=>{
+  const {state, id, cost}= json;
   const values = [
-    parseInt(state), 
+    parseInt(state),
     parseInt(id)
   ];
-  if(cost) values.splice(1 ,0, parseFloat(cost));
-  let sql =cost===null? "update estimate set state_stateId=? where estimateId=?": "update estimate set state_stateId=?, cost=? where estimateId=?";
+  
+  let sql = "update estimate set state_stateId=? where estimateId=?";
+  if(cost) {
+    values.splice(1 ,0, parseFloat(cost));
+    sql="update estimate set state_stateId=?, cost=? where estimateId=?";
+  }
   connection.query(sql, values, (err, results) => {
     if (err) {
       console.error('Error al crear estimacion', err.message);

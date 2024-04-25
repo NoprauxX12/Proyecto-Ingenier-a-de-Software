@@ -19,8 +19,8 @@ class EstimateData{
         cb(res.data.estimate);
     }
 
-    static async getEstimateById(idestimate, cb){
-        const res= await axios.post(`http://localhost:3001/estimate-by-id`, {estimateId:idestimate});
+    static async getEstimateById(idestimate, user, cb){
+        const res= await axios.post(`http://localhost:3001/estimate-by-id`, {estimateId:idestimate, user: user});
         cb(res.data);
     }
 

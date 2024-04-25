@@ -68,7 +68,7 @@ const Chat = ({ socket, username }) => {
                     {showchat? (<>
                         <ChatContainer socket={socket} rooms={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
                     </>): (<>
-                        <EstimateContainer estimateId={selectedRoom} toggleChat={toggleChats}/>
+                        <EstimateContainer socket={socket} estimateId={selectedRoom} toggleChat={toggleChats} show={()=>setShowChat(false)}/>
                     </>)}
                 </> ) : (
                     <NotChosenChat/>

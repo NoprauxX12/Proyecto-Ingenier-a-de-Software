@@ -110,6 +110,7 @@ io.on("connection", (socket) => {
     })
 
     socket.on("send_estimate", (data)=> {
+      console.log(data);
       socket.to(data.room).emit("recive_cotizacion", data);
 })
 

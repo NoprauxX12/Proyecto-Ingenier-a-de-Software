@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import EstimateData from "../../services/estimate.js";
 import "../../styles/overlays.css";
 
-const SendEstimateOv= ({onClose, estimateId})=>{
+const SendEstimateOv= ({onClose, estimateId, onSend})=>{
     const [cost, setCost] = useState('');
 
     const handleChange = (e) => {
@@ -16,16 +16,16 @@ const SendEstimateOv= ({onClose, estimateId})=>{
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        EstimateData.setState({state: 3, id: estimateId,cost: cost}, (res)=>{
+        EstimateData.setState({state: 3, id: estimateId, cost: cost}, (res)=>{
             console.log(res)
         })
-        onClose();
+        onSend({cost: cost ,state: 3});
     }
     return(<>
     <div className="overlay" >
-        <div className="deal-box" style={{height:"40%", width: "30%"}} >
+        <div className="deal-box" style={{height:"30%", width: "30%"}} >
            <div style={{width: "90%"}}>
-            <h3 style={{color:"#55ACEE", fontWeight: "bold"}}> <span style={{color:"#3D00B7", fontWeight: "bold"}}>Enviar la </span> cotizacion</h3>
+            <h2 style={{color:"#55ACEE", fontWeight: "bold"}}> <span style={{color:"#3D00B7", fontWeight: "bold"}}>Enviar la </span> cotizacion</h2>
                 <form action="" method="post" onSubmit={handleSubmit}>
                     <input
                     className="form-control"
@@ -34,9 +34,8 @@ const SendEstimateOv= ({onClose, estimateId})=>{
                     onChange={handleChange}
                     placeholder="$ Ingrese el costo de el servicio "
                     />
-                    <textarea placeholder="observaciones" type="text" className="form-control" style={{maxHeight:"4em"}}/>
-                    <button type="button" className="botn" id="button_b" onClick={onClose} style={{display: "inline-block"}}>Cerrar</button>
-                    <button type="submit" className="botn" id="button">Enviar</button>
+                    <button type="button" className="botn" id="button_b" onClick={onClose} style={{display: "inline-block", marginBottom: "0.1em"}}>Cerrar</button>
+                    <button type="submit" className="botn" id="button" style={{display: "inline-block", marginBottom: "0.1em"}}>Enviar</button>
                 </form>
            </div>
         </div>

@@ -146,12 +146,12 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                 <div style={{position: 'absolute', top: '0', right: '0', width: '71.9%', maxWidth: '72.4%', backgroundColor: '#EEE', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999', boxShadow: "2px 2px 2px rgba(100,100,100,0.5)" }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' , border:"1px solid #000"}}>
                                     {}                           
-                                    {contact.profilePhoto? (<>
-                                        <img src={`data:image/jpeg;base64,${contactPhoto}`} alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    {contact.profilePhoto ? (<>
+                                        <img src={`data:image/jpeg;base64,${contact.profilePhoto}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Profile" />
                                     </>):(<>
-                                        <img src={photo} alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                    </>)}               
-                </div>
+                                        <img src="/images/defaultUser.png" alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />                            
+                                    </>)}                
+                                    </div>
                     <span style={{ fontSize: '1.rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>
                                 {contact.name}
                     </span>
