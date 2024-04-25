@@ -57,10 +57,9 @@ const Chat = ({ socket, username }) => {
     }, [estimates, selectedRoom, userData]);
 
 
-
     return (
         <div style={{ display: 'flex', height: '100vh' }}>
-                <SiderBar/>
+                <SiderBar socket={socket}/>
             <div style={{ flex: '2.70', backgroundColor: '#white', position: 'relative' }}>
                 <ChatList estimates={estimates} username={username} handler={handleChatClick} />
             </div>

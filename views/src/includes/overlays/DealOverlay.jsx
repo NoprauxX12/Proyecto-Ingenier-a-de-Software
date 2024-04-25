@@ -105,14 +105,14 @@ function DealOverlay({onClose, cities, idFreelancer}){
         <div className="overlay">
           
           <div className="deal-box">
-          <h3 style={{color:"black"}}>Realizar solicitud cotizacion</h3>
+          <h3 style={{color:"black"}}>Realizar solicitud cotización</h3>
           <h5 id="pasos">Paso {step} de 2</h5>
           <p style={{color: "red"}}>{error}</p>
           <form onSubmit={handleSubmit}>
             {step===1 && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="city" className="left form-label mt-4">ciudad donde se realizara el servicio</label>
+                  <label htmlFor="city" className="left form-label mt-4">ciudad donde se realizará el servicio</label>
                   <select onChange={handleChange} className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="exampleFreelancer/client" name="city" >
                   <option value={userData.idCity}>{selectedCity}</option>
                       {cities.length>0 && (
@@ -128,12 +128,12 @@ function DealOverlay({onClose, cities, idFreelancer}){
                   </select>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="place" className="left form-label mt-4">Direccion o barrio</label>
-                  <input value={formValues.place} onChange={handleChange} type="text" name="place" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="¿donde vamos a realizar el servicio?" required />
+                  <label htmlFor="place" className="left form-label mt-4">Dirección o barrio</label>
+                  <input value={formValues.place} onChange={handleChange} type="text" name="place" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="¿Dónde vamos a realizar el servicio?" required />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="description" className="left form-label mt-4">Descripcion de trabajo a realizar</label>
-                  <textarea onChange={handleChange} value={formValues.description}  type="text" name="description" className="expanded form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Cuentanos el servicio que requieres..." required />
+                  <label htmlFor="description" className="left form-label mt-4">Descripción de trabajo a realizar</label>
+                  <textarea onChange={handleChange} value={formValues.description}  type="text" name="description" className="expanded form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Cuéntanos el servicio que requieres..." required />
                 </div>
                   
               </div>
@@ -144,7 +144,7 @@ function DealOverlay({onClose, cities, idFreelancer}){
                 <label htmlFor="place" className="left form-label mt-4">Fecha de inicio (opcional)</label>
                 <input onChange={handleChange} value={formValues.dateStart}  type="date" name="dateStart" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="¿donde vamos a realizar el servicio?"/>
               </div>
-              <p className="left form-label mt-4">Adregar una imagen: </p>
+              <p className="left form-label mt-4">Agregar una imagen: </p>
               <input
                 type="file"
                 id="img"

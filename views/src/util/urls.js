@@ -6,7 +6,7 @@ const Urls = {
     photo: "/last-step",
     profile: "/profile",
     post: '/post',
-    chat: "/chat"
+    chat: "/estimate"
     
 }
 

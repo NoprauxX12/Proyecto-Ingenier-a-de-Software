@@ -2,10 +2,8 @@ const { fetchAllEstimates , createEstimate, getById, setState } = require("../mo
 
 exports.getUserEstimates = (req, res) => {
     const {id, user} = req.body;
-    console.log(req.body);
     // Consulta a la base de datos para obtener las salas asociadas al usuario con el ID proporcionado
     fetchAllEstimates(id , user, (result) => {
-        console.log(result);
         const { error } = result;
         if (error === 404) {
             res.status(404).send('No se encontraron salas asociadas al usuario');

@@ -1,10 +1,11 @@
-import React, {useState,useRef,useEffect,useCallback}  from "react";
+import React, {useState,useRef,useEffect,useCallback, useContext}  from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faCamera } from '@fortawesome/free-solid-svg-icons';
-
+import { AuthContext } from "../../providers/userProvider";
 
 const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
+    const {userData} = useContext(AuthContext);
     const [currentMessage, setCurrentMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [cameraAvailable, setCameraAvailable] = useState(true);
@@ -35,6 +36,8 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
             const info = {
                 content: currentMessage,
                 autor: username,
+                user: userData.user,
+                id: userData.idCard,
                 room_id: selectedRoom,
                 time: `${new Date(Date.now()).getHours()}:${new Date(Date.now()).getMinutes()}`,
             };
@@ -140,7 +143,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
        <div>
             {contact && (<>
             
-                <div style={{ position: 'absolute', top: '0', right: '0', width: '71.6%', maxWidth: '72.4%', backgroundColor: '#ffffff', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999' }}>
+                <div style={{position: 'absolute', top: '0', right: '0', width: '71.9%', maxWidth: '72.4%', backgroundColor: '#EEE', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999', boxShadow: "2px 2px 2px rgba(100,100,100,0.5)" }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' , border:"1px solid #000"}}>
                                     {}                           
                                     {contact.profilePhoto? (<>
@@ -155,7 +158,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
             </div>
                     <div>
                             <div style={{
-                                 backgroundImage: "url('http://localhost:3000/images/borrosa.jpg')",
+                                 backgroundImage: "url('http://localhost:3000/images/fondo.jpg')",
                                  backgroundSize: 'cover',
                                  height: '100vh',
                                  overflowY: 'scroll',
@@ -175,7 +178,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                                                 textAlign: isOwnMessage ? 'right' : 'left',
                                                 marginBottom: '1rem',
                                             }}>
-                                                <div style={{ backgroundColor: isOwnMessage ? '#3D00B7' : '#EE35A4', color: '#ffffff', padding: '0.5rem 1rem', borderRadius: '0.9rem', maxWidth: '70%', marginLeft: isOwnMessage ? 'auto' : 'none', marginRight: isOwnMessage ? 'none' : 'auto', position: 'relative'}}>
+                                                <div style={{ backgroundColor: isOwnMessage ? '#55ACEE' : '#777', color: '#ffffff', padding: '0.5rem 1rem', borderRadius: '0.9rem', maxWidth: '70%', marginLeft: isOwnMessage ? 'auto' : 'none', marginRight: isOwnMessage ? 'none' : 'auto', position: 'relative'}}>
                                                 {message.content === null ? 
                                                         (   
                                                             (() => {
@@ -191,13 +194,13 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                                                         height: '0',
                                                         borderLeft: '10px solid transparent',
                                                         borderRight: '10px solid transparent',
-                                                        borderTop: isOwnMessage ? '10px solid #3D00B7' : '10px solid #EE35A4',
+                                                        borderTop: isOwnMessage ? '10px solid #55ACEE' : '10px solid #777',
                                                         bottom: isOwnMessage ? '-9.6px' : '-9.6px',
                                                         left: isOwnMessage ? 'auto' : '10px',
                                                         right: isOwnMessage ? '10px' : 'auto',
                                                         transform: isOwnMessage? 'rotate(-2deg)':'rotate(2deg)',
                                                     }} />
-                                                    <p style={{ textAlign: isOwnMessage ? 'right' : 'left', color: 'white', marginTop: '0.5rem' }}>Enviado por: <strong>{message.autor}</strong> a las <i><strong>{message.time}</strong></i></p>
+                                                    <p style={{ textAlign: isOwnMessage ? 'right' : 'left', color: 'white', marginTop: '0.5rem'}}><strong style={{color: "#fff"}}>{message.autor}</strong> a las <i><span style={{color: isOwnMessage? "#3D00B7": "#55ACEE¬"}}>{message.time}</span></i></p>
                                                 </div>
                                             </div>
                                         );
@@ -242,7 +245,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                                                 borderTopRightRadius: '0.5rem',
                                                 borderBottomRightRadius: '0.5rem',
                                                 border: '0',
-                                                backgroundColor: '#3D00B7',
+                                                backgroundColor: '#55ACEE',
                                                 color: '#fff',
                                                 cursor: 'pointer',
                                                 outline: 'none',
@@ -260,7 +263,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                                                 borderTopRightRadius: '0.5rem',
                                                 borderBottomRightRadius: '0.5rem',
                                                 border: '0',
-                                                backgroundColor: '#3D00B7',
+                                                backgroundColor: '#55ACEE',
                                                 color: '#fff',
                                                 cursor: 'pointer',
                                                 outline: 'none',

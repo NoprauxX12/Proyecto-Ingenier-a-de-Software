@@ -3,7 +3,6 @@ const {getMessages, insterMessage, insertImages} = require("../model/messageDAO"
 exports.getMessages=(req, res) => {
     const roomId = req.params.roomId;
     getMessages(roomId, (response)=>{
-        console.log(response);
         if(response.error){
             if(response.error===400){
                 res.status(404).send('No se encontraron mensajes');

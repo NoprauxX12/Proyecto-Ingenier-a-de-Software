@@ -38,7 +38,7 @@ connection.connect((err) => {
 // Agregar una ruta para obtener información sobre un usuario por su ID
 app.get("/user/:userId", (req, res) => {
   const userId = req.params.userId;
-  console.log("user id"+userId)
+  console.log("user id"+userId);
   // Variables para almacenar los resultados de las consultas
   let freelancerData = null;
   let clientData = null;
@@ -91,11 +91,12 @@ io.on("connection", (socket) => {
     console.log("Usuario actual: ", socket.id);
 
     socket.on("join_room", (room)=> {
-        socket.join(room)
+        socket.join(room);
         if (!rooms[room]) {
             rooms[room] = [];
           }
-          rooms[room].push(socket.id); // Agregar usuario a la lista de usuarios en la sala
+          rooms[room].push(socket.id); 
+          console.log("lo que esoty buescando   "+rooms[room]);// Agregar usuario a la lista de usuarios en la sala
           let conected = rooms[room].length
           io.to(room).emit("users_changed", conected);
         console.log("Usuario id: ", socket.id, "Se unio a la sala", room)
@@ -105,8 +106,12 @@ io.on("connection", (socket) => {
     
 
     socket.on("send_message", (data)=> {
-        socket.to(data.room).emit("recive_message", data);
+          socket.to(data.room).emit("recive_message", data);
     })
+
+    socket.on("send_estimate", (data)=> {
+      socket.to(data.room).emit("recive_cotizacion", data);
+})
 
     socket.on("disconnect", () => {
         console.log("Usuario desconectado", socket.id)

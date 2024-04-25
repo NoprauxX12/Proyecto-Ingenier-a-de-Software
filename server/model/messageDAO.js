@@ -1,7 +1,6 @@
 const connection= require("../DAL/mysqlCon");
 
 exports.getMessages = async (roomId, cb) =>{
-    console.log(roomId)
     connection.query('SELECT id, content, autor, estimateid, attachment, DATE_FORMAT(time, "%H:%i") AS time FROM messages WHERE estimateid = ?', [roomId], (err, results) => {
       if (err) {
         console.error('Error al obtener los mensajes asociadas a la sala: ', err.message);

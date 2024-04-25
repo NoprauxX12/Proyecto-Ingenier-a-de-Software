@@ -70,7 +70,6 @@ exports.setState= async (state, id,cost, cb)=>{
     parseInt(id)
   ];
   if(cost) values.splice(1 ,0, parseFloat(cost));
-  console.log(values)
   let sql =cost===null? "update estimate set state_stateId=? where estimateId=?": "update estimate set state_stateId=?, cost=? where estimateId=?";
   connection.query(sql, values, (err, results) => {
     if (err) {
