@@ -9,19 +9,20 @@ import "./styles/App.css";
 import "./styles/profile.css"
 import UploadPhotoScreen from './screens/Uploadphoto/photoScreen';
 import PostPage from './screens/postScreen'
-import ProfileScreen from './screens/profile/profileScreen';
-
+import ViewProfile from './screens/profile/viewProfile';
+import EditProfile from './screens/profile/editProfile';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path={Urls.profile} element={<ProfileScreen/>} />
+        <Route path={Urls.viewProfile} element={<ViewProfile/>}/>
+        <Route path={Urls.editProfile} element={<EditProfile/>}/>
         <Route path={Urls.photo}element={<UploadPhotoScreen/>}/>
         <Route path={Urls.home} element={<HomeScreen />} />
-        <Route path={Urls.signUp} element={<SignUpScreen />} />
+        <Route path={Urls.signUp} element={<SignUpScreen />}/>
         <Route path={Urls.logIn} element={<LoginScreen />}/>
-        <Route path='/post' element = {<PostPage />}/>
+        <Route path={Urls.post} element = {<PostPage />}/>
 
       </Routes>
     </Router>

@@ -2,21 +2,25 @@
 import React, { useLayoutEffect, useState } from "react";
 import UserData from "../../services/user";
 
-function ProfileScreen(){
+function ViewProfile(){
     const params = new URLSearchParams(window.location.search);
     const [user, setUser]= useState({});
-    const id= params.get("id");
+    const id = params.get("id");
+    const usertype = params.get("usertype");
 
-    useLayoutEffect(()=>{
-        document.title="freelancer-profile";
-        const getUserData= async ()=>{
-            UserData.fetchFreelancerById(id, (res)=>{
-                setUser(res);
-            });
-        }
+  
+    useLayoutEffect(() => {
+      const reqView = {id, usertype};
+      document.title = user.name;
+      const getUserData = async () => {
+        UserData.viewProfile(reqView, (res) => {
+          console.log(res);
+          setUser(res);
+        });
+      };
 
-        getUserData();
-    },[id]);
+      getUserData();
+    }, [id, usertype, user.name]);
     
     return (
       <>
@@ -121,4 +125,4 @@ function ProfileScreen(){
     );
 }
 
-export default ProfileScreen;
+export default ViewProfile;
