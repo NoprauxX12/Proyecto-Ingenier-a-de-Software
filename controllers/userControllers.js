@@ -2,6 +2,8 @@ const Freelancer = require("../model/entities/freelancer")
 const FreelancerDAO = require("../model/data Acces/freelancerDAO")
 const client = require("../model/entities/client")
 const ClientDAO = require("../model/data Acces/clientDAO")
+const GeneralDAO = require("../model/data Acces/generalDAO")
+const Client = require("../model/entities/client")
 
 exports.SignUp= (req, res, next)=>{
     let link=null;
@@ -62,11 +64,28 @@ exports.verifyUserExistence=(req, res, next)=>{
     }
 };
 
-exports.fetchFreelancerId=(req,res,next)=>{
-    FreelancerDAO.fetchById(req.body.id,(result)=>{
-        res.json(result);
+exports.viewProfile=(req,res,next)=>{
+    if(parseInt(req.body.usertype)===1){
+        FreelancerDAO.fetchById(req.body.id,(result)=>{
+            res.json(result);
+        });
+    }else{
+        ClientDAO.fetchById(req.body.id,(result)=>{
+            res.json(result);
+        });
+    }
+};
 
-    })
+exports.editProfile=(req,res,next)=>{
+    let link = null;
+    try {
+      link = req.file.path;
+      req.body["photo"] = link;
+    } catch (error) {}
+    if(parseInt(req.body.usertype)===1){
+        FreelancerDAO.updateById(req.body);
+    }
+    res.json({response:true});
 };
 
 

@@ -31,7 +31,6 @@ const Card = (props) => {
     if (!freelancer) {
         return null; // Manejar el caso de datos incompletos o nulos
     }
-    console.log("freelancer.profilePhoto.data")
     return (
       <>
       {showSingUpSugerence && (<>
@@ -47,19 +46,19 @@ const Card = (props) => {
           </>)}
       <div className="card__item card" style={{marginBottom: "0.5em"}}>
           {!freelancer.profilePhoto? (<>
-          <a href={Urls.profile+`/?id=${freelancer.idFreelancer}`}>
+          <a href={Urls.viewProfile+`/?id=${freelancer.idFreelancer}&usertype=1`}>
             <img src="/images/defaultUser.png" className="card-img-top"  alt="usuario por defecto" style={{width: "12em",margin: "auto", cursor: "pointer"}} />
           </a>
           </>):(
             <>
-            <a href={Urls.profile+`/?id=${freelancer.idFreelancer}`}>
+            <a href={Urls.viewProfile+`/?id=${freelancer.idFreelancer}&usertype=1`}>
               <img src={`data:image/jpeg;base64,${freelancer.profilePhoto}`} id={"cardIm"} className="card-img-top" alt="Profile" />
             </a>
             </>
           )}
             
             <div className="card-body">
-              <a href={Urls.profile+`/?id=${freelancer.idFreelancer}`} style={{textDecoration: "none", color: "inherit"}}>
+              <a href={Urls.viewProfile+`/?id=${freelancer.idFreelancer}&usertype=1`} style={{textDecoration: "none", color: "inherit"}}>
                 <h5 className="card-title">{freelancer.name}</h5>
               </a>
               <p style={{display: "block"}}>{freelancer.description.length>26? freelancer.description.slice(0,25)+"..." : freelancer.description}</p>

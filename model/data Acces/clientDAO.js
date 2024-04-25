@@ -87,6 +87,26 @@ class ClientDAO{
       }
   }
 
+  static async fetchById(id, cb){
+    let sql= "select name, cellphone, adress, email, description, profilePhoto from client where idClient=?";
+    try {
+        const response= await mysqlExecute(sql, [id]);
+        response.map((e)=>{
+            if(e.profilePhoto){
+                let photo= e.profilePhoto.toString("base64");
+                e["profilePhoto"]=photo;
+            }
+        });
+        let user=response[0];
+        cb(user);
+    } catch (error) {
+        console.log(error);
+    }
+}
+          console.log(error);
+      }
+  }
+
 
   static async logIn(json, cb){
     let sql = "SELECT name, idClient idCard, email, idCity, password, adress from client where email = ?";

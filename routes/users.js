@@ -10,7 +10,9 @@ router.post("/getFreelancers", usersControllers.getFreelancer);
 
 router.post("/user_exist", usersControllers.verifyUserExistence);
 
-router.post("/getFreelancerInfo",usersControllers.fetchFreelancerId);
+router.post("/view-profile",usersControllers.viewProfile);
+
+router.post("/edit-profile", upload.single('photo'), usersControllers.editProfile);
 
 router.post("/log-in", usersControllers.logIn);
 
