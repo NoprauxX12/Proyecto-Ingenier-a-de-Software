@@ -4,10 +4,11 @@ import io from 'socket.io-client';
 import Chat from "./chat";
 import axios from 'axios';
 import NoChatsFoundScreen from "./notFoundChat";
+import { useSocket } from "../../providers/socketProvider";
 
-const socket = io.connect("http://localhost:3001");
 
 function ChatScreen() {
+  const socket = useSocket();
   const [userId, setUserId] = useState("");
   const [showChat, setShowChat] = useState(false);
   const [username, setUsername] = useState("");

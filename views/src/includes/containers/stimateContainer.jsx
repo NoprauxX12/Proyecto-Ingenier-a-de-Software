@@ -64,18 +64,18 @@ const EstimateContainer =({toggleChat, estimateId})=>{
             maxWidth: '71.4%',
             width: '100%',
             }}>
-            <div style={{ position: 'absolute', top: '0',  width: '100%', maxWidth: '100', backgroundColor: '#ffffff', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999', float: "left" }}>
+            <div style={{boxShadow: "2px 2px 2px rgba(100,100,100,0.5)", position: 'absolute', top: '0',  width: '100%', maxWidth: '100', backgroundColor: '#ffffff', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999', float: "left" }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' }}>        
                     <img src="/images/defaultUser.png" alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />                            
                 </div>
                 <span style={{ fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>{userData.user==="2"? estimate.freelancerName : estimate.clientName}</span>
                 {userData.user==="1"? (<>
                     {1===parseInt(estimate.state)&& (<>
-                        <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={onSend}>Realizar Cotizacion</a>
+                        <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={onSend}>Realizar Cotización</a>
                     </>)}
                 </>): (<>
                     {3===parseInt(estimate.state)&& (<>
-                        <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} href="/">Aceptar Cotizacion</a>
+                        <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} href="/">Aceptar Cotización</a>
                     </>)}
                 </>)}
                 <span onClick={toggleChat} style={{cursor: "pointer"}}><i className="bx bx-message-dots" style={{color: '#4f4f4f', fontSize: "2.5em"}} /></span>
@@ -85,15 +85,15 @@ const EstimateContainer =({toggleChat, estimateId})=>{
                 <p style={{float: "right"}}>{estimate.sendDate}</p>
                 <h5 style={{}}>{estimate.city} - {estimate.adress}</h5>
                 {3===parseInt(estimate.state) && (<>
-                    <h1 style={{color: "#3D00B7", fontWeight: "bold", marginBottom: "1em"}}>Valor: <span style={{float: "right", marginRight:"1em",color: "#3D00B7"}}>{estimate.cost}</span></h1>
+                    <h1 style={{color: "#3D00B7", fontWeight: "bold", marginBottom: "1em"}}>Valor: <span style={{float: "right", marginRight:"1em",color: "#3D00B7"}}>{estimate.cost}.000</span></h1>
                 </>)}
                 {showRealizar && (<>
                 <SendEstimateOv onClose={onSend} estimateId={estimateId}/>
                 </>)}
                 <h3>Descripción:</h3>
                 <p className="textDescriptio">{estimate.description}</p>
-                <h3>Fecha inicio:</h3>
-                <p className="textDescriptio">{estimate.dateStart==="" || estimate.dateStart===null? "No espeificada": estimate.dateStart }</p>
+                <h3>Fecha de inicio:</h3>
+                <p className="textDescriptio">{estimate.dateStart==="" || estimate.dateStart===null? "No especificada": estimate.dateStart }</p>
                 <h3>Foto:</h3>
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBDcdFBcZWFO_lMPIUCjtQT75VopMSYsu4pG-t89B3cA&s" alt="" />
                 </div>
