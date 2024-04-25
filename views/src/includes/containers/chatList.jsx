@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
-const ChatList = ({handler, estimates, show})=>{
+const ChatList = ({handler, estimates})=>{
     const [selected, setSelected] = useState("");
     let photo = 'http://localhost:3000/images/profiledf.png';
+    
 
     return(<>
         <div style={{ padding: '0.23rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', overflowY: estimates.length > 0 ? 'auto' : 'hidden' }}>
@@ -16,7 +17,7 @@ const ChatList = ({handler, estimates, show})=>{
                 </div>
             <div id="estimatesList">
                 {estimates.map(estimate => (<>
-                    {estimate.state===(1||2||3)&& (<>
+                    {estimate.state!==4&& (<>
                         <div key={estimate.id} onClick={() => {
                                 handler(estimate.id);
                                 setSelected(estimate.id);

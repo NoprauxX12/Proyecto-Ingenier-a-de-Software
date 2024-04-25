@@ -18,7 +18,7 @@ const mesesDelAnio = [
     "diciembre"
 ];
 
-const EstimateContainer =({toggleChat, estimateId, socket})=>{
+const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
     const [estimate, setEstimate] = useState({});
     const [showRealizar, setShowRealizar]= useState(false);
     const [showAsk, setshowAsk]= useState(false);
@@ -61,13 +61,13 @@ const EstimateContainer =({toggleChat, estimateId, socket})=>{
             EstimateData.setState({state: 4, id: estimateId}, (res)=>{
                 console.log(res)
             })
+            show();
             setshowAsk(false);
         }
             
         function onSend(value){
             setShowRealizar(!showRealizar);
             setEstimate({...estimate, state: value.state, cost: value.cost.toString().substring(0,2)});
-            
             socket.emit("send_estimate", {room_id: estimateId, estimate: value});
         }
 
@@ -135,9 +135,7 @@ const EstimateContainer =({toggleChat, estimateId, socket})=>{
 export default EstimateContainer;
 
 
-const AskOv= ({onClose, cost, onAcept})=>{
-
-
+const AskOv= ({onClose, cost, onAcept, show})=>{
     return(<>
     <div className="overlay" >
         <div className="deal-box" style={{height:"30%", width: "40%"}} >

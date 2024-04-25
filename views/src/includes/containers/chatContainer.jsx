@@ -11,10 +11,8 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
     const [cameraAvailable, setCameraAvailable] = useState(true);
     const contact = rooms.find(room => room.id === selectedRoom);
     const messagesEndRef = useRef(null);
-    let photo = 'http://localhost:3000/images/profiledf.png';
     var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
     snd.volume = 0.05;
-    let contactPhoto = null;
 
     const scrollToBottom = () => {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -119,6 +117,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
         if (selectedRoom) {
             fetchMessages(selectedRoom);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRoom]);
 
     const messageHandle = useCallback((data) => {

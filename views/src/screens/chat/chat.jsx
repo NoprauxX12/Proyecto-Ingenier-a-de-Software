@@ -12,9 +12,12 @@ import { AuthContext } from "../../providers/userProvider";
 const Chat = ({ socket, username }) => {
     const {userData} = useContext(AuthContext);
     const [showchat, setShowChat]= useState(false);
+    // eslint-disable-next-line no-unused-vars
     const [messages, setMessages] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [estimates, setEstimates] = useState([]);
+    var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
+    snd.volume = 0.05;
 
     function toggleChats(){
         setShowChat(!showchat);
@@ -39,6 +42,11 @@ const Chat = ({ socket, username }) => {
         setShowChat(false);
         console.log(`Abrir chat con ID: ${roomId}`);
     }
+    const fetchestimates = () => {
+        EstimateData.getEstimates(userData.user, userData.idCard, (res)=>{
+            setEstimates(res);
+        })
+    };
 
     useEffect(() => {
         const fetchestimates = () => {
@@ -46,7 +54,9 @@ const Chat = ({ socket, username }) => {
                 setEstimates(res);
             })
         };
-
+        socket.on("recive_cotizacion", ()=>{
+            fetchestimates();
+        })
         if (estimates.length === 0) { //poner cuidado con un ciclo inf
             fetchestimates();
         }else{
@@ -54,6 +64,7 @@ const Chat = ({ socket, username }) => {
         }
         document.title="chat";
         setMessages(searchMessages(selectedRoom));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [estimates, selectedRoom, userData]);
 
 
@@ -68,7 +79,10 @@ const Chat = ({ socket, username }) => {
                     {showchat? (<>
                         <ChatContainer socket={socket} rooms={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
                     </>): (<>
-                        <EstimateContainer socket={socket} estimateId={selectedRoom} toggleChat={toggleChats} show={()=>setShowChat(false)}/>
+                        <EstimateContainer socket={socket} estimateId={selectedRoom} toggleChat={toggleChats} show={()=>{
+                            setSelectedRoom(null);
+                            fetchestimates(); 
+                            }}/>
                     </>)}
                 </> ) : (
                     <NotChosenChat/>
