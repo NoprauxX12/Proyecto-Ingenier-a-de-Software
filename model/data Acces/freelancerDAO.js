@@ -266,29 +266,6 @@ class FreelancerDAO {
       console.error("Error al actualizar el perfil:", error);
     }
   }
-    static async fetchById(id, cb){
-        let sql= "select cellphone, email,cellphone, description, idCity, idFreelancer,  phoneNumber, profilePhoto, name from freelancer where idFreelancer=?";
-        try {
-            const response= await mysqlExecute(sql, [id]);
-            response.map((e)=>{
-                if(e.profilePhoto){
-                    let photo= e.profilePhoto.toString("base64");
-                    e["profilePhoto"]=photo;
-                }
-            });
-            sql="select title from academicdegrees join technicalknowledge using(idTechnicalKnowledge) where idFreelancer=?";
-            const knowledge= await mysqlExecute(sql, [id]);
-            let user=response[0];
-            const list= [];
-            knowledge.map((e)=>{
-                list.push(e.title);
-            })
-            user["knowledge"]= list.join(", ");
-            cb(user);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     static async logIn(json, cb){
         let sql = "SELECT name, idFreelancer idCard, email, idCity, adress, password from freelancer where email = ?";
