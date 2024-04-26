@@ -50,7 +50,7 @@ const InfoContainer=()=>{
           <div className="grid-item" style={{ flexShrink: 0 }}>
                 <img src="/images/secondMain.png" alt=""/>
             </div>
-            <div className="grid-container" style={{ flex: "1" }}>
+            <div className="grid-container" style={{ display: "flex", alignItems: "center" }}>
                 <div className="grid-item">
                 <h2>Crea tu perfil como freelancer y ofrece tus servicios</h2>
                 <p style={{textAlign: "justify"}}>El Que Sabe te permite conectar fácilmente con cientos de clientes en línea, ofrecer y recibir ofertas por tus servicios como independiente, y tener un portafolio de trabajos realizados en tu perfil para que otras personas puedan ver lo que has hecho.</p>

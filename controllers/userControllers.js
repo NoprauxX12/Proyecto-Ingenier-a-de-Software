@@ -86,8 +86,11 @@ exports.fetchPhoto= (req, res)=>{
     if(parseInt(req.body.user)===1){
         FreelancerDAO.getProfilePhotoById(req.body.id, (result)=>{
             res.json(result);
+            console.log(result);
         })
     }else if(parseInt(req.body.user)=== 2){
-        //ClientDAO(req.body);
+        ClientDAO.getProfilePhotoById(req.body,(result)=>{
+            res.json(result);
+        });
     }
 };

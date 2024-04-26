@@ -1,14 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useContext, useEffect, useState} from 'react';
 import { AuthContext } from '../../providers/userProvider';
-import { useSocket } from '../../providers/socketProvider';
 import Urls from '../../util/urls';
 import UserData from '../../services/user';
 
 import "../../styles/siderBar.css"
 
 const SiderBar = () => {
-    const socket = useSocket();
     const [isActive, setIsActive] = useState(false);
     const params= new URLSearchParams(window.location.search);
     const {userData, logout} = useContext(AuthContext);

@@ -111,6 +111,22 @@ class ClientDAO{
         console.log(error);
     }
 }
+static async getProfilePhotoById(json, cb){
+    let {id} =json;
+    let sql= "select profilePhoto from  client where  idClient=?";
+    try {
+        const res= await mysqlExecute(sql, [id]);
+        if(res[0].profilePhoto){
+            let photo= res[0].profilePhoto.toString("base64");
+            cb({profilePhoto: photo, response: true});
+        }else{
+            cb({response: false});
+        }
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
 }
 
 module.exports= ClientDAO;
