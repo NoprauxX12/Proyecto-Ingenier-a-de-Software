@@ -21,7 +21,7 @@ function ChatScreen() {
   }, [userData]); // Ejecutar solo cuando userData cambie
 
   const fetchUserInfo = async () => {
-    await axios.get(`http://localhost:3001/user/${userId}`)
+    await axios.get(`http://localhost:3001/user/${userId}/${userData.user}`)
       .then(response => setUsername(response.data.name))
       .catch(error => console.error('Error fetching username', error))
   };  
@@ -34,7 +34,6 @@ function ChatScreen() {
         .then(response => {
           // Si la respuesta es exitosa, significa que la ID de usuario es válida
           setShowChat(true);
-          socket.emit("join_room");
         })
         .catch(error => {
           // Si hay un error en la respuesta, la ID de usuario no es válida

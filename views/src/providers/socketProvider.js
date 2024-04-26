@@ -8,6 +8,7 @@ export const SocketProvider = ({ children }) => {
     const storedUserData = localStorage.getItem('userData');
     const userData =  storedUserData ? JSON.parse(storedUserData) : null;
     const socket = io('http://localhost:3001'); // Establecer la conexión del socket
+    socket.emit("join_room");
     if(userData) socket.emit("save_user", {user: userData.user, id: userData.idCard, socket: socket.id});
     return (
         <SocketContext.Provider value={socket}>
