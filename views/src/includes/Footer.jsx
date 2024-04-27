@@ -14,9 +14,10 @@ const Footer=()=>{
                 </div>
                 <div className="col-md-4">
                     <h5>Buscador</h5>
-                    <p>Todos los freelancers</p>
-                    <p>Tecnologia</p>
-                    <p>Hogar</p>
+                    <p><a href="#search">Nav Bar</a></p>
+                    <p><a href="#explore">Todos los freelancers</a></p>
+                    <p><a href="#botones_ingreso">Registro</a></p>
+                    <p><a href="#descubre">Descubre y conecta</a></p>
                 </div>
                 <div className="col-md-4">
                     <h5>Suscripción</h5>
