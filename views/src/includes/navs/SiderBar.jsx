@@ -3,16 +3,20 @@ import React, {useContext, useEffect, useState} from 'react';
 import { AuthContext } from '../../providers/userProvider';
 import Urls from '../../util/urls';
 import UserData from '../../services/user';
+import {useSocket} from "../../providers/socketProvider";
 
 import "../../styles/siderBar.css"
 
 const SiderBar = () => {
     const [isActive, setIsActive] = useState(false);
+    const [not, setNot]= useState(0);
     const params= new URLSearchParams(window.location.search);
     const {userData, logout} = useContext(AuthContext);
     const [photo, setPhoto] = useState(null);
     const [name, setName] = useState([]);
     const [searchVal, setSearchVal] = useState(params.get("search"));
+    const socket= useSocket();
+    
     document.body.style.marginLeft = "90px";
     const handleLogout = (e) => {
         e.preventDefault(); // Evitar el comportamiento predeterminado del enlace
@@ -24,6 +28,10 @@ const SiderBar = () => {
         }, 1000); // Cambia el tiempo de espera según tus necesidades
     };
     useEffect(()=>{
+        
+        socket.on("recive_message", ()=>{
+            setNot(not+1);
+        })
         const getPhoto= async ()=> {
             UserData.fetchProfilePhoto({id: userData.idCard,user:userData.user}, (res)=>{
                 if(res.response) setPhoto(res.profilePhoto);
@@ -34,7 +42,7 @@ const SiderBar = () => {
             getPhoto();
         }
         
-    },[photo, userData])
+    },[photo, userData, socket, not])
 
     const toggleSidebar = () => {
         setIsActive(!isActive);
@@ -54,9 +62,9 @@ const SiderBar = () => {
                 {photo!==null? (<>
                     <div style={{ width: "50px", height: "50px",minWidth: "50px", mineight: "50px", overflow: "hidden", borderRadius: "50%" }}>
                     <img 
-                        src={`data:image/jpeg;base64,${photo}`}
-                        alt="user"
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        src={`data:image/jpeg;base64,${photo}`} 
+                        alt="user" 
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }} 
                     />
                 </div>
 
@@ -98,10 +106,15 @@ const SiderBar = () => {
                     <span className="tooltip">Contratos</span>
                 </li>
                 <li>
-                    <a href={Urls.chat}>
-                    <i className="bx bx-message-square-dots" />
-                    <span className="nav-item">Cotizaciones</span>
-                    </a>
+                    <a href={Urls.chat} style={{ position: 'relative' }}>
+                        <i className="bx bx-message-square-dots" />
+                        <span className="nav-item">Cotizaciones</span>
+                        {not>0 &&(<>
+                        <div style={{ position: 'absolute', top: '-5px', right: '-5px', backgroundColor: '#55ACEE', color: 'white', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            {not}
+                        </div>
+                        </>)}
+                                            </a>
                     <span className="tooltip">Cotizaciones</span>
                 </li>
                 <li>

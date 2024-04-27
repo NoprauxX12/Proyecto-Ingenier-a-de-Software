@@ -8,12 +8,13 @@ export const SocketProvider = ({ children }) => {
     const storedUserData = localStorage.getItem('userData');
     const userData =  storedUserData ? JSON.parse(storedUserData) : null;
     const socket = io('http://localhost:3001'); // Establecer la conexión del socket
-    socket.emit("join_room", userData.idCard + userData.user);
-    if(userData) socket.emit("save_user", {
+    if(userData) {
+        socket.emit("join_room", userData.idCard + userData.user);
+        socket.emit("save_user", {
         user: userData.user, 
         id: userData.idCard + userData.user, 
         socket: socket.id
-    });
+    });}
     return (
         <SocketContext.Provider value={socket}>
             {children}

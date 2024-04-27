@@ -25,7 +25,6 @@ const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
     const {userData} = useContext(AuthContext);
     var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
     snd.volume = 0.05;
-
         useEffect(() => {
             const getEst = () => {
                 EstimateData.getEstimateById(estimateId, userData.user, (res) => {
@@ -68,7 +67,10 @@ const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
         function onSend(value){
             setShowRealizar(!showRealizar);
             setEstimate({...estimate, state: value.state, cost: value.cost.toString().substring(0,2)});
-            socket.emit("send_estimate", {room_id: estimateId, estimate: value});
+            socket.emit("send_estimate", {
+                room_id: estimateId, 
+                estimate: value
+            });
         }
 
         function onClose(){

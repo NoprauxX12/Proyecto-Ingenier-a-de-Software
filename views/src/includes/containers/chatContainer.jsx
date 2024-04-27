@@ -18,7 +18,6 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     } 
     
-    
     const fetchMessages = async (roomId) => {
         console.log("Consulta chatcontainer")
         const roomMessages = await mesgs(roomId);
@@ -31,12 +30,13 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
 
     const sendMessage = () => {
         if (username && currentMessage) {
+            let add = userData.user==="2"? "1": "2";
             const info = {
                 content: currentMessage,
                 autor: username,
-                user: userData.user,
-                id: userData.idCard,
                 room_id: selectedRoom,
+                autorId:userData.idCard,
+                receptorId: contact.receptor+ add,
                 time: `${new Date(Date.now()).getHours()}:${new Date(Date.now()).getMinutes()}`,
             };
 
@@ -81,11 +81,14 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
     }
 
     const sendImage = (file) => {
+        let add = userData.user==="2"? "1": "2";
         if (username && file) {
             const info = {
                 attachment: file,
                 autor: username,
                 room_id: selectedRoom,
+                autorId:userData.idCard,
+                receptorId: contact.receptor+ add,
                 time: `${new Date(Date.now()).getHours()}:${new Date(Date.now()).getMinutes()}`,
             };
             

@@ -2,9 +2,9 @@ const connection= require("../DAL/mysqlCon");
 const fs = require("fs");
 const sharp = require("sharp");
 
-exports.fetchAllEstimates= async (userId,user, cb) =>{
-    let sql= user==="2"? "select estimateId id, f.name name, e.description, f.profilePhoto, sendedBy user, state_stateId state from estimate e join freelancer f using(idFreelancer) where idClient=? order by sendDate desc"
-    : "select estimateId id, c.name name, e.description, c.profilePhoto, sendedBy user, state_stateId state from estimate e join client c using( idClient) where idFreelancer=? order by sendDate desc";
+exports.fetchAllEstimates= async (userId, user, cb) =>{
+    let sql= user==="2"? "select estimateId id, f.name name, e.description, f.profilePhoto, sendedBy user, state_stateId state, f.idFreelancer receptor from estimate e join freelancer f using(idFreelancer) where idClient=? order by sendDate desc"
+    : "select estimateId id, c.name name, e.description, c.profilePhoto, sendedBy user, state_stateId state, c.idClient receptor from estimate e join client c using( idClient) where idFreelancer=? order by sendDate desc";
     connection.query(sql, [userId], (err, results) => {
         if (err) {
           console.error('Error al obtener las salas asociadas al usuario:', err.message);
@@ -96,6 +96,17 @@ exports.setState= async (json, cb)=>{
     if (err) {
       console.error('Error al crear estimacion', err.message);
       cb({result: false });
+    }else{
+      cb(results[0]);
+    }
+  });
+}
+
+exports.toNotify= (id, cb)=>{
+  let sql = "select idClient, idFreelancer from estimate where estimateId=?";
+  connection.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error('Error al crear estimacion', err.message);
     }else{
       cb(results[0]);
     }

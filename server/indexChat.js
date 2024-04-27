@@ -6,12 +6,14 @@ const {Server} = require("socket.io");
 const { Socket } = require("socket.io-client");
 const connection = require("./DAL/mysqlCon");
 const bodyParser = require('body-parser');
+const {toNotify} = require("./model/estimateDAO")
 app.use(cors())
 app.use(bodyParser.json());
 
 // routes
 const chatRoutes= require("./routes/message");
 const roomsRoutes= require("./routes/estimate");
+const { toNotify } = require("./model/estimateDAO");
 
 const server = http.createServer(app)
 const rooms = {};
@@ -45,33 +47,28 @@ app.use((req, res) => {
 io.on("connection", (socket) => {
     console.log("Usuario actual: ", socket.id);
     socket.on("join_room", (room)=> {
-      console.log("especificar que: "+room)
         socket.join(room);
-        if (!rooms[room]) {
-            rooms[room] = [];
+        if (!rooms[socket.id]) {
+            rooms[socket.id] = [];
           }
-          rooms[room].push(socket.id); 
-          console.log("lo que esoty buescando   "+rooms[room]);// Agregar usuario a la lista de usuarios en la sala
-          let conected = rooms[room].length
-          io.to(room).emit("users_changed", conected);
-        console.log("Usuario id: ", socket.id, "Se unio a la sala", room)
-        console.log("Conectados a la sala: ", socket.id, ". ", conected)
+          rooms[socket.id].push(room); 
     })
 
-    
-
     socket.on("send_message", (data)=> {
-          socket.to(data.room).emit("recive_message", data);
+          socket.to(data.autorId).emit("recive_message", data);
+          socket.to(data.receptorId).emit("recive_message", data);
     })
 
     socket.on("send_estimate", (data)=> {
-      console.log(data);
+      console.log( "mira aca"+ data);
       socket.to(data.room).emit("recive_cotizacion", data);
 })
 
     socket.on("disconnect", () => {
         console.log("Usuario desconectado", socket.id)
-
+        let iduser=rooms[socket.id];
+        delete rooms[socket.id];
+        socket.leave(iduser);
         Object.keys(rooms).forEach((room) => {
             const index = rooms[room].indexOf(socket.id);
             if (index !== -1) {
