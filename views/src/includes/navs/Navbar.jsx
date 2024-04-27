@@ -48,12 +48,12 @@ const Navbar = () => {
   <div className='button-container'>
   {!isLoggedIn ? (
     <>
-      <a className="btne" href={Urls.logIn}>Log in</a>
-      <a className="btne_dark" href={Urls.signUp}>Sign up</a>
+      <a className="btne" href={Urls.logIn}>Ingresar</a>
+      <a className="btne_dark" href={Urls.signUp}>Registrarse</a>
     </>
   ) : (
     <>
-      <a href={Urls.photo}><p style={{ display: "inline-block", marginRight: "10px", marginTop: "0.7em" }}>{userData.name}</p></a>
+      <a href={Urls.editProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}><p style={{ display: "inline-block", marginRight: "10px", marginTop: "0.7em" }}>{userData.name}</p></a>
       <a href={Urls.home} onClick={(e) => handleLogout(e)}>
         <i className="bx bx-log-in-circle" style={{color: '#7d7d7d', fontSize: "2em"}} />
       </a>
@@ -61,7 +61,7 @@ const Navbar = () => {
 )}
   
   </div>
-
+  
 </header>
 
   );

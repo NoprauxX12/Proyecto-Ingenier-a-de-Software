@@ -65,7 +65,7 @@ const SiderBar = () => {
                 </>)}
                 
                 <div className="letter">
-                    <p className="bold">{name[0]}</p>
+                <a href={Urls.editProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}><p className="bold">{name[0]}</p></a>
                     <p style={{color: "#fff"}}>carpintera</p>
                 </div>
             </div>

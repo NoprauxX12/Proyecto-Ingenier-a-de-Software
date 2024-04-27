@@ -48,7 +48,7 @@
 }
 
 .content-element{
-    margin-bottom: 8px;
+    margin-bottom: 2px;
 }
 
 .inside-color{
@@ -113,6 +113,7 @@
   border: transparent;
   cursor: pointer;
   padding: 1.5%;
+  margin-left: 1.5%;
 }
 
 .button-box:hover{
@@ -128,5 +129,4 @@
 .button-plus{
     background: transparent;
     border: transparent;
-    
 }
