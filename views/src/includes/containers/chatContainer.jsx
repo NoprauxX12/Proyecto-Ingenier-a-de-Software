@@ -13,7 +13,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
     const messagesEndRef = useRef(null);
     var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
     snd.volume = 0.05;
-
+    username= userData.name;
     const scrollToBottom = () => {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     } 
@@ -139,36 +139,33 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
     }, []);
 
     return(<>
-       <div>
+<div>
             {contact && (<>
             
-                <div style={{position: 'absolute', top: '0', right: '0', width: '71.9%', maxWidth: '72.4%', backgroundColor: '#EEE', padding: '1.16rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999', boxShadow: "2px 2px 2px rgba(100,100,100,0.5)" }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' , border:"1px solid #000"}}>
-                                    {}                           
-                                    {contact.profilePhoto ? (<>
-                                        <img src={`data:image/jpeg;base64,${contact.profilePhoto}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Profile" />
-                                    </>):(<>
-                                        <img src="/images/defaultUser.png" alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />                            
-                                    </>)}                
-                                    </div>
-                    <span style={{ fontSize: '1.rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>
-                                {contact.name}
-                    </span>
-            </div>
-                    <div>
-                            <div style={{
-                                 backgroundImage: "url('http://localhost:3000/images/fondo.jpg')",
-                                 backgroundSize: 'cover',
-                                 height: '100vh',
-                                 overflowY: 'scroll',
-                                 WebkitOverflowScrolling: 'touch',
-                                 msOverflowStyle: 'none', 
-                                 scrollbarWidth: 'none', 
-                                 boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.1)',
-                                 borderRadius: '0.5rem',
-                                 padding:'1rem',
-                            }}>
-                                <div style={{ marginTop: '100px', marginBottom: '55px' }}>
+            <div style={{
+            position: 'absolute',
+            backgroundSize: 'cover',
+            minHeight: '100vh',
+            display: 'flex',
+            height: '100%',
+            maxWidth: '71.4%',
+            width: '100%',
+            }}>
+            <div style={{position: 'absolute', top: '0',  width: '100%', maxWidth: '100', backgroundColor: '#FFF', padding: '1.3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: '999', float: "left" }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', marginRight: '15px', display: 'inline-block' }}>      
+                {contact.profilePhoto ? (<>
+                    <img src={`data:image/jpeg;base64,${contact.profilePhoto}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Profile" />
+                </>):(<>
+                    <img src="/images/defaultUser.png" alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />                            
+                </>)}  
+                    
+                </div>
+                    </div>
+                            <div className="contentBox" style={{
+                                margin: "0",
+                                backgroundImage: "url('http://localhost:3000/images/fondo.jpg')"}}>
+                                <div style={{marginBottom: '55px' }}>
+
                                     
                                     {messages.map((message, index) => {
                                         const isOwnMessage = username === message.autor;
@@ -229,6 +226,11 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                                             type="text"
                                             placeholder='Mensaje'
                                             value={currentMessage}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    sendMessage();
+                                                }
+                                            }}
                                             onChange={e => {
                                                 setCurrentMessage(e.target.value);
                                                 if (e.target.value === "") {

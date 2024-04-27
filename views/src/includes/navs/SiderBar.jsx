@@ -52,7 +52,14 @@ const SiderBar = () => {
             </div>
             <div className="user">
                 {photo!==null? (<>
-                    <img src={`data:image/jpeg;base64,${photo}`}  className="user-img" alt="user" />
+                    <div style={{ width: "50px", height: "50px",minWidth: "50px", mineight: "50px", overflow: "hidden", borderRadius: "50%" }}>
+                    <img 
+                        src={`data:image/jpeg;base64,${photo}`} 
+                        alt="user" 
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                    />
+                </div>
+
                 </>):(<>
                     <img src="/images/defaultUser.png" alt="user" className="user-img" />
                 </>)}

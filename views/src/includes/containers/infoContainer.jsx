@@ -46,21 +46,19 @@ const InfoContainer=()=>{
               <p style={{textAlign: "justify"}}>Como cliente, también puedes publicar tus problemas, proyectos o necesidades para que un freelancer que te pueda ayudar se comunique contigo.</p>
             </div>
           </div>
-          <div className="container">
-          <div className="grid-item" style={{ flexShrink: 0 }}>
+          <div className="container" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center" }}>
+            <div className="grid-item">
                 <img src="/images/secondMain.png" alt=""/>
             </div>
-            <div className="grid-container" style={{ display: "flex", alignItems: "center" }}>
-                <div className="grid-item">
+            <div className="grid-item">
                 <h2>Crea tu perfil como freelancer y ofrece tus servicios</h2>
-                <p style={{textAlign: "justify"}}>El Que Sabe te permite conectar fácilmente con cientos de clientes en línea, ofrecer y recibir ofertas por tus servicios como independiente, y tener un portafolio de trabajos realizados en tu perfil para que otras personas puedan ver lo que has hecho.</p>
-                </div>
+                <p style={{ textAlign: "justify" }}>El Que Sabe te permite conectar fácilmente con cientos de clientes en línea, ofrecer y recibir ofertas por tus servicios como independiente, y tener un portafolio de trabajos realizados en tu perfil para que otras personas puedan ver lo que has hecho.</p>
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    <a href={Urls.signUp} className="btne_dark">Registrarme ahora</a>  
+                    <a href={Urls.signUp} style={{fontSize: "1.2em"}} className="btne_dark">Registrarme ahora</a>  
                 </div>
             </div>
         </div>
-        </div>
+      </div>
         </>
     )
 }
