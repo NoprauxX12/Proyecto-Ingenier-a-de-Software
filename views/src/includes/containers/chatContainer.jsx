@@ -203,7 +203,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                                     })}
                                     <div ref={messagesEndRef}></div>
                                     <div style={{
-                                        position: 'fixed',
+                                         position: 'fixed',
                                         bottom: '0.2rem',
                                         right: '0',
                                         width: '70%',

@@ -19,7 +19,7 @@ const Chat = ({ socket, username }) => {
     var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
     snd.volume = 0.05;
 
-    function toggleChats(){
+    function toggleChats(){ 
         setShowChat(!showchat);
     }
     

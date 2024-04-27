@@ -32,50 +32,6 @@ connection.connect((err) => {
     console.log('Conexión a la base de datos establecida correctamente');
   });
 
-
-
-// Agrega una ruta para obtener información sobre un usuario por su ID
-// Agregar una ruta para obtener información sobre un usuario por su ID
-app.get("/user/:userId", (req, res) => {
-  const userId = req.params.userId;
-  console.log("user id"+userId);
-  // Variables para almacenar los resultados de las consultas
-  let freelancerData = null;
-  let clientData = null;
-  
-  // Realizar la consulta para obtener datos de la tabla 'freelancer'
-  connection.query('SELECT idFreelancer, name, profilePhoto FROM freelancer WHERE idFreelancer = ?', userId, (err, freelancerResults) => {
-      if (err) {
-          console.error('Error al obtener datos del freelancer:', err.message);
-      } else {
-          freelancerData = freelancerResults[0];
-      }
-      
-      // Realizar la consulta para obtener datos de la tabla 'client'
-      connection.query('SELECT idClient, name, profilePhoto FROM client WHERE idClient = ?', userId, (err, clientResults) => {
-          if (err) {
-              console.error('Error al obtener datos del cliente:', err.message);
-          } else {
-              clientData = clientResults[0];
-          }
-          
-          // Verificar si alguna de las consultas devolvió resultados
-          if (freelancerData || clientData) {
-            if (freelancerData !== undefined){
-              res.json(freelancerData);
-            }
-            else if(clientData !== undefined){
-              res.json(clientData)
-            }
-          } else {
-              // Ninguna de las consultas devolvió resultados
-              res.status(404).send('No se encontraron datos para el usuario');
-          }
-      });
-  });
-});
-
-
 app.use(chatRoutes);
 // Agregar una ruta para obtener las salas asociadas a un usuario por su ID
 app.use(roomsRoutes);
@@ -86,11 +42,10 @@ app.use((req, res) => {
   res.status(404).send("Ruta no encontrada");
 });
   
-
 io.on("connection", (socket) => {
     console.log("Usuario actual: ", socket.id);
-
     socket.on("join_room", (room)=> {
+      console.log("especificar que: "+room)
         socket.join(room);
         if (!rooms[room]) {
             rooms[room] = [];
