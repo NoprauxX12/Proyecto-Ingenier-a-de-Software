@@ -12,15 +12,14 @@ class EstimateData{
         } catch (error) {
             cb("error");
         }
-    
     }
-    static async getEstimates(user, idCard, cb){
-        const res= await axios.post(`http://localhost:3001/rooms`, {id: idCard, user: user})
+    static async getEstimates(data, cb){
+        const res= await axios.post(`http://localhost:3001/rooms`, data);
         cb(res.data.estimate);
     }
 
-    static async getEstimateById(idestimate, user, cb){
-        const res= await axios.post(`http://localhost:3001/estimate-by-id`, {estimateId:idestimate, user: user});
+    static async getEstimateById(data, cb){
+        const res= await axios.post(`http://localhost:3001/estimate-by-id`, data);
         cb(res.data);
     }
 

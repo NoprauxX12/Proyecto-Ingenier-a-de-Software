@@ -6,7 +6,7 @@ const {Server} = require("socket.io");
 const { Socket } = require("socket.io-client");
 const connection = require("./DAL/mysqlCon");
 const bodyParser = require('body-parser');
-const {toNotify} = require("./model/estimateDAO")
+const {toNotificaions} = require("./model/estimateDAO")
 app.use(cors())
 app.use(bodyParser.json());
 
@@ -59,10 +59,19 @@ io.on("connection", (socket) => {
           socket.to(data.receptorId).emit("recive_message", data);
     })
 
-    socket.on("send_estimate", (data)=> {
-      console.log( "mira aca"+ data);
-      socket.to(data.room).emit("recive_cotizacion", data);
+    socket.on("sendEstimateChange", (data)=> {
+      toNotificaions(parseInt(data.estimateId), (res)=>{
+        console.log( "mira aca"+ data);
+        if(res.idClient===data.autorId){
+          socket.to(res.idFreelancer+"1").emit("recive_cotizacion", data);
+        }else{
+          socket.to(res.idClient+"2").emit("recive_cotizacion", data);
+        }
+      });
 })
+    socket.on("newEstimate", (idToSend)=>{
+      socket.to(idToSend).emit("newEstimateSended");
+    })
 
     socket.on("disconnect", () => {
         console.log("Usuario desconectado", socket.id)

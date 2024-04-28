@@ -1,6 +1,7 @@
 import React, { useState, useRef, useContext, useEffect} from "react";
 import "../../styles/overlays.css";
 import { AuthContext } from "../../providers/userProvider";
+import { useSocket } from "../../providers/socketProvider";
 import EstimateData from "../../services/estimate";
 
 function DealOverlay({onClose, cities, idFreelancer}){
@@ -11,6 +12,7 @@ function DealOverlay({onClose, cities, idFreelancer}){
   const [img, setImg] = useState(null);
   const [preview, setPreview] = useState("/images/defaultUser.png");
   const fileInputRef = useRef(null);
+  const socket = useSocket();
   const [formValues, setFormValues] = useState({
     "city": userData.idCity,
     "place": userData.adress,
@@ -21,7 +23,6 @@ function DealOverlay({onClose, cities, idFreelancer}){
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
-    
     // Crear un FormData para enviar los datos del formulario y la imagen
     if(step===2){
     const formData = new FormData();
@@ -36,7 +37,10 @@ function DealOverlay({onClose, cities, idFreelancer}){
 
     EstimateData.Create(formData,(res)=>{
       setTimeout(onClose(res),500);
+      let idToNotify = userData.user==="2"? res.idFreelancer+"1" : res.idClient+"2";
+      socket.emit("newEstimate", idToNotify);
     })
+    
   }else{
     setTimeout(()=>{
       next();

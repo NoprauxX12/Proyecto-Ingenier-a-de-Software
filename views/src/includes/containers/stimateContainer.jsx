@@ -3,6 +3,7 @@ import React, {useEffect, useState, useContext} from "react";
 import EstimateData from "../../services/estimate";
 import SendEstimateOv from "../overlays/sendEstimateOv";
 import { AuthContext } from "../../providers/userProvider";
+import MessageData from "../../services/message";
 const mesesDelAnio = [
     "enero",
     "febrero", 
@@ -18,7 +19,7 @@ const mesesDelAnio = [
     "diciembre"
 ];
 
-const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
+const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
     const [estimate, setEstimate] = useState({});
     const [showRealizar, setShowRealizar]= useState(false);
     const [showAsk, setshowAsk]= useState(false);
@@ -27,7 +28,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
     snd.volume = 0.05;
         useEffect(() => {
             const getEst = () => {
-                EstimateData.getEstimateById(estimateId, userData.user, (res) => {
+                EstimateData.getEstimateById({estimateId:estimateId, user: userData.user, name:userData.name}, (res) => {
                     setEstimate(res);
                     const { sendDate, dateStart } = res; // Cambiado de estimate a res
         
@@ -63,14 +64,23 @@ const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
             show();
             setshowAsk(false);
         }
-            
+
         function onSend(value){
             setShowRealizar(!showRealizar);
             setEstimate({...estimate, state: value.state, cost: value.cost.toString().substring(0,2)});
-            socket.emit("send_estimate", {
-                room_id: estimateId, 
-                estimate: value
+            socket.emit("sendEstimateChange", {
+                estimateId: estimateId, 
+                estimate: value,
+                autorId: userData.idCard
             });
+        }
+        function openChat(){
+             MessageData.onView({estimateId: estimateId, userName: userData.name}, (res)=>{
+                console.log(res);
+             });
+             onOpen()
+             setEstimate({...estimate, msg: 0});
+             toggleChat();
         }
 
         function onClose(){
@@ -106,7 +116,28 @@ const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
                         <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={()=>{setshowAsk(true)}}>Aceptar Cotización</a>
                     </>)}
                 </>)}
-                <span onClick={toggleChat} style={{cursor: "pointer"}}><i className="bx bx-message-dots" style={{color: '#4f4f4f', fontSize: "2.5em"}} /></span>
+                <span onClick={openChat} style={{ position: 'relative', cursor: "pointer" }}>
+    {estimate.msg > 0 && (
+        <>
+            <div style={{ 
+                position: 'absolute', 
+                top: '-10px', 
+                right: '-10px', 
+                backgroundColor: '#55ACEE', 
+                color: 'white', 
+                borderRadius: '50%', 
+                width: '20px', 
+                height: '20px', 
+                display: 'flex', 
+                justifyContent: 'center', 
+                padding: "3px",
+                alignItems: 'center' }}>
+                {estimate.msg}
+            </div>
+            </>
+        )}
+            <i className="bx bx-message-dots" style={{ color: '#4f4f4f', fontSize: "2.5em" }} />
+            </span>
                 <span><i class='bx bx-dots-vertical-rounded' style={{color: '#4f4f4f', fontSize: "2.5em", marginLeft: "1em"}}></i></span>
             </div>
             <div className="contentBox">

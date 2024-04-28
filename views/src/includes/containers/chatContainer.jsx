@@ -32,6 +32,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
         if (username && currentMessage) {
             let add = userData.user==="2"? "1": "2";
             const info = {
+                visto: false,
                 content: currentMessage,
                 autor: username,
                 room_id: selectedRoom,
@@ -41,7 +42,6 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
             };
 
             socket.emit("send_message", info); // Emitir el mensaje al servidor    
-
             try {
                 const response = axios.post('http://localhost:3001/messages', info);
                 console.log('Mensaje enviado correctamente:', response.data);
@@ -84,6 +84,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
         let add = userData.user==="2"? "1": "2";
         if (username && file) {
             const info = {
+                visto: false,
                 attachment: file,
                 autor: username,
                 room_id: selectedRoom,
@@ -167,7 +168,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                             <div className="contentBox" style={{
                                 margin: "0",
                                 backgroundImage: "url('http://localhost:3000/images/fondo.jpg')"}}>
-                                <div style={{marginBottom: '55px' }}>
+                                <div style={{marginBottom: '55px', marginTop: "5em"}}>
 
                                     
                                     {messages.map((message, index) => {

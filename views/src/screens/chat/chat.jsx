@@ -36,26 +36,34 @@ const Chat = ({ socket, username }) => {
       };
     
 
-    async function  handleChatClick(roomId){
+    async function  handleChatClick(roomId, user){
+        if(userData.user!==user){
+            await EstimateData.setState({state:2, id:roomId},(res)=>{
+                console.log(res);
+            })
         await setMessages(searchMessages(roomId));
+        fetchestimates();
         setSelectedRoom(roomId);
         setShowChat(false);
-        console.log(`Abrir chat con ID: ${roomId}`);
+        }
     }
     const fetchestimates = () => {
-        EstimateData.getEstimates(userData.user, userData.idCard, (res)=>{
+        EstimateData.getEstimates({id: userData.idCard, user: userData.user, name: userData.name}, (res)=>{
             setEstimates(res);
         })
     };
 
     useEffect(() => {
         const fetchestimates = () => {
-            EstimateData.getEstimates(userData.user, userData.idCard, (res)=>{
+            EstimateData.getEstimates({id: userData.idCard, user: userData.user, name: userData.name}, (res)=>{
                 setEstimates(res);
             })
         };
         socket.on("recive_cotizacion", ()=>{
             fetchestimates();
+        })
+        socket.on("recive_message", ()=>{
+            fetchestimates()
         })
         if (estimates.length === 0) { //poner cuidado con un ciclo inf
             fetchestimates();
@@ -72,14 +80,14 @@ const Chat = ({ socket, username }) => {
         <div style={{ display: 'flex', height: '100vh' }}>
                 <SiderBar socket={socket}/>
             <div style={{ flex: '2.70', backgroundColor: '#white', position: 'relative' }}>
-                <ChatList estimates={estimates} username={username} handler={handleChatClick} />
+                <ChatList estimates={estimates} username={username} handler={handleChatClick}/>
             </div>
             <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}> {/* Columna principal */}
                 {selectedRoom ? (<>
                     {showchat? (<>
                         <ChatContainer socket={socket} rooms={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
                     </>): (<>
-                        <EstimateContainer socket={socket} estimateId={selectedRoom} toggleChat={toggleChats} show={()=>{
+                        <EstimateContainer onOpen={fetchestimates} socket={socket} estimateId={selectedRoom} toggleChat={toggleChats} show={()=>{
                             setSelectedRoom(null);
                             fetchestimates(); 
                             }}/>
