@@ -6,8 +6,8 @@ const sharp = require("sharp");
 exports.fetchAllEstimates = async (userId, user, name, cb) => {
   let sql =
     user === "2"
-      ? "select estimateId id, f.name name, e.description, f.profilePhoto, sendedBy user, state_stateId state, f.idFreelancer receptor from estimate e join freelancer f using(idFreelancer) where idClient=? order by sendDate desc"
-      : "select estimateId id, c.name name, e.description, c.profilePhoto, sendedBy user, state_stateId state, c.idClient receptor from estimate e join client c using( idClient) where idFreelancer=? order by sendDate desc";
+      ? "select estimateId id, f.name name, e.description, f.profilePhoto, sendedBy user, state_stateId state, f.idFreelancer receptor, e.sendDate lasTime from estimate e join freelancer f using(idFreelancer) where idClient=? order by sendDate desc"
+      : "select estimateId id, c.name name, e.description, c.profilePhoto, sendedBy user, state_stateId state, c.idClient receptor, e.sendDate lasTime from estimate e join client c using( idClient) where idFreelancer=? order by sendDate desc";
 
   connection.query(sql, [userId], async (err, results) => {
     if (err) {
@@ -30,12 +30,26 @@ exports.fetchAllEstimates = async (userId, user, name, cb) => {
             }
           });
         });
+        await new Promise((resolve, reject) => {
+          let sql = "SELECT MAX(time) AS lastTime FROM messages where estimateId=?";
+          connection.query(sql, [estimate.id], (err, res) => {
+            if (err) {
+              console.error(err);
+              reject(err);
+            } else {
+              estimate["lasTime"] = res[0].lastTime===null? estimate["lasTime"]: res[0].lastTime;
+              resolve();
+            }
+          });
+        });
 
         if (estimate.profilePhoto) {
           let photo = estimate.profilePhoto.toString("base64");
           estimate["profilePhoto"] = photo;
         }
       }
+      results.sort((a, b) => new Date(b.lasTime) - new Date(a.lasTime));
+      console.log(results)
       cb({ estimate: results });
     }
   });
@@ -105,8 +119,9 @@ exports.getById= async (json, cb)=>{
   });
 
 }
-//TODO cambiar el estado a  cunado sea visto un estimate
 exports.setState= async (json, cb)=>{
+  console.log("antes que nada")
+  console.log(json)
   const {state, id, cost}= json;
   const values = [
     parseInt(state),
@@ -118,6 +133,8 @@ exports.setState= async (json, cb)=>{
     values.splice(1 ,0, parseFloat(cost));
     sql="update estimate set state_stateId=?, cost=? where estimateId=?";
   }
+  console.log(sql);
+  console.log(values);
   connection.query(sql, values, (err, results) => {
     if (err) {
       console.error('Error al crear estimacion', err.message);
