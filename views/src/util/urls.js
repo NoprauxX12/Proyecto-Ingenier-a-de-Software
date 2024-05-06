@@ -7,7 +7,9 @@ const Urls = {
     viewProfile: "/view-profile",
     editProfile: "/edit-profile",
     post: '/post',
-    chat: "/estimate"
+    chat: "/estimate",
+    recovery: "/recovery",
+    change: "/change-password"
     
 }
 

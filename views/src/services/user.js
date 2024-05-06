@@ -65,6 +65,15 @@ class UserData {
         }
     }
 
+    static async verifyEmailvalid(json, cb){
+      try{
+        const response = await axios.post(`${BaseUrl}/verify-email`, json);
+        cb(response.data)
+      }catch(error){
+        cb({response: false});
+      }
+    }
+
     static async fetchProfilePhoto(json, cb){
         try{
             const response = await axios.post(`${BaseUrl}/profile-photo`, json);
@@ -73,6 +82,25 @@ class UserData {
             cb({response: false});
         }
     }
+
+    static async recoveryPass(json, cb){
+      try{
+        const response = await axios.post(`${BaseUrl}/recovery-pass`, json);
+        cb(response.data);
+      }catch (error){
+        cb({response: false})
+      }
+    }
+
+    static async fecthTokenInfo(token, cb){
+      try {
+          const  response = await axios.post( `${BaseUrl}/getTokenInfo`, {token: token});
+          console.log(response.data);
+          cb(response.data);
+      } catch (error) {
+          cb({response: false});
+      }
+  }
 
 }
 

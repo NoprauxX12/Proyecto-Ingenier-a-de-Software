@@ -4,6 +4,8 @@ const client = require("../model/entities/client")
 const ClientDAO = require("../model/data Acces/clientDAO")
 const GeneralDAO = require("../model/data Acces/generalDAO")
 const Client = require("../model/entities/client")
+const RecoveryPass = require("../model/entities/recoveryPasword")
+const RecoveryDAO = require("../model/data Acces/recoveryDAO")
 
 exports.SignUp= (req, res, next)=>{
     let link=null;
@@ -101,6 +103,18 @@ exports.logIn =(req,res, next)=>{
     }
 }
 
+exports. verifyEmail=(req,res)=>{
+    if(parseInt(req.body.user)===1){
+        FreelancerDAO.emailExist(req.body, (result)=>{
+            res.json(result);
+        })
+    }else if(parseInt(req.body.user)=== 2){
+        ClientDAO.emailExist(req.body, (result)=>{
+            res.json(result);
+        })
+    }
+}
+
 exports.fetchPhoto= (req, res)=>{
     if(parseInt(req.body.user)===1){
         FreelancerDAO.getProfilePhotoById(req.body.id, (result)=>{
@@ -113,3 +127,37 @@ exports.fetchPhoto= (req, res)=>{
         });
     }
 };
+
+exports.recoveryPass = async (req, res) => {
+    const { user, email, token, dateTime } = req.body;
+
+    try {
+        await new Promise((resolve, reject) => {
+            RecoveryDAO.insertRecoveryToken(user, email, token, dateTime, (error, result) => {
+                if (error) {
+                    console.error('Error al insertar los datos del token de recuperación:', error);
+                    reject(error);
+                } else {
+                    console.log('Datos del token de recuperación insertados correctamente en la tabla.');
+                    resolve(result);
+                }
+            });
+        });
+
+        const recoveryInstance = new RecoveryPass();
+        recoveryInstance.sender(req.body, (result) => {
+            res.json(result);
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al insertar los datos del token de recuperación en la base de datos' });
+    }
+};
+
+exports.getTokenInfo =(req, res, next)=>{
+    const params= req.body;
+        RecoveryDAO.getTokenInfoByToken(params, (result)=>{
+            res.json(result);
+        });
+    
+};
+
