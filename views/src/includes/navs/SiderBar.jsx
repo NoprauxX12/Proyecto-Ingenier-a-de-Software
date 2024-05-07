@@ -11,6 +11,7 @@ import "../../styles/siderBar.css"
 const SiderBar = () => {
     const [isActive, setIsActive] = useState(false);
     const [not, setNot]= useState(0);
+    const [initialLoad, setInitialLoad] = useState(false);
     const params= new URLSearchParams(window.location.search);
     const {userData, logout} = useContext(AuthContext);
     const [photo, setPhoto] = useState(null);
@@ -36,12 +37,9 @@ const SiderBar = () => {
             })
 
         }
-        socket.on("newEstimateSended", ()=>{
-            getNotifications()
-        })
-        socket.on("recive_message", ()=>{
-            getNotifications()
-        })
+        socket.on("newEstimateSended",getNotifications)
+        socket.on("recive_message",getNotifications)
+        socket.on("viewMessages", getNotifications)
         const getPhoto= async ()=> {
             UserData.fetchProfilePhoto({id: userData.idCard,user:userData.user}, (res)=>{
                 if(res.response) setPhoto(res.profilePhoto);
@@ -51,8 +49,11 @@ const SiderBar = () => {
             setName(userData.name.split(" "));
             getPhoto();
         }
-        getNotifications();
-    },[photo, userData, socket, not])
+        if(!initialLoad){
+            getNotifications();
+            setInitialLoad(true);
+        }
+    },[photo, userData, socket, not, initialLoad])
 
     const toggleSidebar = () => {
         setIsActive(!isActive);

@@ -43,25 +43,27 @@ app.use(chatRoutes);
 app.use((req, res) => {
   res.status(404).send("Ruta no encontrada");
 });
-  
+
 io.on("connection", (socket) => {
-    console.log("Usuario actual: ", socket.id);
-    socket.on("join_room", (room)=> {
-        socket.join(room);
+  socket.on("join_room", (idUser)=> {
+        socket.join(idUser);
         if (!rooms[socket.id]) {
             rooms[socket.id] = [];
           }
-          rooms[socket.id].push(room); 
-    })
+          rooms[socket.id].push(idUser); 
+      })
+      socket.on("view", (userId)=> {
+        socket.emit("viewMessages", userId);
+  })
+
 
     socket.on("send_message", (data)=> {
-          socket.to(data.autorId).emit("recive_message", data);
-          socket.to(data.receptorId).emit("recive_message", data);
+        socket.to(data.autorId).emit("recive_message", data);
+        socket.to(data.receptorId).emit("recive_message", data);
     })
 
     socket.on("sendEstimateChange", (data)=> {
       toNotificaions(parseInt(data.estimateId), (res)=>{
-        console.log( "mira aca"+ data);
         if(res.idClient===data.autorId){
           socket.to(res.idFreelancer+"1").emit("recive_cotizacion", data);
         }else{
@@ -69,8 +71,9 @@ io.on("connection", (socket) => {
         }
       });
 })
-    socket.on("newEstimate", (idToSend)=>{
-      socket.to(idToSend).emit("newEstimateSended");
+    socket.on("newEstimate", (data)=>{
+      socket.to(data.autorId).emit("newEstimateSended", data);
+      socket.to(data.receptorId).emit("newEstimateSended", data);
     })
 
     socket.on("disconnect", () => {

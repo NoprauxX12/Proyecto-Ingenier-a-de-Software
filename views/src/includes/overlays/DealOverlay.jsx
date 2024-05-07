@@ -38,7 +38,8 @@ function DealOverlay({onClose, cities, idFreelancer}){
     EstimateData.Create(formData,(res)=>{
       setTimeout(onClose(res),500);
       let idToNotify = userData.user==="2"? res.idFreelancer+"1" : res.idClient+"2";
-      socket.emit("newEstimate", idToNotify);
+      socket.emit("newEstimate", {autorId: userData.idCard+userData.user,
+      receptorId: idToNotify});
     })
     
   }else{

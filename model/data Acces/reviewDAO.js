@@ -28,14 +28,15 @@ class ReviewDAO {
     }
 
     static async selectReviews(id,cb){
-        let sql = "SELECT r.clientComment FROM review r INNER JOIN contract c ON r.idContract = c.idContract INNER JOIN estimate e ON c.estimate_estimateId = e.estimateId INNER JOIN freelancer f ON e.idFreelnacer = f.idFreelancer WHERE f.idFreelancer = ?";   
+        let sql = "SELECT r.clientComment, r.clientScore FROM review r INNER JOIN contract c ON r.idContract = c.idContract INNER JOIN estimate e ON c.estimate_estimateId = e.estimateId INNER JOIN freelancer f ON e.idFreelancer = f.idFreelancer WHERE f.idFreelancer = ?";   
         try{
-            const [rows] = await mysqlExecute(sql, [id]);
+            const rows = await mysqlExecute(sql, [id]);
             cb({result: true, data: rows});
         }catch(error){
             console.error("Error al ejecutar la consulta:", error);
+            cb({result: false});
         }
     }
 }
 
-module.exports = ReviewDAO;
+module.exports=ReviewDAO;

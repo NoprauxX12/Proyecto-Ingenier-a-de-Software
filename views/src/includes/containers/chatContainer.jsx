@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from "../../providers/userProvider";
 
-const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
+const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend} )=>{
     const {userData} = useContext(AuthContext);
     const [currentMessage, setCurrentMessage] = useState("");
     const [messages, setMessages] = useState([]);
@@ -36,7 +36,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                 content: currentMessage,
                 autor: username,
                 room_id: selectedRoom,
-                autorId:userData.idCard,
+                autorId:userData.idCard+userData.user,
                 receptorId: contact.receptor+ add,
                 time: `${new Date(Date.now()).getHours()}:${new Date(Date.now()).getMinutes()}`,
             };
@@ -55,6 +55,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
             
 
             setCurrentMessage(""); // Limpiar el campo de mensaje
+            onSend();
         }
         else {
             console.error('Usuario, mensaje o sala no seleccionados');
@@ -110,6 +111,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
             
 
             setCurrentMessage(""); // Limpiar el campo de mensaje
+            onSend();
         }
         else {
             alert("No se envio la foto")
