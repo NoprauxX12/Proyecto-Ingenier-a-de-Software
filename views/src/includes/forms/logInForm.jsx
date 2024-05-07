@@ -34,6 +34,10 @@ const FormularioLogIn = () => {
     setShowRecovery(!showRecovery);
   };
 
+  const toggleSignUP = () => {
+    window.location.href = "http://localhost:3000/sign-up"
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({
@@ -197,6 +201,15 @@ const FormularioLogIn = () => {
               onClick={toggleRecovery}
             >
               Recuperar contraseña
+            </a>
+          </div>
+          <div>
+            ¿Aun no tienes cuenta?{" "}
+            <a
+              style={{ color: "blue", cursor: "pointer" }}
+              onClick={toggleSignUP}
+            >
+              ¡Registrate!
             </a>
           </div>
         </form>

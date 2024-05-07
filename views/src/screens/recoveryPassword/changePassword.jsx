@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import UserData from "../../services/user";
+import MiddleLogoContainer from "../../includes/containers/middleLogoContainer";
 
 const ChangePassword = () => {
     const [tokenInfo, setTokenInfo] = useState(null);
@@ -24,7 +25,7 @@ const ChangePassword = () => {
     useEffect(() => {
         const intervalId = setInterval(() => {
             setTrigger(prevTrigger => prevTrigger + 1);
-        }, 3000);
+        }, 1000);
         return () => clearInterval(intervalId);
     }, []);
 
@@ -34,13 +35,15 @@ const ChangePassword = () => {
 
     const fetchInfoToken = async () => {
         try {
+            if(tokenInfo === null){
             await UserData.fecthTokenInfo(token, (args) => {
                 setTokenInfo(args)
-            })
+            })}
+
+            setLinkExpired(false)
             const expirationTime = new Date(tokenInfo[0].dateTime).getTime(); 
             const currentTime = new Date().getTime(); 
             const timeDifference = (expirationTime - currentTime) / (1000 * 60);
-            console.log(expirationTime, currentTime, timeDifference) 
             if (timeDifference < 284) {
                 setLinkExpired(true);
             }
@@ -51,6 +54,7 @@ const ChangePassword = () => {
             })
         } catch (error) {
             console.error('Error al obtener la información del token:', error);
+            setLinkExpired(true)
         } finally {
             setLoading(false);
         }
@@ -62,6 +66,7 @@ const ChangePassword = () => {
                 if(args === true ){
                     console.log("contraseña cambiada")
                     alert("EXITO")
+                    window.location.href = "http://localhost:3000"
                 } else {
                     alert("ERROR")
                     console.log("contraseña NO cambiada")
@@ -96,33 +101,62 @@ const ChangePassword = () => {
     };
 
     if (loading) {
-        return <div>Cargando...</div>;
+        return (
+            <>
+            <div style={{
+              position: 'relative',
+              backgroundSize: 'cover',
+              minHeight: '100vh',
+              backgroundColor: "#fff",
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+              width: '100%',
+              }}>
+              <div style={{ textAlign: 'center' , background:" radial-gradient(circle, rgba(85, 172, 238, 0.8), rgba(255, 255, 255, 0.8))", padding: "3em", borderRadius: "100%"}}>
+                  <h1 style={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '9rem', color: '#B9B7B7' , margin: "0"}}><i className="bx bxl-mailchimp" style={{color: '#ffffff'}} /></h1>
+                  <p style={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5rem', color: '#fff', fontWeight: "bold" }}>Cargando...</p>
+              </div>
+            </div>
+          </>    
+    );
     }
 
     if (linkExpired) {
         return (
-            <div>
-                <h1>Enlace Expirado</h1>
-                <p>El enlace para restablecer la contraseña ha expirado. Por favor, solicite un nuevo enlace.</p>
-                <button onClick={() => window.location.href = "http://localhost:3000"}>Ir al Inicio</button>
+            <div className="text-center">
+                <h1 className="text-blue-700 text-2xl font-bold mb-4">Enlace Expirado :(</h1>
+                <p className="text-gray-700 text-xl mb-4">El enlace para restablecer la contraseña ha expirado. Por favor, solicita un nuevo enlace.</p>
+                <button onClick={() => window.location.href = "http://localhost:3000"} className="btne">Ir al Inicio</button>
             </div>
         );
     }
 
     return (
         <div>
-            <h1>Cambio de Contraseña</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="password">Nueva Contraseña:</label>
-                    <input type="password" id="password" value={newPassword} onChange={handlePasswordChange} />
-                </div>
-                <div>
-                    <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
-                    <input type="password" id="confirmPassword" value={confirmPassword} onChange={handleConfirmPasswordChange} />
-                </div>
-                <button type="submit">Cambiar Contraseña</button>
+            <MiddleLogoContainer></MiddleLogoContainer>
+            <div className='shadow-md rounded-lg p-4'>
+            <form>
+                <fieldset>
+                <legend>
+                    <span style={{ color: '#3D00B7' }}>Cambiar </span>
+                    <span style={{ color: '#55ACEE' }}>contraseña</span>
+                </legend>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label className="form-label mt-4"  htmlFor="password">Nueva Contraseña:</label>
+                        <input className="form-control" type="password" id="password" value={newPassword} placeholder="Contraseña" autoComplete="off" onChange={handlePasswordChange} />
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label mt-4" htmlFor="confirmPassword">Confirmar Contraseña:</label>
+                        <input className="form-control" type="password" id="confirmPassword" value={confirmPassword} placeholder="Confirmar contraseña" autoComplete="off" onChange={handleConfirmPasswordChange} />
+                    </div>
+                    <button className="btne" type="submit">Cambiar Contraseña</button>
+                </form>
+                </fieldset>
             </form>
+            </div>
         </div>
     );
 };
