@@ -110,5 +110,3 @@ function Formulario() {
     </div>
   );
 }
-
-export default Formulario;

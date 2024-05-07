@@ -7,7 +7,7 @@ const ClientsMainContainer=(props)=>{
     const text= "Resultados de ";
     return (
       <div>
-        <div className="discoberDontainer">
+        <div className="discoberDontainer" id='explore'>
           <h2>
             {search===null ? (
               <>
