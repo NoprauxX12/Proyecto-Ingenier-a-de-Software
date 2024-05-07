@@ -71,7 +71,7 @@ function ViewProfile(){
               </div>
               <div className="content-element">
                 <h1>4.8/5.0</h1>
-                <a href="#">Ver 182 reseñas</a>
+                <a href={"/review/?id="+ id }>Ver reseñas</a>
               </div>
             </div>
             <div className="right-container">
