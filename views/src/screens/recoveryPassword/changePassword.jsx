@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import UserData from "../../services/user";
 import MiddleLogoContainer from "../../includes/containers/middleLogoContainer";
+import Alert from "../../includes/overlays/alert";
 
 const ChangePassword = () => {
     const [tokenInfo, setTokenInfo] = useState(null);
+    const [showAlert, setShowAlert] = useState(false);
+    const [message, setMessage] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [token, setToken] = useState(null);
@@ -38,8 +41,8 @@ const ChangePassword = () => {
             if(tokenInfo === null){
             await UserData.fecthTokenInfo(token, (args) => {
                 setTokenInfo(args)
-            })}
-
+            })
+            }
             setLinkExpired(false)
             const expirationTime = new Date(tokenInfo[0].dateTime).getTime(); 
             const currentTime = new Date().getTime(); 
@@ -62,20 +65,26 @@ const ChangePassword = () => {
 
     const upDate = async ()=>{
         try{
+            console.log(data)
             await UserData.updatePassword(data, (args) => {
                 if(args === true ){
                     console.log("contraseña cambiada")
-                    alert("EXITO")
+                    setMessage("Contraseña actualizada correctamente")
                     window.location.href = "http://localhost:3000"
                 } else {
-                    alert("ERROR")
+                    setMessage("No se pudo actualizar tu contraseña")
                     console.log("contraseña NO cambiada")
                 }
+                toggleAlert()
             })
         } catch (error) {
             console.log("ERROR")
         }
     }
+
+    const toggleAlert = () => {
+        setShowAlert(!showAlert);
+    };
 
     const handlePasswordChange = (event) => {
         setNewPassword(event.target.value);
@@ -90,9 +99,6 @@ const ChangePassword = () => {
         event.preventDefault();
         
         if (newPassword === confirmPassword && newPassword.length >= 8) {
-            setData({
-                password: newPassword
-            })
             upDate()
         } else {
            
@@ -135,6 +141,7 @@ const ChangePassword = () => {
 
     return (
         <div>
+            {showAlert && <Alert message={message} onClose={toggleAlert} />}
             <MiddleLogoContainer></MiddleLogoContainer>
             <div className='shadow-md rounded-lg p-4'>
             <form>
@@ -152,7 +159,7 @@ const ChangePassword = () => {
                         <label className="form-label mt-4" htmlFor="confirmPassword">Confirmar Contraseña:</label>
                         <input className="form-control" type="password" id="confirmPassword" value={confirmPassword} placeholder="Confirmar contraseña" autoComplete="off" onChange={handleConfirmPasswordChange} />
                     </div>
-                    <button className="btne" type="submit">Cambiar Contraseña</button>
+                    <button className="btne" type="button" onClick={handleSubmit}>Cambiar Contraseña</button>
                 </form>
                 </fieldset>
             </form>
