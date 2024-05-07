@@ -27,7 +27,7 @@ class ClientDAO {
     let sql =
       "INSERT INTO Client (idClient, `name`, phoneNumber,cellphone,adress, email, `password`, idCity, `description`, profilePhoto ) VALUES (?,?,?,?,?,?,?,?,?,?);";
     const password = await hashPassword(client.password);
-    let link = client.profilePhoto;
+    let link = client.profilePhoto; 
     let fileContent = null;
     const values = [
       client.idCard,
@@ -56,13 +56,17 @@ class ClientDAO {
     }
 
     if (link !== null) {
-      fs.unlink(link, (error) => {
-        if (error) {
-          console.error("Error deleting file:", error);
-        } else {
-          console.log("File deleted successfully.");
-        }
-      });
+      try {
+        fs.unlink(link, (error) => {
+            if (error) {
+              console.error("Error deleting file:", error);
+            } else {
+              console.log("File deleted successfully.");
+            }
+          });
+      } catch (error) {
+          console.log(error);
+      }
     }
   }
   static async userExist(json, cb) {

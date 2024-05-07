@@ -27,7 +27,7 @@ function ViewProfile(){
         <div className="main-container">
           <div className="header-container">
           <a href="/" style={{display: "inline-block"}}> 
-              <div className="back">
+              <div className="back" style={{position: "absolute", marginTop: "0"}}>
                 <i class='bx bx-chevron-left' style={{color: '#7d7d7d', fontSize: "4em"}} ></i>
               </div>
             </a>

@@ -1,5 +1,5 @@
 .cuadro {
-    margin-top: 200px; 
+    padding: 2em 0; 
   }
   
 
@@ -19,6 +19,7 @@
     font-size: 2rem;
     font-style: normal;
   }
+  
   .t{
     font-family: "Fredoka", sans-serif;
     font-optical-sizing: auto;
@@ -40,7 +41,7 @@
     text-align: center;
     width: 50%; 
   }
-  
+
   button {
     margin-top: 20px; 
     
@@ -48,5 +49,42 @@
 
   .enviar{
     text-align: center;
-    margin-left: 48%;
+    margin-left: 30%;
   }
+
+.form-label{
+  float: left;
+  margin-left: 0.5em;
+  font-size: 1.5em;
+}
+
+.addContent{
+  background-color: #EEE;
+  width: 38%;
+  padding: 0.5em 0;
+  border-radius: 6px;
+  margin: auto;
+}
+
+.addContent h4{
+  color: #646464;
+  margin-left: 5%;
+}
+
+.addContent i{
+  color: #646464;
+  font-size: 1.5em;
+  margin-left: 50%;
+  cursor: pointer;
+}
+
+#postImg{
+  height: 5em;
+  margin-left: 30%;
+}
+
+#postImg{
+  margin-left: -1em;
+  margin-bottom : -1.6em;
+  height: 12em;
+}

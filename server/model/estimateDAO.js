@@ -49,7 +49,6 @@ exports.fetchAllEstimates = async (userId, user, name, cb) => {
         }
       }
       results.sort((a, b) => new Date(b.lasTime) - new Date(a.lasTime));
-      console.log(results)
       cb({ estimate: results });
     }
   });
