@@ -147,7 +147,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
             <div className="contentBox">
                 <p style={{float: "right"}}>{estimate.sendDate}</p>
                 <h5 style={{}}>{estimate.city} - {estimate.adress}</h5>
-                {3===parseInt(estimate.state) && (<>
+                {(3===parseInt(estimate.state) || estimate.cost) && (<>
                     <h1 style={{color: "#3D00B7", fontWeight: "bold", marginBottom: "1em"}}>Valor: <span style={{float: "right", marginRight:"1em",color: "#3D00B7"}}>{estimate.cost}.000</span></h1>
                     <p>Importante: las cotizaciones incluyen unicamente el costo de la mano de obra.</p>
                 </>)}

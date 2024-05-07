@@ -1,17 +1,21 @@
 .cuadro {
-    padding: 2em 0; 
-  }
-  
+  padding: 1em 0; 
+  margin-left: 1em;
+  display: flex;
+  max-width: 90%;
+}
 
-  .mb-3 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80%; 
-    margin: 0 auto; 
-  }
-  
-  .Info {
+legend{
+  margin-top: 1em;
+}
+
+.cuadrito {
+  flex: 1;
+  padding: 0 1em;
+  width: calc(50% - 2em); /* Resta el padding del 50% para evitar desbordamiento */
+}
+
+.Info {
     text-align: center;
     font-family: "Fredoka", sans-serif;
     font-optical-sizing: auto;
@@ -42,6 +46,10 @@
     width: 50%; 
   }
 
+  .short{
+    height: 6em;
+  }
+
   button {
     margin-top: 20px; 
     
@@ -49,7 +57,7 @@
 
   .enviar{
     text-align: center;
-    margin-left: 30%;
+    margin-left: 40%;
   }
 
 .form-label{
@@ -61,7 +69,10 @@
 .addContent{
   background-color: #EEE;
   width: 38%;
-  padding: 0.5em 0;
+
+  cursor: pointer;
+  max-height: 4em;
+  padding: 0.3em 0;
   border-radius: 6px;
   margin: auto;
 }
@@ -74,8 +85,7 @@
 .addContent i{
   color: #646464;
   font-size: 1.5em;
-  margin-left: 50%;
-  cursor: pointer;
+  margin-left: 5em ;
 }
 
 #postImg{
@@ -88,3 +98,4 @@
   margin-bottom : -1.6em;
   height: 12em;
 }
+

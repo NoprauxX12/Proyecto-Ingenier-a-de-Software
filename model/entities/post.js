@@ -6,6 +6,8 @@ class Post{
         this.title= json.title;
         this.idClient= json.idClient;
         this.img= img;
+        this.adress=json.place;
+        this.idCity=json.city;
     }
 }
 

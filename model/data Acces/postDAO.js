@@ -8,7 +8,10 @@ class PostDAO{
         let values= [
         post.description,
         post.title,
-        post.idClient];
+        post.idClient,
+        post.idCity,
+        post.adress
+    ];
 
     let link= post.img;
     let fileContent=null;
@@ -22,7 +25,7 @@ class PostDAO{
       } catch (err) {
         console.error(err);
       }
-    let sql= " INSERT INTO contractOffer (description, title, idClient) VALUES (?,?,?)";
+    let sql= " INSERT INTO contractOffer (description, title, idClient, idCity, adress) VALUES (?,?,?,?,?)";
     let imgSql= "INSERT INTO imegesco (image, idContractOffer) VALUES (?,?)"
     try {
         let res= await mysqlExecute(sql, values);
@@ -49,7 +52,8 @@ class PostDAO{
     }
     
     static async fetchAll(city, cb){
-        let sql=city?"select idContractOffer, c.description, title, idClient, l.name, t.name city from contractOffer c join client l using(idClient) join town t using(idCity) WHERE l.idCity=?" : "select idContractOffer, c.description, title, idClient, l.name, t.name city from contractOffer c join client l using(idClient) join town t using(idCity)"
+        let sql=city?"select idContractOffer, c.description, title, idClient, l.name, t.name city, c.idCity, c.adress from contractOffer c join client l using(idClient) join town t on t.idCity= c.idCity WHERE l.idCity=?" : 
+        "select idContractOffer, c.description, title, idClient, l.name, t.name city, c.idCity, c.adress from contractOffer c join client l using(idClient) join town t on t.idCity= c.idCity";
         try {
             const response =city? await mysqlExecute(sql, [parseFloat(city)]) : await mysqlExecute(sql);
             for (let i = 0; i < response.length; i++) {
@@ -64,7 +68,6 @@ class PostDAO{
                     resolve()
                 })
             }
-            console.log(response)
             cb(response);
         } catch (error) {
             console.log(error);
@@ -78,7 +81,6 @@ class PostDAO{
         "SELECT idContractOffer, c.description, title, idClient, l.name, t.name AS city FROM contractOffer c JOIN client l USING(idClient) JOIN town t USING(idCity) WHERE c.description LIKE ?";
         const descriptionValue = `%${search}%`;
         try {
-            if(city) console.log("otra");
             const response =city? await mysqlExecute(sql, [parseFloat(city), descriptionValue]) : await mysqlExecute(sql,[descriptionValue]);
             cb(response);
         } catch (error) {
