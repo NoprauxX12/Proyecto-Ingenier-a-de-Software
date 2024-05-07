@@ -24,6 +24,8 @@ router.post("/recovery-pass", usersControllers.recoveryPass)
 
 router.post("/getTokenInfo", usersControllers.getTokenInfo)
 
+router.post("/change-pass", usersControllers.updatePassword) 
+
 
 module.exports= router;
 

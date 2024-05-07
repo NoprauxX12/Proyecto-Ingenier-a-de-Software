@@ -14,11 +14,9 @@ class RecoveryDAO {
 
     static async getTokenInfoByToken(token, cb) {
         let sql = "SELECT * FROM recovery_tokens WHERE token = ?";
-        console.log(token)
         try {
             const result = await mysqlExecute(sql, [token.token]);
-            console.log(result)
-            cb(result); // Suponiendo que solo esperas un resultado
+            cb(result);
         } catch (error) {
             console.error('Error al obtener la información del token:', error);
             cb({result: false})

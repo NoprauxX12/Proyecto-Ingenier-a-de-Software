@@ -111,6 +111,24 @@ class ClientDAO {
     }
   }
 
+  static async updatePassword(data, cb) {
+
+    let sql = "UPDATE client SET password = ? WHERE email = ?";
+    let hashedPassword = await hashPassword(data.password)
+
+    try{  
+      console.log(hashedPassword)
+        const res = await mysqlExecute(sql, [hashedPassword, data.email])
+        if (res.affectedRows > 0){
+          cb(true)
+        } else {
+          cb(false)
+        }
+    } catch (error){
+      console.log(error);
+    }
+  }
+
   static async logIn(json, cb) {
     let sql =
       "SELECT name, idClient idCard, email, idCity, password, adress from client where email = ?";

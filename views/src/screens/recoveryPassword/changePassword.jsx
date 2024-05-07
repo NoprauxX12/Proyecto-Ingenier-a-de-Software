@@ -9,12 +9,16 @@ const ChangePassword = () => {
     const [loading, setLoading] = useState(true);
     const [linkExpired, setLinkExpired] = useState(false);
     const [trigger, setTrigger] = useState(0);
+    const [data, setData] = useState({
+        user: "",
+        email: "",
+        password: ""
+    });
 
     useEffect(() => {
         setToken(window.location.search.substring(1));
         if(token !== null){
-            delay()
-        }
+            delay()} 
     }, [trigger]);
 
     useEffect(() => {
@@ -30,7 +34,6 @@ const ChangePassword = () => {
 
     const fetchInfoToken = async () => {
         try {
-            console.log(token)
             await UserData.fecthTokenInfo(token, (args) => {
                 setTokenInfo(args)
             })
@@ -41,12 +44,33 @@ const ChangePassword = () => {
             if (timeDifference < 284) {
                 setLinkExpired(true);
             }
+            setData({
+                user: tokenInfo[0].user,
+                email: tokenInfo[0].email,
+                password: newPassword
+            })
         } catch (error) {
             console.error('Error al obtener la información del token:', error);
         } finally {
             setLoading(false);
         }
     };
+
+    const upDate = async ()=>{
+        try{
+            await UserData.updatePassword(data, (args) => {
+                if(args === true ){
+                    console.log("contraseña cambiada")
+                    alert("EXITO")
+                } else {
+                    alert("ERROR")
+                    console.log("contraseña NO cambiada")
+                }
+            })
+        } catch (error) {
+            console.log("ERROR")
+        }
+    }
 
     const handlePasswordChange = (event) => {
         setNewPassword(event.target.value);
@@ -61,8 +85,10 @@ const ChangePassword = () => {
         event.preventDefault();
         
         if (newPassword === confirmPassword && newPassword.length >= 8) {
-            // ya solo falta hacer las consultas y las rutas para cambiar contraseña
-           alert("Exito")
+            setData({
+                password: newPassword
+            })
+            upDate()
         } else {
            
             alert("Las contraseñas no coinciden o tienen menos de 8 caracteres.");

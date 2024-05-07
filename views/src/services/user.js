@@ -95,12 +95,20 @@ class UserData {
     static async fecthTokenInfo(token, cb){
       try {
           const  response = await axios.post( `${BaseUrl}/getTokenInfo`, {token: token});
-          console.log(response.data);
           cb(response.data);
       } catch (error) {
           cb({response: false});
       }
-  }
+    }
+
+    static async updatePassword(data, cb){
+      try{
+        const response = await axios.post( `${BaseUrl}/change-pass`, data )
+        cb(response.data);  
+      } catch (error) {
+        cb(false)
+      }
+    }
 
 }
 

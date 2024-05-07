@@ -48,9 +48,24 @@ exports.getFreelancer =(req, res, next)=>{
         FreelancerDAO.fetchAll(params, (result)=>{
             res.json(result);
         });
+    }   
+}
+
+exports.updatePassword =(req, res) => {
+    const params = req.body;
+    const data = {
+        email: params.email,
+        password: params.password
     }
-    
-    
+    if(parseInt(params.user) === 1){
+        FreelancerDAO.updatePassword(data, (answer) => {
+            res.json(answer);
+        })
+    } else if(parseInt(params.user) === 2){
+        ClientDAO.updatePassword(data, (answer) => {
+            res.json(answer);
+        })
+    }
 }
    
 exports.verifyUserExistence=(req, res, next)=>{
