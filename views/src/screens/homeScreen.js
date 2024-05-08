@@ -143,7 +143,7 @@ function HomeScreen() {
                 {posts.length>0 ? (
                 <>
                 {posts.map((post) => (
-                    <PostCard post={post}/>  
+                    <PostCard cities={cityes} post={post}/>  
                 ))}
                 
                 </>

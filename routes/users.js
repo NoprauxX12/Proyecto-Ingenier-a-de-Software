@@ -18,6 +18,14 @@ router.post("/log-in", usersControllers.logIn);
 
 router.post("/profile-photo", usersControllers.fetchPhoto);
 
+router.post("/verify-email", usersControllers.verifyEmail)
+
+router.post("/recovery-pass", usersControllers.recoveryPass)
+
+router.post("/getTokenInfo", usersControllers.getTokenInfo)
+
+router.post("/change-pass", usersControllers.updatePassword) 
+
 
 module.exports= router;
 

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from "../../providers/userProvider";
 
-const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
+const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend} )=>{
     const {userData} = useContext(AuthContext);
     const [currentMessage, setCurrentMessage] = useState("");
     const [messages, setMessages] = useState([]);
@@ -32,16 +32,16 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
         if (username && currentMessage) {
             let add = userData.user==="2"? "1": "2";
             const info = {
+                visto: false,
                 content: currentMessage,
                 autor: username,
                 room_id: selectedRoom,
-                autorId:userData.idCard,
+                autorId:userData.idCard+userData.user,
                 receptorId: contact.receptor+ add,
                 time: `${new Date(Date.now()).getHours()}:${new Date(Date.now()).getMinutes()}`,
             };
 
             socket.emit("send_message", info); // Emitir el mensaje al servidor    
-
             try {
                 const response = axios.post('http://localhost:3001/messages', info);
                 console.log('Mensaje enviado correctamente:', response.data);
@@ -55,6 +55,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
             
 
             setCurrentMessage(""); // Limpiar el campo de mensaje
+            onSend();
         }
         else {
             console.error('Usuario, mensaje o sala no seleccionados');
@@ -84,6 +85,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
         let add = userData.user==="2"? "1": "2";
         if (username && file) {
             const info = {
+                visto: false,
                 attachment: file,
                 autor: username,
                 room_id: selectedRoom,
@@ -109,6 +111,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
             
 
             setCurrentMessage(""); // Limpiar el campo de mensaje
+            onSend();
         }
         else {
             alert("No se envio la foto")
@@ -167,7 +170,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom} )=>{
                             <div className="contentBox" style={{
                                 margin: "0",
                                 backgroundImage: "url('http://localhost:3000/images/fondo.jpg')"}}>
-                                <div style={{marginBottom: '55px' }}>
+                                <div style={{marginBottom: '55px', marginTop: "5em"}}>
 
                                     
                                     {messages.map((message, index) => {

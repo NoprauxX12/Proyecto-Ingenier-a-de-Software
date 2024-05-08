@@ -6,6 +6,7 @@ const {Server} = require("socket.io");
 const { Socket } = require("socket.io-client");
 const connection = require("./DAL/mysqlCon");
 const bodyParser = require('body-parser');
+const {toNotificaions} = require("./model/estimateDAO")
 app.use(cors())
 app.use(bodyParser.json());
 
@@ -42,26 +43,38 @@ app.use(chatRoutes);
 app.use((req, res) => {
   res.status(404).send("Ruta no encontrada");
 });
-  
+
 io.on("connection", (socket) => {
-    console.log("Usuario actual: ", socket.id);
-    socket.on("join_room", (room)=> {
-        socket.join(room);
+  socket.on("join_room", (idUser)=> {
+        socket.join(idUser);
         if (!rooms[socket.id]) {
             rooms[socket.id] = [];
           }
-          rooms[socket.id].push(room); 
-    })
+          rooms[socket.id].push(idUser); 
+      })
+      socket.on("view", (userId)=> {
+        socket.emit("viewMessages", userId);
+  })
+
 
     socket.on("send_message", (data)=> {
-          socket.to(data.autorId).emit("recive_message", data);
-          socket.to(data.receptorId).emit("recive_message", data);
+        socket.to(data.autorId).emit("recive_message", data);
+        socket.to(data.receptorId).emit("recive_message", data);
     })
 
-    socket.on("send_estimate", (data)=> {
-      console.log( "mira aca"+ data);
-      socket.to(data.room).emit("recive_cotizacion", data);
+    socket.on("sendEstimateChange", (data)=> {
+      toNotificaions(parseInt(data.estimateId), (res)=>{
+        if(res.idClient===data.autorId){
+          socket.to(res.idFreelancer+"1").emit("recive_cotizacion", data);
+        }else{
+          socket.to(res.idClient+"2").emit("recive_cotizacion", data);
+        }
+      });
 })
+    socket.on("newEstimate", (data)=>{
+      socket.to(data.autorId).emit("newEstimateSended", data);
+      socket.to(data.receptorId).emit("newEstimateSended", data);
+    })
 
     socket.on("disconnect", () => {
         console.log("Usuario desconectado", socket.id)

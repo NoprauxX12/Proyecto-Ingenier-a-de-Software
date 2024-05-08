@@ -3,6 +3,7 @@ import React, {useEffect, useState, useContext} from "react";
 import EstimateData from "../../services/estimate";
 import SendEstimateOv from "../overlays/sendEstimateOv";
 import { AuthContext } from "../../providers/userProvider";
+import MessageData from "../../services/message";
 const mesesDelAnio = [
     "enero",
     "febrero", 
@@ -18,7 +19,7 @@ const mesesDelAnio = [
     "diciembre"
 ];
 
-const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
+const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
     const [estimate, setEstimate] = useState({});
     const [showRealizar, setShowRealizar]= useState(false);
     const [showAsk, setshowAsk]= useState(false);
@@ -27,7 +28,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
     snd.volume = 0.05;
         useEffect(() => {
             const getEst = () => {
-                EstimateData.getEstimateById(estimateId, userData.user, (res) => {
+                EstimateData.getEstimateById({estimateId:estimateId, user: userData.user, name:userData.name}, (res) => {
                     setEstimate(res);
                     const { sendDate, dateStart } = res; // Cambiado de estimate a res
         
@@ -48,6 +49,9 @@ const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
                     }
                 });
             };
+            socket.on("recive_message", ()=>{
+                getEst()
+            })
             socket.on("recive_cotizacion", (data)=>{
                 snd.play();
                 getEst();
@@ -63,14 +67,24 @@ const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
             show();
             setshowAsk(false);
         }
-            
+
         function onSend(value){
             setShowRealizar(!showRealizar);
             setEstimate({...estimate, state: value.state, cost: value.cost.toString().substring(0,2)});
-            socket.emit("send_estimate", {
-                room_id: estimateId, 
-                estimate: value
+            socket.emit("sendEstimateChange", {
+                estimateId: estimateId, 
+                estimate: value,
+                autorId: userData.idCard
             });
+        }
+        function openChat(){
+             MessageData.onView({estimateId: estimateId, userName: userData.name}, (res)=>{
+                console.log(res);
+             });
+             socket.emit("view", userData.idCard+userData.user)
+             onOpen()
+             setEstimate({...estimate, msg: 0});
+             toggleChat();
         }
 
         function onClose(){
@@ -98,7 +112,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
                 </div>
                 <span style={{ fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>{userData.user==="2"? estimate.freelancerName : estimate.clientName}</span>
                 {userData.user==="1"? (<>
-                    {1===parseInt(estimate.state)&& (<>
+                    {(1===parseInt(estimate.state) || 2===parseInt(estimate.state))&& (<>
                         <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={onClose}>Realizar Cotización</a>
                     </>)}
                 </>): (<>
@@ -106,14 +120,36 @@ const EstimateContainer =({toggleChat, estimateId, socket, show})=>{
                         <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={()=>{setshowAsk(true)}}>Aceptar Cotización</a>
                     </>)}
                 </>)}
-                <span onClick={toggleChat} style={{cursor: "pointer"}}><i className="bx bx-message-dots" style={{color: '#4f4f4f', fontSize: "2.5em"}} /></span>
+                <span onClick={openChat} style={{ position: 'relative', cursor: "pointer" }}>
+    {estimate.msg > 0 && (
+        <>
+            <div style={{ 
+                position: 'absolute', 
+                top: '-10px', 
+                right: '-10px', 
+                backgroundColor: '#55ACEE', 
+                color: 'white', 
+                borderRadius: '50%', 
+                width: '20px', 
+                height: '20px', 
+                display: 'flex', 
+                justifyContent: 'center', 
+                padding: "3px",
+                alignItems: 'center' }}>
+                {estimate.msg}
+            </div>
+            </>
+        )}
+            <i className="bx bx-message-dots" style={{ color: '#4f4f4f', fontSize: "2.5em" }} />
+            </span>
                 <span><i class='bx bx-dots-vertical-rounded' style={{color: '#4f4f4f', fontSize: "2.5em", marginLeft: "1em"}}></i></span>
             </div>
             <div className="contentBox">
                 <p style={{float: "right"}}>{estimate.sendDate}</p>
                 <h5 style={{}}>{estimate.city} - {estimate.adress}</h5>
-                {3===parseInt(estimate.state) && (<>
+                {(3===parseInt(estimate.state) || estimate.cost) && (<>
                     <h1 style={{color: "#3D00B7", fontWeight: "bold", marginBottom: "1em"}}>Valor: <span style={{float: "right", marginRight:"1em",color: "#3D00B7"}}>{estimate.cost}.000</span></h1>
+                    <p>Importante: las cotizaciones incluyen unicamente el costo de la mano de obra.</p>
                 </>)}
                 {showRealizar && (<>
                 <SendEstimateOv  onSend={onSend} onClose={onClose} estimateId={estimateId}/>
@@ -140,10 +176,11 @@ export default EstimateContainer;
 const AskOv= ({onClose, cost, onAcept, show})=>{
     return(<>
     <div className="overlay" >
-        <div className="deal-box" style={{height:"30%", width: "40%"}} >
+        <div className="deal-box" style={{height:"40%", width: "50%"}} >
            <div style={{width: "90%"}}>
             <h2 style={{color:"#55ACEE", fontWeight: "bold"}}> <span style={{color:"#3D00B7", fontWeight: "bold"}}>Quieres Aceptar </span> la cotizacion</h2>
-                    <h4>por: {cost} <span style={{marginLeft: "0.2em", marginTop: "0.2em"}}>mil pesos</span></h4>
+                    <h4>por: {cost} <span style={{marginLeft: "0", marginTop: "0.2em"}}>.000</span></h4>
+                    <p> <span style={{color: "#3D00B7", fontWeight: "bold"}}>Importante:</span> las cotizaciones incluyen unicamente el costo de la mano de obra.</p>
                     <button type="button" className="botn" id="button_b" onClick={onClose} style={{display: "inline-block", marginBottom: "0.1em"}}>Cancelar</button>
                     <button type="button" className="botn" id="button" onClick={onAcept} style={{display: "inline-block", marginBottom: "0.1em"}}>Aceptar</button>
            </div>

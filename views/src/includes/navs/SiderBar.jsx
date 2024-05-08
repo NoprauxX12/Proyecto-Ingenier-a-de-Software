@@ -3,6 +3,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import { AuthContext } from '../../providers/userProvider';
 import Urls from '../../util/urls';
 import UserData from '../../services/user';
+import MessageData from '../../services/message';
 import {useSocket} from "../../providers/socketProvider";
 
 import "../../styles/siderBar.css"
@@ -10,6 +11,7 @@ import "../../styles/siderBar.css"
 const SiderBar = () => {
     const [isActive, setIsActive] = useState(false);
     const [not, setNot]= useState(0);
+    const [initialLoad, setInitialLoad] = useState(false);
     const params= new URLSearchParams(window.location.search);
     const {userData, logout} = useContext(AuthContext);
     const [photo, setPhoto] = useState(null);
@@ -28,10 +30,16 @@ const SiderBar = () => {
         }, 1000); // Cambia el tiempo de espera según tus necesidades
     };
     useEffect(()=>{
-        
-        socket.on("recive_message", ()=>{
-            setNot(not+1);
-        })
+        const getNotifications=()=>{
+            MessageData.getNotifications({user: userData.user, idUser: userData.idCard, name: userData.name}, (res)=>{
+                console.log(res);
+                setNot(res.notifications);
+            })
+
+        }
+        socket.on("newEstimateSended",getNotifications)
+        socket.on("recive_message",getNotifications)
+        socket.on("viewMessages", getNotifications)
         const getPhoto= async ()=> {
             UserData.fetchProfilePhoto({id: userData.idCard,user:userData.user}, (res)=>{
                 if(res.response) setPhoto(res.profilePhoto);
@@ -41,8 +49,11 @@ const SiderBar = () => {
             setName(userData.name.split(" "));
             getPhoto();
         }
-        
-    },[photo, userData, socket, not])
+        if(!initialLoad){
+            getNotifications();
+            setInitialLoad(true);
+        }
+    },[photo, userData, socket, not, initialLoad])
 
     const toggleSidebar = () => {
         setIsActive(!isActive);
@@ -54,22 +65,28 @@ const SiderBar = () => {
             <div className="top">
                 <div className="logo">
                     <i className="bx bx-hard-hat" style={{color: '#000'}} />
-                    <span>Freelancer</span>
+                    <span>{userData.user==="1"? "Freelancer": "Cliente"}</span>
                 </div>
                 <i className="bx bx-menu" id="btn" onClick={toggleSidebar} style={{fontSize: '2.3rem', color:"#fff"}} />
             </div>
             <div className="user">
                 {photo!==null? (<>
                     <div style={{ width: "50px", height: "50px",minWidth: "50px", mineight: "50px", overflow: "hidden", borderRadius: "50%" }}>
-                    <img 
-                        src={`data:image/jpeg;base64,${photo}`} 
-                        alt="user" 
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-                    />
-                </div>
+                        <a href={Urls.editProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}>
+                            <img 
+                            src={`data:image/jpeg;base64,${photo}`} 
+                            alt="user" 
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                            />
+                        </a>
+                    </div>
 
                 </>):(<>
-                    <img src="/images/defaultUser.png" alt="user" className="user-img" />
+                    <div style={{ width: "50px", height: "50px",minWidth: "50px", mineight: "50px", overflow: "hidden", borderRadius: "50%" }}>
+                        <a href={Urls.editProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}>
+                            <img src="/images/defaultUser.png" alt="user" className="user-img" />
+                        </a>
+                    </div>
                 </>)}
                 
                 <div className="letter">
@@ -110,7 +127,18 @@ const SiderBar = () => {
                         <i className="bx bx-message-square-dots" />
                         <span className="nav-item">Cotizaciones</span>
                         {not>0 &&(<>
-                        <div style={{ position: 'absolute', top: '-5px', right: '-5px', backgroundColor: '#55ACEE', color: 'white', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <div style={{ 
+                            position: 'absolute', 
+                            top: '-5px', 
+                            right: '-5px', 
+                            backgroundColor: '#55ACEE', 
+                            color: 'white', 
+                            borderRadius: '50%', 
+                            width: '20px', 
+                            height: '20px', 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            alignItems: 'center' }}>
                             {not}
                         </div>
                         </>)}

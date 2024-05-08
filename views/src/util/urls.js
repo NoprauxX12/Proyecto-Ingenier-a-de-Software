@@ -8,7 +8,9 @@ const Urls = {
     editProfile: "/edit-profile",
     post: '/post',
     chat: "/estimate",
-    review:"/review"
+    recovery: "/recovery",
+    change: "/change-password"
+    
 }
 
 export default  Urls;
