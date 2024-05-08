@@ -17,13 +17,14 @@ class ReviewDAO {
         }
     }
 
-    static async averageRank(cb){
-        let sql = "SELECT AVG(clientScore) AS Promedio_Ranking FROM review";
+    static async averageRank(id, cb){
+        let sql = "SELECT AVG(clientScore) AS Promedio_Ranking FROM review r, freelancer f WHERE f.idFreelancer = ? ";
         try{
-            mysqlExecute(sql);
+            mysqlExecute(sql, [id]);
             cb({result: true});
         }catch(error){
-            cb({result:false})
+            cb({result: false})
+            console.error("Error al hacer la consulta", error)
         }
     }
 

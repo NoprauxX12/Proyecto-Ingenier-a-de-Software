@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import UserData from "../../services/user";
+import ReviewData from "../../services/review";
 
 function ViewProfile(){
     const params = new URLSearchParams(window.location.search);
     const [user, setUser]= useState({});
     const id = params.get("id");
     const usertype = params.get("usertype");
+    const [averageRank, setAverageRank] = useState(null)
 
   
     useLayoutEffect(() => {
@@ -21,6 +23,25 @@ function ViewProfile(){
 
       getUserData();
     }, [id, usertype, user.name]);
+
+    useEffect(()=>{
+      const fetchData = async () =>{
+        try{
+          ReviewData.averageRank({id: id}, (response)=>{
+            if(response.result){
+              setAverageRank(response.data)
+            }else{
+              console.log("Error al mostrar ranking")
+            }
+          })
+        }catch(error){
+          console.log(error)
+        }
+      };
+      fetchData();
+    }, [])
+
+
     
     return (
       <>
@@ -70,7 +91,7 @@ function ViewProfile(){
                 <label htmlFor="rating">Puntuación y reseñas:</label>
               </div>
               <div className="content-element">
-                <h1>4.8/5.0</h1>
+                <h1>{averageRank}/5.0</h1>
                 <a href={"/review/?id="+ id }>Ver reseñas</a>
               </div>
             </div>

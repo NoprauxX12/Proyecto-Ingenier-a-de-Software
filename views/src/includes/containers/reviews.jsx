@@ -12,7 +12,6 @@ const ReviewPage = () =>{
             try{
                 ReviewData.selectedReviews({id: id}, (responses)=>{
                     if(responses.result){
-                        console.log("ola",typeof responses.data)
                         setReviews(responses.data);
                     }else{
                         console.error("Error al obtener Reseñas");
@@ -35,7 +34,7 @@ const ReviewPage = () =>{
                         <h4>Puntuación:{review.clientScore}</h4>
                         <h4>Reseña: {review.clientComment}</h4>
                     </div>
-                ))
+                ))  
             ) : (
                 <p>No hay reseñas disponibles.</p>
             )}

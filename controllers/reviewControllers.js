@@ -16,7 +16,6 @@ exports.averageRanking = (req, res, next)=>{
 
 exports.selectedReview = (req, res,next)=>{
     const reviews = req.body.id
-    console.log("reseñas", reviews)
     ReviewDAO.selectReviews(reviews, (result)=>{
         res.json(result)
     })
