@@ -12,7 +12,6 @@ exports.SignUp= (req, res, next)=>{
         } catch (error) {
             
         }
-        console.log(req.body); 
         if(parseInt(req.body.user)===1){
             const list = [];
         req.body.knowledge.split(",").map((e)=>{
@@ -105,7 +104,6 @@ exports.fetchPhoto= (req, res)=>{
     if(parseInt(req.body.user)===1){
         FreelancerDAO.getProfilePhotoById(req.body.id, (result)=>{
             res.json(result);
-            console.log(result);
         })
     }else if(parseInt(req.body.user)=== 2){
         ClientDAO.getProfilePhotoById(req.body,(result)=>{

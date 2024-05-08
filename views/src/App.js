@@ -12,11 +12,13 @@ import PostPage from './screens/postScreen'
 import ViewProfile from './screens/profile/viewProfile';
 import EditProfile from './screens/profile/editProfile';
 import Chat from './screens/chat/chatScreen'
+import ContractScreen from './screens/contracts/contractScreen';
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path={Urls.contract} element={<ContractScreen/>}/>
         <Route path={Urls.viewProfile} element={<ViewProfile/>}/>
         <Route path={Urls.editProfile} element={<EditProfile/>}/>
         <Route path={Urls.photo}element={<UploadPhotoScreen/>}/>

@@ -116,7 +116,7 @@ const SiderBar = () => {
                 </>)}
                 
                 <li>
-                    <a href="#">
+                    <a href={Urls.contract}>
                     <i className="bx bx-notepad"/>
                     <span className="nav-item">Contratos</span>
                     </a>

@@ -31,6 +31,16 @@ class MessageData{
         }
     }
 
+    static async getMessages(roomId, cb){
+        try {
+            const response = await axios.get(`http://localhost:3001/messages/${roomId}`);
+            cb(response.data);
+          } catch (error) {
+            console.error('Error fetching messages:', error);
+          }
+    }
+
+    
 
 }
 

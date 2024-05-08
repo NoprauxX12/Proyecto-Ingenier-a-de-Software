@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const sharp= require("sharp");
 const GeneralDAO = require("./generalDAO");
 const { response } = require("express");
+const { error } = require("console");
 
 const hashPassword = async (password) => {
     const saltRounds = 10; // Número de rondas de salado
@@ -54,6 +55,7 @@ class FreelancerDAO {
       cb({ result: true, user: {} });
       GeneralDAO.insertKnowledge(knowledge, free.idCard);
     } catch (err) {
+      console.log(err);
       cb({ result: false });
     }
 
@@ -86,6 +88,7 @@ class FreelancerDAO {
       });
       cb(results);
     } catch (err) {
+      console.log(error)
       cb({ result: false });
     }
   }
@@ -147,7 +150,9 @@ class FreelancerDAO {
           }
         }
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   static async emailExist(json, cb) {

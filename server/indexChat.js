@@ -66,8 +66,10 @@ io.on("connection", (socket) => {
       toNotificaions(parseInt(data.estimateId), (res)=>{
         if(res.idClient===data.autorId){
           socket.to(res.idFreelancer+"1").emit("recive_cotizacion", data);
+          socket.to(res.idFreelancer+"1").emit("newEstimateSended", data);
         }else{
           socket.to(res.idClient+"2").emit("recive_cotizacion", data);
+          socket.to(res.idClient+"2").emit("newEstimateSended", data);
         }
       });
 })

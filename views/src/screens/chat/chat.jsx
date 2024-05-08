@@ -42,6 +42,10 @@ const Chat = ({ socket, username }) => {
             await EstimateData.setState({state:2, id:roomId},(res)=>{
                 console.log(res);
             })
+        }else if(parseInt(state)===3){
+            await EstimateData.setState({state: 4, id:roomId},(res)=>{
+                console.log(res);
+            })   
         }
         socket.emit("view");
         await setMessages(searchMessages(roomId));

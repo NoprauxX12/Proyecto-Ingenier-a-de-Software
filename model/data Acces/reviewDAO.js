@@ -13,6 +13,7 @@ class ReviewDAO {
             mysqlExecute(sql, values);
             cb({result: true});
         } catch(error){
+            console.log(error)
             cb({result:false})
         }
     }
@@ -23,6 +24,7 @@ class ReviewDAO {
             mysqlExecute(sql);
             cb({result: true});
         }catch(error){
+            console.log(error);
             cb({result:false})
         }
     }

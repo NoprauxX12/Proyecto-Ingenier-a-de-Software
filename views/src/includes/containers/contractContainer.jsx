@@ -19,7 +19,7 @@ const mesesDelAnio = [
     "diciembre"
 ];
 
-const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
+const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
     const [estimate, setEstimate] = useState({});
     const [showRealizar, setShowRealizar]= useState(false);
     const [showAsk, setshowAsk]= useState(false);
@@ -170,7 +170,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
         </>)
 }
 
-export default EstimateContainer;
+export default ContractContainer;
 
 
 const AskOv= ({onClose, cost, onAcept, show})=>{

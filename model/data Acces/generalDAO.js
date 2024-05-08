@@ -7,7 +7,7 @@ class GeneralDAO{
             let results = await mysqlExecute(sql);
             cb(results)
         } catch (error) {
-            cb({});
+            console.log(error);
         }
     }
     static async addKnowledge(knowledges, id){

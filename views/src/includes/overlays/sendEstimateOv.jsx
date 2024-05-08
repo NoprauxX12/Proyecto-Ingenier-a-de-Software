@@ -19,7 +19,6 @@ const SendEstimateOv= ({onClose, estimateId, onSend})=>{
         EstimateData.setState({state: 3, id: estimateId, cost: cost}, (res)=>{
             console.log(res)
         })
-        onSend({cost: cost ,state: 3});
     }
     return(<>
     <div className="overlay" >

@@ -1,21 +1,21 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useState} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
-
-const ChatList = ({handler, estimates, userData})=>{
+const ContractList = ({handler, estimates, userData})=>{
     const [selected, setSelected] = useState("");
     return(<>
         <div style={{ padding: '0.23rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', overflowY: estimates.length > 0 ? 'auto' : 'hidden' }}>
-                    <h2 style={{ margin: '0', fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>Cotizaciones</h2>
-                        <button style={{ border: 'none', background: 'none', cursor: 'pointer', margin:'0' }}>
-                            <FontAwesomeIcon icon={faUserPlus} style={{ fontSize: '1.8rem', color: '#333' }} />
-                        </button>
+                    <h2 style={{ margin: '0', fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>Contratos</h2>
+                    <select name="" id="" className="form-control" style={{width: "30%"}}>
+                        <option value="5">Todos</option>
+                        <option value="6">En curso</option>
+                        <option value="7">Finalizados</option>
+                    </select>
             <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: '2px', backgroundColor: '#EEE',boxShadow: "box-shadow: 4px 0 4px -2px rgba(0, 0, 0, 0.8)" }}></div>
                 </div>
             <div id="estimatesList">
                 {estimates.map(estimate => (<>
-                    {estimate.state<5&& (<>
+                    {estimate.state>=5&& (<>
                         <div key={estimate.id} onClick={() => {
                                 handler(estimate.id, estimate.user, estimate.state);
                                 setSelected(estimate.id);
@@ -41,4 +41,4 @@ const ChatList = ({handler, estimates, userData})=>{
     </>);
 }
 
-export default ChatList;
+export default ContractList;
