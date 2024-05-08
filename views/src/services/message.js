@@ -19,6 +19,19 @@ class MessageData{
             cb("error");
         }
     }
+
+    static async createMessage(content, cb){
+        try {
+            const response = axios.post('http://localhost:3001/messages', content);
+            console.log('Mensaje enviado correctamente:', response.data);
+            cb({response})
+        } catch (error) {
+            cb(false)
+            console.error('Error al enviar el mensaje:', error);
+        }
+    }
+
+
 }
 
 export default MessageData;

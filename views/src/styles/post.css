@@ -1,17 +1,21 @@
 .cuadro {
-    margin-top: 200px; 
-  }
-  
+  padding: 1em 0; 
+  margin-left: 1em;
+  display: flex;
+  max-width: 90%;
+}
 
-  .mb-3 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80%; 
-    margin: 0 auto; 
-  }
-  
-  .Info {
+legend{
+  margin-top: 1em;
+}
+
+.cuadrito {
+  flex: 1;
+  padding: 0 1em;
+  width: calc(50% - 2em); /* Resta el padding del 50% para evitar desbordamiento */
+}
+
+.Info {
     text-align: center;
     font-family: "Fredoka", sans-serif;
     font-optical-sizing: auto;
@@ -19,6 +23,7 @@
     font-size: 2rem;
     font-style: normal;
   }
+  
   .t{
     font-family: "Fredoka", sans-serif;
     font-optical-sizing: auto;
@@ -40,7 +45,11 @@
     text-align: center;
     width: 50%; 
   }
-  
+
+  .short{
+    height: 6em;
+  }
+
   button {
     margin-top: 20px; 
     
@@ -48,5 +57,45 @@
 
   .enviar{
     text-align: center;
-    margin-left: 48%;
+    margin-left: 40%;
   }
+
+.form-label{
+  float: left;
+  margin-left: 0.5em;
+  font-size: 1.5em;
+}
+
+.addContent{
+  background-color: #EEE;
+  width: 38%;
+
+  cursor: pointer;
+  max-height: 4em;
+  padding: 0.3em 0;
+  border-radius: 6px;
+  margin: auto;
+}
+
+.addContent h4{
+  color: #646464;
+  margin-left: 5%;
+}
+
+.addContent i{
+  color: #646464;
+  font-size: 1.5em;
+  margin-left: 5em ;
+}
+
+#postImg{
+  height: 5em;
+  margin-left: 30%;
+}
+
+#postImg{
+  margin-left: -1em;
+  margin-bottom : -1.6em;
+  height: 12em;
+}
+

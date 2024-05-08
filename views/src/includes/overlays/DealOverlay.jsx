@@ -18,7 +18,6 @@ function DealOverlay({onClose, cities, idFreelancer}){
     "place": userData.adress,
     "description": null,
     "dateStart":"",
-    "img": null
   });
 
   const handleSubmit = async (event) => {
@@ -108,7 +107,6 @@ function DealOverlay({onClose, cities, idFreelancer}){
   }, [cities, formValues, selectedCity, userData])
     return (
         <div className="overlay">
-          
           <div className="deal-box">
           <h3 style={{color:"black"}}>Realizar solicitud cotización</h3>
           <h5 id="pasos">Paso {step} de 2</h5>

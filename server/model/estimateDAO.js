@@ -49,26 +49,27 @@ exports.fetchAllEstimates = async (userId, user, name, cb) => {
         }
       }
       results.sort((a, b) => new Date(b.lasTime) - new Date(a.lasTime));
-      console.log(results)
       cb({ estimate: results });
     }
   });
 };
 
 exports.createEstimate= async (json, cb)=>{
-  const { city, user, idClient, idFreelancer, place, description, dateStart, photo} =json;
+  const { city, user, idClient, idFreelancer, place, description, dateStart, photo, img} =json;
   const date = dateStart===""? null: dateStart;
   let sql= "INSERT INTO estimate (`idClient`, `idFreelancer`, `description`, `adress`, `idCity`, `sendedBy`, `state_stateId`, `dateStart`, `dercriptiveImg`) VALUES (?,?,?,?,?,?,?,?,?)";
-  let values=[idClient, idFreelancer, description,place,city,user, 1, date];
+  let values=[idClient, idFreelancer, description,place,city,user, 1 ,date];
   let fileContent=null;
-  if(photo){
+  if(user===1){
+    fileContent = Buffer.from(img, "base64");
+  }else if(photo){
     fileContent = await sharp(photo)
       .resize({ width: 800 })
       .jpeg({ quality: 80 })
       .toBuffer();
   }
   values.push(fileContent);
-  connection.query(sql, values, (err) => {
+  connection.query(sql, values, (err, res) => {
     if (photo !== null) {
       fs.unlink(photo, (error, result) => {
           if (error) {
@@ -82,7 +83,7 @@ exports.createEstimate= async (json, cb)=>{
       console.error('Error al crear estimacion', err.message);
       cb({result:false });
     }else{
-      cb({result: true, idFreelancer: idFreelancer, idClient: idClient});
+      cb({result: true, idFreelancer: idFreelancer, idClient: idClient, id: res.insertId});
     }
      
   });
@@ -120,8 +121,6 @@ exports.getById= async (json, cb)=>{
 
 }
 exports.setState= async (json, cb)=>{
-  console.log("antes que nada")
-  console.log(json)
   const {state, id, cost}= json;
   const values = [
     parseInt(state),
@@ -133,8 +132,6 @@ exports.setState= async (json, cb)=>{
     values.splice(1 ,0, parseFloat(cost));
     sql="update estimate set state_stateId=?, cost=? where estimateId=?";
   }
-  console.log(sql);
-  console.log(values);
   connection.query(sql, values, (err, results) => {
     if (err) {
       console.error('Error al crear estimacion', err.message);

@@ -2,7 +2,15 @@ const PostDAO= require("../model/data Acces/postDAO")
 const Post= require("../model/entities/post")
 
 exports.createPost = (req, res, next)=>{
-    const post = new Post(req.body);
+    let link=null;
+        try {
+            if(req.file.path){
+                link=req.file.path;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    const post = new Post(req.body, link);
     PostDAO.createPost(post, (result)=>{
         res.json(result);
     })
