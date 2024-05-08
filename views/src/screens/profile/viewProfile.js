@@ -29,6 +29,7 @@ function ViewProfile(){
         try{
           ReviewData.averageRank({id: id}, (response)=>{
             if(response.result){
+              console.log("ola",typeof response.data)
               setAverageRank(response.data)
             }else{
               console.log("Error al mostrar ranking")
@@ -91,7 +92,7 @@ function ViewProfile(){
                 <label htmlFor="rating">Puntuación y reseñas:</label>
               </div>
               <div className="content-element">
-                <h1>{averageRank}/5.0</h1>
+                <h1>{averageRank}/5</h1>
                 <a href={"/review/?id="+ id }>Ver reseñas</a>
               </div>
             </div>

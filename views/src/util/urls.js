@@ -9,7 +9,8 @@ const Urls = {
     post: '/post',
     chat: "/estimate",
     recovery: "/recovery",
-    change: "/change-password"
+    change: "/change-password",
+    review: "/review"
     
 }
 

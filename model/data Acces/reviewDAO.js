@@ -10,7 +10,7 @@ class ReviewDAO {
 
         let sql = "INSERT INTO review(idContract, clientScore, clientComment) VALUES (?,?,?)";
         try{
-            mysqlExecute(sql, values);
+            let res= await mysqlExecute(sql, values);
             cb({result: true});
         } catch(error){
             cb({result:false})
@@ -20,11 +20,12 @@ class ReviewDAO {
     static async averageRank(id, cb){
         let sql = "SELECT AVG(clientScore) AS Promedio_Ranking FROM review r, freelancer f WHERE f.idFreelancer = ? ";
         try{
-            mysqlExecute(sql, [id]);
-            cb({result: true});
+            let res = await mysqlExecute(sql, [id]);
+            const promedio = res[0].Promedio_Ranking;
+            cb({result: true, data: promedio});
         }catch(error){
-            cb({result: false})
             console.error("Error al hacer la consulta", error)
+            cb({result: false})
         }
     }
 

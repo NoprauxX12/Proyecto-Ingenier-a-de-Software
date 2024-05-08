@@ -14,10 +14,12 @@ class ReviewData{
 
         static async averageRank(json, cb){
             try{
+                console.log("Json", json)
                 let result = await axios.post(BaseUrl+"/average-rank", json);
+                console.log("data", result.data)
                 cb(result.data);
             }catch(error){
-                console.log(error)
+                console.log("Error",error)
                 cb({result:false});
             }
         }
@@ -25,9 +27,10 @@ class ReviewData{
         static async selectedReviews(json, cb){
             try{
                 let result = await axios.post(BaseUrl+ "/select-reviews", json)
+                console.log("data",result.data)
                 cb(result.data);
             }catch(error){
-                console.log(error)
+                console.log("Error",error)
                 cb({result: false});
             }
         }
