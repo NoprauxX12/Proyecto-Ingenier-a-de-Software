@@ -26,6 +26,16 @@ class ReviewDAO {
             cb({result:false})
         }
     }
+
+    static async selectReviews(id,cb){
+        let sql = "SELECT r.clientComment FROM review r INNER JOIN contract c ON r.idContract = c.idContract INNER JOIN estimate e ON c.estimate_estimateId = e.estimateId INNER JOIN freelancer f ON e.idFreelnacer = f.idFreelancer WHERE f.idFreelancer = ?";   
+        try{
+            const [rows] = await mysqlExecute(sql, [id]);
+            cb({result: true, data: rows});
+        }catch(error){
+            console.error("Error al ejecutar la consulta:", error);
+        }
+    }
 }
 
 module.exports = ReviewDAO;

@@ -27,7 +27,7 @@ class ClientDAO {
     let sql =
       "INSERT INTO Client (idClient, `name`, phoneNumber,cellphone,adress, email, `password`, idCity, `description`, profilePhoto ) VALUES (?,?,?,?,?,?,?,?,?,?);";
     const password = await hashPassword(client.password);
-    let link = client.profilePhoto;
+    let link = client.profilePhoto; 
     let fileContent = null;
     const values = [
       client.idCard,
@@ -56,13 +56,17 @@ class ClientDAO {
     }
 
     if (link !== null) {
-      fs.unlink(link, (error) => {
-        if (error) {
-          console.error("Error deleting file:", error);
-        } else {
-          console.log("File deleted successfully.");
-        }
-      });
+      try {
+        fs.unlink(link, (error) => {
+            if (error) {
+              console.error("Error deleting file:", error);
+            } else {
+              console.log("File deleted successfully.");
+            }
+          });
+      } catch (error) {
+          console.log(error);
+      }
     }
   }
   static async userExist(json, cb) {
@@ -133,7 +137,23 @@ class ClientDAO {
     } catch (error) {
       console.log(error);
     }
-  }
+}
+static async getProfilePhotoById(json, cb){
+    let {id} =json;
+    let sql= "select profilePhoto from  client where  idClient=?";
+    try {
+        const res= await mysqlExecute(sql, [id]);
+        if(res[0].profilePhoto){
+            let photo= res[0].profilePhoto.toString("base64");
+            cb({profilePhoto: photo, response: true});
+        }else{
+            cb({response: false});
+        }
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
 }
 
 module.exports= ClientDAO;

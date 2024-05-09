@@ -12,11 +12,15 @@ import { AuthContext } from "../../providers/userProvider";
 const Chat = ({ socket, username }) => {
     const {userData} = useContext(AuthContext);
     const [showchat, setShowChat]= useState(false);
+    // eslint-disable-next-line no-unused-vars
     const [messages, setMessages] = useState([]);
+    const [initialLoad, setInitialLoad] = useState(false);
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [estimates, setEstimates] = useState([]);
+    var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
+    snd.volume = 0.05;
 
-    function toggleChats(){
+    function toggleChats(){ 
         setShowChat(!showchat);
     }
     
@@ -33,42 +37,62 @@ const Chat = ({ socket, username }) => {
       };
     
 
-    async function  handleChatClick(roomId){
+    async function  handleChatClick(roomId, user, state){
+        if(userData.user!==user && parseInt(state)===1){
+            await EstimateData.setState({state:2, id:roomId},(res)=>{
+                console.log(res);
+            })
+        }
+        socket.emit("view");
         await setMessages(searchMessages(roomId));
+        fetchestimates();
         setSelectedRoom(roomId);
         setShowChat(false);
-        console.log(`Abrir chat con ID: ${roomId}`);
     }
+    const fetchestimates = () => {
+        EstimateData.getEstimates({id: userData.idCard, user: userData.user, name: userData.name}, (res)=>{
+            setEstimates(res);
+        })
+    };
 
     useEffect(() => {
         const fetchestimates = () => {
-            EstimateData.getEstimates(userData.user, userData.idCard, (res)=>{
+            EstimateData.getEstimates({id: userData.idCard, user: userData.user, name: userData.name}, (res)=>{
                 setEstimates(res);
             })
         };
-
-        if (estimates.length === 0) { //poner cuidado con un ciclo inf
+        socket.on("newEstimateSended",fetchestimates)
+        socket.on("recive_message",fetchestimates)
+        if(!initialLoad){
             fetchestimates();
-        }else{
-            console.log(estimates)
+            document.title="chat";
+            setMessages(searchMessages(selectedRoom));
+            setInitialLoad(true);
         }
-        document.title="chat";
-        setMessages(searchMessages(selectedRoom));
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [estimates, selectedRoom, userData]);
-
+    const onSend=()=>{
+            fetchestimates();
+            setMessages(searchMessages(selectedRoom));
+            
+    }
 
     return (
         <div style={{ display: 'flex', height: '100vh' }}>
                 <SiderBar socket={socket}/>
             <div style={{ flex: '2.70', backgroundColor: '#white', position: 'relative' }}>
-                <ChatList estimates={estimates} username={username} handler={handleChatClick} />
+                <ChatList userData={userData} estimates={estimates} username={username} handler={handleChatClick}/>
             </div>
             <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}> {/* Columna principal */}
                 {selectedRoom ? (<>
                     {showchat? (<>
-                        <ChatContainer socket={socket} rooms={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
+                        <ChatContainer onSend={onSend} socket={socket} rooms={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
                     </>): (<>
-                        <EstimateContainer estimateId={selectedRoom} toggleChat={toggleChats}/>
+                        <EstimateContainer onOpen={fetchestimates} socket={socket} estimateId={selectedRoom} toggleChat={toggleChats} show={()=>{
+                            setSelectedRoom(null);
+                            fetchestimates(); 
+                            }}/>
                     </>)}
                 </> ) : (
                     <NotChosenChat/>

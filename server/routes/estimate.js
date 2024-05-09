@@ -12,6 +12,6 @@ router.post("/create-estimate", upload.single("img"), creatEstimate);
 
 router.post("/estimate-by-id", getEstimateById);
 
-router.post("/set-estimate-state", setStateStimate);
+router.post("/set-estimate-state", setStateStimate); 
 
 module.exports = router;

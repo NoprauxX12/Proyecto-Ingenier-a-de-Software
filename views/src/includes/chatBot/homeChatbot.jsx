@@ -61,7 +61,7 @@ export default class ElQueSabeChatbot extends Component {
       <div>
         {showChatbot && (
           <ThemeProvider theme={theme}>
-            <ChatBot
+            <ChatBot style={{zIndex: 9999,}}
               steps={[
                 {
                   id: '1',

@@ -49,7 +49,7 @@ const Navbar = () => {
   {!isLoggedIn ? (
     <>
       <a className="btne" href={Urls.logIn}>Ingresar</a>
-      <a className="btne_dark" href={Urls.signUp}>Registrarse</a>
+      <a className="btne_dark" href={Urls.signUp} id='botones_ingreso'>Registrarse</a>
     </>
   ) : (
     <>

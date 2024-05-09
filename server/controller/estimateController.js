@@ -1,9 +1,9 @@
 const { fetchAllEstimates , createEstimate, getById, setState } = require("../model/estimateDAO");
 
 exports.getUserEstimates = (req, res) => {
-    const {id, user} = req.body;
+    const {id, user, name} = req.body;
     // Consulta a la base de datos para obtener las salas asociadas al usuario con el ID proporcionado
-    fetchAllEstimates(id , user, (result) => {
+    fetchAllEstimates(id , user, name, (result) => {
         const { error } = result;
         if (error === 404) {
             res.status(404).send('No se encontraron salas asociadas al usuario');
@@ -38,8 +38,8 @@ exports.getEstimateById=(req,res)=>{
 }
 
 exports.setStateStimate=(req, res)=>{
-    const {state, id,cost}= req.body;
-    setState(state, id,cost, (response)=>{
+    console.log(req.body);
+    setState(req.body, (response)=>{
         res.json(response);
     })
 }
