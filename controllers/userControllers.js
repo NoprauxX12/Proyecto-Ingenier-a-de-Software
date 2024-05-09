@@ -105,7 +105,6 @@ exports.fetchPhoto= (req, res)=>{
     if(parseInt(req.body.user)===1){
         FreelancerDAO.getProfilePhotoById(req.body.id, (result)=>{
             res.json(result);
-            console.log(result);
         })
     }else if(parseInt(req.body.user)=== 2){
         ClientDAO.getProfilePhotoById(req.body,(result)=>{
@@ -122,6 +121,8 @@ exports.progressiveProfiling = (req, res)=>{
 
 exports.checkPreferences = (req, res)=>{
     FreelancerDAO.checkPreferences(req.body.id, (result)=>{
+        //console.log(result);
         res.json(result);
+        
     })
 }

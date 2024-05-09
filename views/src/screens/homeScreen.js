@@ -47,11 +47,8 @@ function HomeScreen() {
           console.log("freelancerPreferences:", res);
         });
       }
-      
     };
-
-
-    console.log(freelancerPreferences);
+    
     const fetchCityes = async () => {
         TownData.fetchCityes((res) => {
           setCytyes(res); // Aquí accedes a res.data en lugar de res
@@ -91,7 +88,7 @@ function HomeScreen() {
         <Navbar />
       </>):(<>
         <SiderBar user={userData.user}/>
-        {userData.user === "1" && !freelancerPreferences && (
+        {userData.user === "1" && !freelancerPreferences.response && (
       <FreelancerPreferences />
       )}
       </>)}

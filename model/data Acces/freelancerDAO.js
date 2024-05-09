@@ -337,7 +337,7 @@ class FreelancerDAO {
       "SELECT tools, preferredBrands FROM freelancer WHERE idFreelancer =?";
     try {
       const res = await mysqlExecute(sql, [id]);
-
+  
       if(res[0].tools && res[0].preferredBrands){
         cb({response: true});
       }else{
@@ -346,7 +346,6 @@ class FreelancerDAO {
 
     } catch (error) {
       console.log(error);
-      cb
     }
   }
 }

@@ -83,15 +83,15 @@ class UserData {
           cb({ response: false });
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
         cb({ response: false });
       }
     }
 
     static async checkPreferences(id, cb){
       try{
-        const response = await axios.post(`${BaseUrl}/check-preferences`,id);
-        cb(response);
+        const response = await axios.post(`${BaseUrl}/check-preferences`,id);  
+        cb(response.data);
       }catch(error){
         console.log(error);
       }
