@@ -110,3 +110,15 @@ exports.fetchPhoto= (req, res)=>{
         //ClientDAO(req.body);
     }
 };
+
+exports.progressiveProfiling = (req, res)=>{
+    FreelancerDAO.progressiveProfiling(req.body, (result)=>{
+        res.json(result);
+    })
+}
+
+exports.checkPreferences = (req, res)=>{
+    FreelancerDAO.checkPreferences(req.body.id, (result)=>{
+        res.json(result);
+    })
+}

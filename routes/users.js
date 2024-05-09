@@ -18,6 +18,9 @@ router.post("/log-in", usersControllers.logIn);
 
 router.post("/profile-photo", usersControllers.fetchPhoto);
 
+router.post("/freelancer-preferences",usersControllers.progressiveProfiling);
+
+router.post("/check-preferences",usersControllers.checkPreferences);
 
 module.exports= router;
 

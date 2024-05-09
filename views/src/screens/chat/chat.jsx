@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import '@fontsource/comfortaa'
+import '@fontsource/comfortaa';
 import SiderBar from "../../includes/navs/SiderBar";
 import ChatList from "../../includes/containers/chatList";
 import ChatContainer from "../../includes/containers/chatContainer";

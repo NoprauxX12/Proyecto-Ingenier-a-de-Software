@@ -74,6 +74,29 @@ class UserData {
         }
     }
 
+    static async progressiveProfiling(json, cb){
+      try{
+        const success = await axios.post(`${BaseUrl}/freelancer-preferences`,json);
+        if (success) {
+          cb({ response: true });
+        } else {
+          cb({ response: false });
+        }
+      } catch (error) {
+        console.error(error);
+        cb({ response: false });
+      }
+    }
+
+    static async checkPreferences(id, cb){
+      try{
+        const response = await axios.post(`${BaseUrl}/check-preferences`,id);
+        cb(response);
+      }catch(error){
+        console.log(error);
+      }
+    }
+
 }
 
 export default UserData;

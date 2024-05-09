@@ -78,7 +78,7 @@ function EditProfile() {
     formData.append("name", data.name);
     formData.append("email", data.email);
     formData.append("description", data.description);
-    formData.append("phone", data.phone);
+    formData.append("cellphone", data.cellphone);
     formData.append("importantInfo", data.importantInfo);
     formData.append("photo", profilePhotoFile);
     formData.append("curriculum", curriculumFile);
@@ -167,10 +167,10 @@ function EditProfile() {
             </div>
             <div className="right-container">
               <div className="content-element">
-                <label htmlFor="phone">Teléfono:</label>{" "}
+                <label htmlFor="cellphone">Teléfono:</label>{" "}
                 <input
                   type="tel"
-                  id="phone"
+                  id="cellphone"
                   className="phone-box inside-color"
                   defaultValue={data.cellphone}
                   size={10}
