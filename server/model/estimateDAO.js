@@ -8,7 +8,6 @@ exports.fetchAllEstimates = async (userId, user, name, cb) => {
     user === "2"
       ? "select estimateId id, f.name name, e.description, f.profilePhoto, sendedBy user, state_stateId state, f.idFreelancer receptor, e.sendDate lasTime from estimate e join freelancer f using(idFreelancer) where idClient=? order by sendDate desc"
       : "select estimateId id, c.name name, e.description, c.profilePhoto, sendedBy user, state_stateId state, c.idClient receptor, e.sendDate lasTime from estimate e join client c using( idClient) where idFreelancer=? order by sendDate desc";
-
   connection.query(sql, [userId], async (err, results) => {
     if (err) {
       console.error("Error al obtener las salas asociadas al usuario:", err.message);

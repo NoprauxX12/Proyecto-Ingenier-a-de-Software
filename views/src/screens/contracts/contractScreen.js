@@ -9,7 +9,7 @@ import ChatContainer from "../../includes/containers/chatContainer";
 import NotChosenChat from "../../includes/containers/notChosenChat";
 import ContractContainer from "../../includes/containers/contractContainer";
 
-import MessageData from "../../services/message";
+import axios from "axios";
 import EstimateData from "../../services/estimate";
 
 
@@ -32,9 +32,12 @@ function ContractScreen() {
   const searchMessages = async (roomId) => {
       let _messages = null;
       console.log("Consulta principal")
-      MessageData.getMessages(roomId,(res)=>{
-        _messages=res;
-      })
+      try {
+        const response = await axios.get(`http://localhost:3001/messages/${roomId}`);
+        _messages = response.data;
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
       return _messages;
     };
   
@@ -63,6 +66,7 @@ function ContractScreen() {
   useEffect(() => {
       const fetchestimates = () => {
           EstimateData.getEstimates({id: userData.idCard, user: userData.user, name: userData.name}, (res)=>{
+            console.log(res);
               setEstimates(res);
           })
       };
@@ -70,7 +74,7 @@ function ContractScreen() {
       socket.on("recive_message",fetchestimates)
       if(!initialLoad){
           fetchestimates();
-          document.title="chat";
+          document.title="Contratos";
           setMessages(searchMessages(selectedRoom));
           setInitialLoad(true);
       }

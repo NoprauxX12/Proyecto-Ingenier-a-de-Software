@@ -1,6 +1,4 @@
-const { faLinesLeaning } = require("@fortawesome/free-solid-svg-icons");
 const connection= require("../DAL/mysqlCon");
-const { notifications } = require("../controller/MessageController");
 
 exports.getMessages = async (roomId, cb) =>{
     connection.query('SELECT id, content, autor, estimateid, attachment, DATE_FORMAT(time, "%H:%i") AS time FROM messages WHERE estimateid = ?', [roomId], (err, results) => {
@@ -62,13 +60,24 @@ exports.notifications= (json, cb)=>{
       let cuenta=res[0].notificatios;
       let sql =user==="2"? "select count(*) cuenta from estimate where state_stateId=1 or state_stateId = 3 and idClient=? and sendedBy!=?":
       "select count(*) cuenta from estimate where state_stateId=1 or state_stateId = 1 and idFreelancer=? and sendedBy!=?";
-        await new Promise((resolve) => {
+      let contractsNotifications = 0;
+      await new Promise((resolve) => {
         connection.query(sql, [idUser,parseInt(user)], (err, res)=>{
           cuenta+= res[0].cuenta;
           resolve();
-        }) 
+        }
+      )
     })
-      cb({response:true, notifications: cuenta})
+    await new Promise((resolve) => {
+      sql=user==="1"? "select count(*) cuenta from (select state_stateId state, visto, sendedBy from estimate left join messages using(estimateId) where idFreelancer=? and autor!=? and state_stateId>=5) notificaion where state = 1 or state = 3 or visto=0":
+      "select count(*) cuenta from (select state_stateId state, visto, sendedBy from estimate left join messages using(estimateId) where idClient=? and autor!=? and state_stateId>=5) notificaion where state = 1 or state = 3 or visto=0"    
+      connection.query(sql, [idUser, name], (err, res)=>{
+        contractsNotifications+= res[0].cuenta;
+        resolve();
+      }
+    )
+  })
+      cb({response:true, notifications: cuenta, contractsNotifications: contractsNotifications})
     }
   })
 }

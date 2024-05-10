@@ -23,6 +23,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
     const [estimate, setEstimate] = useState({});
     const [showRealizar, setShowRealizar]= useState(false);
     const [showAsk, setshowAsk]= useState(false);
+    const [dateStart, setDateStart]= useState(null);
     const {userData} = useContext(AuthContext);
     var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
     snd.volume = 0.05;
@@ -42,10 +43,8 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
         
                     if (dateStart) {
                         let date = new Date(dateStart);
-                        setEstimate((prevEstimate) => ({
-                            ...prevEstimate,
-                            dateStart: `${date.getDate()} - ${mesesDelAnio[date.getMonth()]} de ${date.getFullYear()}` , // Obtener el día del mes
-                        }));
+                        console.log(dateStart)
+                        setDateStart(`${date.getDate()} - ${mesesDelAnio[date.getMonth()]} de ${date.getFullYear()}`)
                     }
                 });
             };
@@ -64,7 +63,10 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
             EstimateData.setState({state: 5, id: estimateId}, (res)=>{
                 console.log(res)
             })
-            show();
+            socket.emit("sendEstimateChange", {
+                estimateId: estimateId,
+                autorId: userData.idCard
+            });
             setshowAsk(false);
         }
 
@@ -159,8 +161,8 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                 </>)}
                 <h3>Descripción:</h3>
                 <p className="textDescriptio">{estimate.description}</p>
-                <h3>Fecha de inicio:</h3>
-                <p className="textDescriptio">{estimate.dateStart==="" || estimate.dateStart===null? "No especificada": estimate.dateStart }</p>
+                <h3>Fecha de inicio - fin:</h3>
+                <p className="textDescriptio">{estimate.dateStart==="" || estimate.dateStart===null? "No especificada": dateStart }</p>
                 <h3>Foto: </h3>
                 {estimate.dercriptiveImg && (<>
                     <img src={`data:image/jpeg;base64,${estimate.dercriptiveImg}`} alt="descrictive img" style={{height: "40%"}}/>
@@ -173,7 +175,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
 export default EstimateContainer;
 
 
-const AskOv= ({onClose, cost, onAcept, show})=>{
+const AskOv= ({onClose, cost, onAcept})=>{
     return(<>
     <div className="overlay" >
         <div className="deal-box" style={{height:"40%", width: "50%"}} >
@@ -189,3 +191,5 @@ const AskOv= ({onClose, cost, onAcept, show})=>{
     </div>
     </>);
 }
+
+//{userData.user==="2"&& (<><form action=""><input type="date"/><input type="date" style={{marginLeft: "1em"}}/><button className="btne_dark" style={{marginLeft: "1em"}}>Cambiar</button></form></>)}

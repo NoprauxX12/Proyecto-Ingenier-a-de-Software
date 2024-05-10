@@ -69,7 +69,7 @@ io.on("connection", (socket) => {
           socket.to(res.idFreelancer+"1").emit("newEstimateSended", data);
         }else{
           socket.to(res.idClient+"2").emit("recive_cotizacion", data);
-          socket.to(res.idClient+"2").emit("newEstimateSended", data);
+          socket.to(res.idClient+"2").emit("newEstimateSended", data); 
         }
       });
 })

@@ -69,7 +69,7 @@ const Chat = ({ socket, username }) => {
         socket.on("recive_message",fetchestimates)
         if(!initialLoad){
             fetchestimates();
-            document.title="chat";
+            document.title="cotizaciones";
             setMessages(searchMessages(selectedRoom));
             setInitialLoad(true);
         }
