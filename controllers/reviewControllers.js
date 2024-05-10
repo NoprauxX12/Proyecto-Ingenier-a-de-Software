@@ -6,10 +6,18 @@ exports.createRanking = (req, res, next)=>{
     ReviewDAO.giveRanking(review, (result)=>{
         res.json(result)
     })
-}
+};
 
 exports.averageRanking = (req, res, next)=>{
-    ReviewDAO.averageRank((result)=>{
+    const id = req.body.id
+    ReviewDAO.averageRank(id, (result)=>{
         res.json(result)
     })
-}
+};
+
+exports.selectedReview = (req, res,next)=>{
+    const reviews = req.body.id
+    ReviewDAO.selectReviews(reviews, (result)=>{
+        res.json(result)
+    })
+};

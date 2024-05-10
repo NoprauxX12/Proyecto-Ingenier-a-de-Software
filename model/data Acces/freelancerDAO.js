@@ -197,7 +197,23 @@ class FreelancerDAO {
       console.log(error);
     }
   }
-  
+
+  static async updatePassword(data, cb) {
+
+    let sql = "UPDATE freelancer SET password = ? WHERE email = ?";
+    let hashedPassword = await hashPassword(data.password)
+
+    try{  
+        const res = await mysqlExecute(sql, [hashedPassword, data.email])
+        if (res.affectedRows > 0){
+          cb(true)
+        } else {
+          cb(false)
+        }
+    } catch (error){
+      console.log(error);
+    }
+  }
 
   static async updateById(formData) {
     const {

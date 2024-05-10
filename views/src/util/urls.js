@@ -8,7 +8,10 @@ const Urls = {
     editProfile: "/edit-profile",
     post: '/post',
     chat: "/estimate",
-    contract: "/contracts"
+    recovery: "/recovery",
+    change: "/change-password",
+    review: "/review"
+    
 }
 
 export default  Urls;

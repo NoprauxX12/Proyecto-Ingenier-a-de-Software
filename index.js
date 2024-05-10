@@ -9,6 +9,7 @@ const app = express();
 const userRoutes = require("./routes/users");
 const generalRoutes=require("./routes/general")
 const postRoutes = require("./routes/post");
+const reviewRoutes = require("./routes/review")
 
 
 app.use(session({
@@ -28,5 +29,6 @@ app.use(cors());
 app.use(userRoutes);
 app.use(generalRoutes);
 app.use(postRoutes);
+app.use(reviewRoutes);
 // Iniciar el servidor
 app.listen(3200);

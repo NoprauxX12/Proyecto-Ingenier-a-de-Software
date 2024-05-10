@@ -12,6 +12,9 @@ import PostPage from './screens/postScreen'
 import ViewProfile from './screens/profile/viewProfile';
 import EditProfile from './screens/profile/editProfile';
 import Chat from './screens/chat/chatScreen'
+import RecoveryPasword from './screens/recoveryPassword/recoveryPasword';
+import ChangePassword from './screens/recoveryPassword/changePassword';
+import ReviewPage from './includes/containers/reviews';
 import ContractScreen from './screens/contracts/contractScreen';
 
 function App() {
@@ -27,6 +30,9 @@ function App() {
         <Route path={Urls.logIn} element={<LoginScreen />}/>
         <Route path={Urls.post} element = {<PostPage />}/>
         <Route path={Urls.chat} element = {<Chat/>}/>
+        <Route path={Urls.recovery} element ={<RecoveryPasword/>}/>
+        <Route path={Urls.change} element ={<ChangePassword/>}/>
+        <Route path={Urls.review} element= {<ReviewPage/>}/>
       </Routes>
     </Router>
   );
