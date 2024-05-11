@@ -231,12 +231,15 @@ class FreelancerDAO {
     } = formData;
 
     let fileContent = null;
-
-    if (photo !== null) {
-      fileContent = await sharp(photo)
-        .resize({ width: 800 })
-        .jpeg({ quality: 80 })
-        .toBuffer();
+    try {
+      if (photo !== null) {
+        fileContent = await sharp(photo)
+          .resize({ width: 800 })
+          .jpeg({ quality: 80 })
+          .toBuffer();
+      }
+    } catch (error) {
+      console.log(error)
     }
 
     let sql = `UPDATE freelancer SET

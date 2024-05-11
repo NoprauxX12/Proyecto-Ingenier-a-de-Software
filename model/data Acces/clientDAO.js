@@ -25,7 +25,7 @@ const hashPassword = async (password) => {
 class ClientDAO {
   static async createClient(client, cb) {
     let sql =
-      "INSERT INTO Client (idClient, `name`, phoneNumber,cellphone,adress, email, `password`, idCity, `description`, profilePhoto ) VALUES (?,?,?,?,?,?,?,?,?,?);";
+      "INSERT INTO client (idClient, `name`, phoneNumber,cellphone,adress, email, `password`, idCity, `description`, profilePhoto ) VALUES (?,?,?,?,?,?,?,?,?,?);";
     const password = await hashPassword(client.password);
     let link = client.profilePhoto; 
     let fileContent = null;
