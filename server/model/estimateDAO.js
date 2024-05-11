@@ -152,3 +152,17 @@ exports.toNotificaions= (id, cb)=>{
   });
 }
 
+exports.setToken= async (estimateId, token, cb)=>{
+  let sql= "select c.email emailCliente, f.email emailFreelancer from estimate join freelancer f using(idFreelancer) join client c using(idClient) where estimateId =?"
+  connection.query(sql, [estimateId], (err, results) => {
+    if (err) {
+      console.error('Error al crear estimacion', err.message);
+    }else{
+      sql= "UPDATE `el_que_sabe`.`estimate` SET `authenticationCode` = ? WHERE (`estimateId` = ?)"
+      connection.query(sql, [token, estimateId], (err) => {
+        if(err) console.log(err);
+      });
+      cb(results[0]);
+    }
+  });
+}

@@ -1,4 +1,8 @@
-const { fetchAllEstimates , createEstimate, getById, setState } = require("../model/estimateDAO");
+const EmailSender = require("../DAL/emailSender");
+const { fetchAllEstimates , createEstimate, getById, setState, setToken } = require("../model/estimateDAO");
+const generarToken= require("../DAL/tokenGenerator");
+
+const emailSender= new EmailSender();
 
 exports.getUserEstimates = (req, res) => {
     const {id, user, name} = req.body;
@@ -38,7 +42,14 @@ exports.getEstimateById=(req,res)=>{
 }
 
 exports.setStateStimate=(req, res)=>{
-    console.log(req.body);
+    const {state, id}=req.body;
+    if(state===5){
+        const token= generarToken();
+        setToken(id, token, (response)=>{
+            emailSender.sendClientTokenNewService(response.emailCliente, token);
+            emailSender.sendFreelancerTokenNewService(response.emailFreelancer, token);
+        })
+    }
     setState(req.body, (response)=>{
         res.json(response);
     })

@@ -111,7 +111,7 @@ const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                     </>)}
                 </>): (<>
                     {(6===parseInt(estimate.state) ||3===parseInt(estimate.state))&& (<>
-                        <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={()=>{setshowAsk(true)}}>Finalizar contrato</a>
+                        <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={()=>{setshowAsk(true)}}>Finalizar servicio</a>
                     </>)}
                 </>)}
                 <span onClick={openChat} style={{ position: 'relative', cursor: "pointer" }}>
@@ -147,7 +147,7 @@ const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                 <AskOv  onAcept={onAcept} onClose={()=>{setShowRealizar(false)}} text={`¿Te han pagado los ${estimate.cost}.000?`} action="1"/>
                 </>)}
                 {showAsk && (<>
-                <AskOv  onAcept={onAcept} onClose={()=>{setshowAsk(false)}} text={`¿Quieres finalizar el contrato?`} action="2" />
+                <AskOv  onAcept={onAcept} onClose={()=>{setshowAsk(false)}} text={`¿Quieres finalizar el servicio?`} action="2" />
                 </>)}
                 <h3>Descripción:</h3>
                 <p className="textDescriptio">{estimate.description}</p>

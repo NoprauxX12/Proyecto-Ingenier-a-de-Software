@@ -8,7 +8,7 @@ const ContractList = ({handler, estimates, userData})=>{
 
     return(<>
         <div style={{ padding: '0.23rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', overflowY: estimates.length > 0 ? 'auto' : 'hidden' }}>
-                    <h2 style={{ margin: '0', fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>Contratos</h2>
+                    <h2 style={{ margin: '0', fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>Servicios</h2>
                     <select onChange={(e)=>{
                         setState(e.target.value);
                     }} id="" className="form-control" style={{width: "35%"}}>
