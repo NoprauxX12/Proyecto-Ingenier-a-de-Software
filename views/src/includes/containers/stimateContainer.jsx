@@ -67,6 +67,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                 estimateId: estimateId,
                 autorId: userData.idCard
             });
+            show();
             setshowAsk(false);
         }
 

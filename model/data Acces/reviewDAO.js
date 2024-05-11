@@ -2,13 +2,14 @@ const mysqlExecute = require("../../util/mysqlConnexion");
 
 class ReviewDAO {
     static async giveRanking(rank, cb){
-        values =[
+        console.log(rank)
+        let values =[
             rank.idContract,
             rank.clientScore,
-            rank.clientComment
+            rank.clientComent
         ];
 
-        let sql = "INSERT INTO review(idContract, clientScore, clientComment) VALUES (?,?,?)";
+        let sql = "INSERT INTO review (estimateId, clientScore, clientComment) VALUES (?,?,?)";
         try{
             let res= await mysqlExecute(sql, values);
             cb({result: true});
@@ -33,7 +34,7 @@ class ReviewDAO {
     }
 
     static async selectReviews(id,cb){
-        let sql = "SELECT r.clientComment, r.clientScore FROM review r INNER JOIN contract c ON r.idContract = c.idContract INNER JOIN estimate e ON c.estimate_estimateId = e.estimateId INNER JOIN freelancer f ON e.idFreelancer = f.idFreelancer WHERE f.idFreelancer = ?";   
+        let sql = "SELECT r.clientComment, r.clientScore FROM review r INNER JOIN contract c ON r.estimateId = c.estimateId INNER JOIN estimate e ON c.estimate_estimateId = e.estimateId INNER JOIN freelancer f ON e.idFreelancer = f.idFreelancer WHERE f.idFreelancer = ?";   
         try{
             const rows = await mysqlExecute(sql, [id]);
             cb({result: true, data: rows});

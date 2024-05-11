@@ -6,8 +6,8 @@ const sharp = require("sharp");
 exports.fetchAllEstimates = async (userId, user, name, cb) => {
   let sql =
     user === "2"
-      ? "select estimateId id, f.name name, e.description, f.profilePhoto, sendedBy user, state_stateId state, f.idFreelancer receptor, e.sendDate lasTime from estimate e join freelancer f using(idFreelancer) where idClient=? order by sendDate desc"
-      : "select estimateId id, c.name name, e.description, c.profilePhoto, sendedBy user, state_stateId state, c.idClient receptor, e.sendDate lasTime from estimate e join client c using( idClient) where idFreelancer=? order by sendDate desc";
+      ? "select estimateId id, f.name name, e.description, f.profilePhoto, sendedBy user, state_stateId state, f.idFreelancer receptor, e.sendDate lasTime, authenticationCode from estimate e join freelancer f using(idFreelancer) where idClient=? order by sendDate desc"
+      : "select estimateId id, c.name name, e.description, c.profilePhoto, sendedBy user, state_stateId state, c.idClient receptor, e.sendDate lasTime, authenticationCode from estimate e join client c using( idClient) where idFreelancer=? order by sendDate desc";
   connection.query(sql, [userId], async (err, results) => {
     if (err) {
       console.error("Error al obtener las salas asociadas al usuario:", err.message);
@@ -91,8 +91,8 @@ exports.createEstimate= async (json, cb)=>{
 exports.getById= async (json, cb)=>{
   const {estimateId, user, name} =json;
 
-  let sql=user==="1"? "select sendDate, estimateId, `idClient`, `idFreelancer`, e.description, e.adress, t.name city, `sendedBy`, `state_stateId` state, `dateStart`, `dercriptiveImg`, c.name clientName, f.name freelancerName, cost, c.profilePhoto profilePhoto from estimate e join client c using(idClient) join freelancer f using(idFreelancer) join town t on e.idCity=t.idCity where estimateId=?": 
-  "select sendDate, estimateId, `idClient`, `idFreelancer`, e.description, e.adress, t.name city, `sendedBy`, `state_stateId` state, `dateStart`, `dercriptiveImg`, c.name clientName, f.name freelancerName, cost, f.profilePhoto profilePhoto from estimate e join client c using(idClient) join freelancer f using(idFreelancer) join town t on e.idCity=t.idCity where estimateId=?";
+  let sql=user==="1"? "select sendDate, estimateId, `idClient`, `idFreelancer`, e.description, e.adress, t.name city, `sendedBy`, `state_stateId` state, `dateStart`, `dercriptiveImg`, c.name clientName, f.name freelancerName, cost, c.profilePhoto profilePhoto, authenticationCode from estimate e join client c using(idClient) join freelancer f using(idFreelancer) join town t on e.idCity=t.idCity where estimateId=?": 
+  "select sendDate, estimateId, `idClient`, `idFreelancer`, e.description, e.adress, t.name city, `sendedBy`, `state_stateId` state, `dateStart`, `dercriptiveImg`, c.name clientName, f.name freelancerName, cost, f.profilePhoto profilePhot, authenticationCodeo from estimate e join client c using(idClient) join freelancer f using(idFreelancer) join town t on e.idCity=t.idCity where estimateId=?";
   connection.query(sql, [parseInt(estimateId)], async (err, results) => {
     if (err) {
       console.error('Error al crear estimacion', err.message);
@@ -158,7 +158,7 @@ exports.setToken= async (estimateId, token, cb)=>{
     if (err) {
       console.error('Error al crear estimacion', err.message);
     }else{
-      sql= "UPDATE `el_que_sabe`.`estimate` SET `authenticationCode` = ? WHERE (`estimateId` = ?)"
+      sql= "UPDATE `el_que_sabe`.`estimate` SET `authenticationCode` = ?, dateStart= NOW() WHERE (`estimateId` = ?)"
       connection.query(sql, [token, estimateId], (err) => {
         if(err) console.log(err);
       });

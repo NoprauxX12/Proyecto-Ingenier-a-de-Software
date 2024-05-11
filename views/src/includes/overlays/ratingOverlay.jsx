@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
 import "../../styles/overlays.css";
 import ReviewData from "../../services/review";
-import { AuthContext } from "../../providers/userProvider";
 
 function FistStep({ onNext, handleChange }) {
   const [rating, setRating] = useState(-1);
@@ -51,19 +50,18 @@ function SecondStep({ onPrev, onSubmit, values, handleChange }) {
       <div className="Titulo">
         <label><span style={{color: "#3D00B7"}}>Reseña tu </span><span style={{color: "#55ACEE"}}>Freelancer</span> </label>
       </div>
-      <div className="container" style={{marginBottom: "-2.3em"}}>
+      <div className="container">
         <textarea name="clientComent" value={values.clientComent} onChange={handleChange} style={{width: "95%", height:"5em"}}/>
         <div className="button-">
-          <button className="botn1" id="button_b" onClick={onPrev}>Anterior</button>
-          <button className="botn1" id="button" onClick={onSubmit}>Enviar</button>
+          <button className="botn" id="button_b" onClick={onPrev}>Anterior</button>
+          <button className="botn" id="button" style={{marginLeft: "1em"}} onClick={onSubmit}>Enviar</button>
         </div>
       </div>
     </div>
   );
 }
 
-function Formulario() {
-  const { userData } = useContext(AuthContext);
+function Formulario({idContract, onClose}) {
   const [paso, setPaso] = useState(1);
   const [formValues, setFormValues] = useState({
     clientScore: '',
@@ -88,11 +86,13 @@ function Formulario() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    ReviewData.createReview({ ...formValues,  idContract: userData.idContract }, (arg) => {
+    ReviewData.createReview({ ...formValues,  idContract: idContract }, (arg) => {
       if (arg.result) {
         alert("Gracias por tus respuestas");
+        onClose();
       } else {
         alert("Oops, ha ocurrido un error");
+        onClose();
       }
     });
   };
@@ -110,3 +110,5 @@ function Formulario() {
     </div>
   );
 }
+
+export default Formulario;

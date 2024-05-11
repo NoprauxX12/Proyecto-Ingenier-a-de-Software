@@ -3,6 +3,7 @@ import React, {useEffect, useState, useContext} from "react";
 import EstimateData from "../../services/estimate";
 import { AuthContext } from "../../providers/userProvider";
 import MessageData from "../../services/message";
+import Formulario from "../overlays/ratingOverlay";
 const mesesDelAnio = [
     "enero",
     "febrero", 
@@ -20,6 +21,7 @@ const mesesDelAnio = [
 
 const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
     const [estimate, setEstimate] = useState({});
+    const [showRating, setShowRating] = useState(false);
     const [showRealizar, setShowRealizar]= useState(false);
     const [showAsk, setshowAsk]= useState(false);
     const {userData} = useContext(AuthContext);
@@ -60,10 +62,10 @@ const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
         const onAcept=(action)=>{
             if(action==="1"){
                 EstimateData.setState({state: 6, id: estimateId}, (res)=>{})
-                show(); 
                 setShowRealizar(false);
             }else{
                 EstimateData.setState({state: 7, id: estimateId}, (res)=>{})
+                setShowRating(true);
                 setshowAsk(false);
             }
             socket.emit("sendEstimateChange", {
@@ -86,6 +88,12 @@ const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
         }
 
     return (<>
+        {showRating && (<>
+            <Formulario idContract={estimateId} onClose={()=>{
+                setShowRating(false);
+                show();
+            }}/>
+        </>)}
         <div style={{
             position: 'absolute',
             backgroundSize: 'cover',
@@ -147,8 +155,12 @@ const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                 <AskOv  onAcept={onAcept} onClose={()=>{setShowRealizar(false)}} text={`¿Te han pagado los ${estimate.cost}.000?`} action="1"/>
                 </>)}
                 {showAsk && (<>
-                <AskOv  onAcept={onAcept} onClose={()=>{setshowAsk(false)}} text={`¿Quieres finalizar el servicio?`} action="2" />
+                <AskOv  onAcept={onAcept} onClose={()=>{
+                    setshowAsk(false);
+                    }} text={`¿Quieres finalizar el servicio?`} action="2" />
                 </>)}
+                <h3>Codigo de autenticacion:</h3>
+                <h2 style={{margin: "1em 0", color: "#55ACEE"}}>{estimate.authenticationCode}</h2>
                 <h3>Descripción:</h3>
                 <p className="textDescriptio">{estimate.description}</p>
                 <h3>Fecha de inicio:</h3>
