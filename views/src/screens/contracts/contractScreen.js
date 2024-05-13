@@ -11,6 +11,7 @@ import ContractContainer from "../../includes/containers/contractContainer";
 
 import axios from "axios";
 import EstimateData from "../../services/estimate";
+import { BaseUrl } from "../../util/apiUrl";
 
 
 function ContractScreen() {
@@ -33,7 +34,7 @@ function ContractScreen() {
       let _messages = null;
       console.log("Consulta principal")
       try {
-        const response = await axios.get(`http://localhost:3001/messages/${roomId}`);
+        const response = await axios.get(`${BaseUrl.chatsserver}/messages/${roomId}`);
         _messages = response.data;
       } catch (error) {
         console.error('Error fetching messages:', error);

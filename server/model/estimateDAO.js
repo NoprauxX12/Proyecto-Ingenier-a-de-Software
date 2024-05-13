@@ -131,7 +131,8 @@ exports.setState= async (json, cb)=>{
     parseInt(id)
   ];
   
-  let sql = "update estimate set state_stateId=? where estimateId=?";
+  let sql =state!==7? "update estimate set state_stateId=? where estimateId=?" :
+  "update estimate set state_stateId=?, finishdate= NOW() where estimateId=?";
   if(cost) {
     values.splice(1 ,0, parseFloat(cost));
     sql="update estimate set state_stateId=?, cost=? where estimateId=?";

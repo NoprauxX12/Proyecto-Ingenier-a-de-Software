@@ -319,7 +319,7 @@ class FreelancerDAO {
         let sql= "select profilePhoto from  freelancer where  idFreelancer=?";
         try {
             const res= await mysqlExecute(sql, [id]);
-            if(res[0].profilePhoto){
+            if(res.length>0 && res[0].profilePhoto){
                 let photo= res[0].profilePhoto.toString("base64");
                 cb({profilePhoto: photo, response: true});
             }else{
