@@ -6,7 +6,7 @@ import UserData from '../../services/user';
 import MessageData from '../../services/message';
 import {useSocket} from "../../providers/socketProvider";
 
-import "../../styles/siderBar.css"
+import "../../styles/siderBar.css";
 
 const SiderBar = () => {
     const [isActive, setIsActive] = useState(false);
@@ -64,7 +64,7 @@ const SiderBar = () => {
         <div className={`sidebar ${isActive ? 'active' : ''}`}>
             <div className="top">
                 <div className="logo">
-                    <i className="bx bx-hard-hat" style={{color: '#000'}} />
+                    <i className="bx bx-hard-hat" style={{color: '#FFFF'}} />
                     <span>{userData.user==="1"? "Freelancer": "Cliente"}</span>
                 </div>
                 <i className="bx bx-menu" id="btn" onClick={toggleSidebar} style={{fontSize: '2.3rem', color:"#fff"}} />
@@ -72,7 +72,7 @@ const SiderBar = () => {
             <div className="user">
                 {photo!==null? (<>
                     <div style={{ width: "50px", height: "50px",minWidth: "50px", mineight: "50px", overflow: "hidden", borderRadius: "50%" }}>
-                        <a href={Urls.editProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}>
+                        <a href={Urls.viewProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}>
                             <img 
                             src={`data:image/jpeg;base64,${photo}`} 
                             alt="user" 
@@ -83,15 +83,15 @@ const SiderBar = () => {
 
                 </>):(<>
                     <div style={{ width: "50px", height: "50px",minWidth: "50px", mineight: "50px", overflow: "hidden", borderRadius: "50%" }}>
-                        <a href={Urls.editProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}>
+                        <a href={Urls.viewProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}>
                             <img src="/images/defaultUser.png" alt="user" className="user-img" />
                         </a>
                     </div>
                 </>)}
                 
                 <div className="letter">
-                <a href={Urls.editProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}><p className="bold">{name[0]}</p></a>
-                    <p style={{color: "#fff"}}>carpintera</p>
+                <a href={Urls.viewProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}><p style={{fontWeight: "800", fontSize: "1.3em", color: "#55ACEE" }}>{name[0]}</p></a>
+                    <p style={{color: "#FFFF"}}>carpintera</p>
                 </div>
             </div>
             <ul> 

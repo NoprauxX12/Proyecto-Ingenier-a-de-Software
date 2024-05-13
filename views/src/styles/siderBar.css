@@ -89,6 +89,10 @@
     font-size: 1.3em;
 }
 
+.bold a{
+    color: #55ACEE;
+}
+
 .sidebar p{
     opacity: 0;
 }

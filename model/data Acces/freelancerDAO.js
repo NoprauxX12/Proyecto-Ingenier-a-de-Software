@@ -1,9 +1,19 @@
 const mysqlExecute = require("../../util/mysqlConnexion");
 const fs = require("fs");
+const fs2 = require("fs").promises;
 const bcrypt = require("bcrypt");
 const sharp = require("sharp");
 const GeneralDAO = require("./generalDAO");
 const { response } = require("express");
+
+// Esta función envuelve la función fs.readFile en una promesa para uso asíncrono
+const readFileAsync = async (path) => {
+    try {
+        return await fs2.readFile(path);
+    } catch (error) {
+        throw error;
+    }
+};
 
 const hashPassword = async (password) => {
   const saltRounds = 10; // Número de rondas de salado
@@ -202,74 +212,128 @@ class FreelancerDAO {
 
   static async updateById(formData) {
     const {
-      id,
-      name,
-      description,
-      cellphone,
-      email,
-      importantInfo,
-      photo,
-      curriculum,
-      rut,
-      eps,
-      password,
-    } = formData;
-
-    let fileContent = null;
-
-    if (photo !== null) {
-      fileContent = await sharp(photo)
-        .resize({ width: 800 })
-        .jpeg({ quality: 80 })
-        .toBuffer();
-    }
-
-    let sql = `UPDATE freelancer SET
-                name = ?,
-                description = ?,
-                cellphone = ?,
-                email = ?,
-                importantInfo = ?,
-                profilePhoto = ?,
-                curriculum = ?,
-                rut = ?,
-                eps = ?
-                WHERE idFreelancer = ?`;
-
-    try {
-      // Ejecutar la consulta SQL para actualizar el perfil
-      await mysqlExecute(sql, [
+        id,
         name,
         description,
         cellphone,
         email,
         importantInfo,
-        fileContent,
+        profilePhoto,
         curriculum,
         rut,
         eps,
-        id,
-      ]);
+        password,
+    } = formData;
 
-      if (photo !== null) {
-        fs.unlink(photo, (error) => {
-          if (error) {
-            console.error("Error deleting file:", error);
-          } else {
-            console.log("File deleted successfully.");
-          }
-        });
-      }
+    let fileContents = {};
 
-      if (password) {
-        const hashedPassword = hashPassword(password);
-        sql = "UPDATE freelancer SET password = ? WHERE idFreelancer = ?";
-        await mysqlExecute(sql, [hashedPassword, id]);
-      }
+    // Verificar y procesar los archivos adjuntos
+    if (profilePhoto) {
+        fileContents.profilePhoto = await sharp(profilePhoto)
+            .resize({ width: 800 })
+            .jpeg({ quality: 80 })
+            .toBuffer();
+    }
+    if (curriculum) {
+        fileContents.curriculum = await readFileAsync(curriculum);
+    }
+    if (rut) {
+        fileContents.rut = await readFileAsync(rut);
+    }
+    if (eps) {
+        fileContents.eps = await readFileAsync(eps);
+    }
 
-      console.log("Perfil actualizado correctamente.");
+    // Consulta SQL para actualizar el perfil
+    let sql = `UPDATE freelancer SET
+                name = ?,
+                description = ?,
+                cellphone = ?,
+                email = ?,
+                importantInfo = ?`;
+
+    const params = [
+        name,
+        description,
+        cellphone,
+        email,
+        importantInfo,
+    ];
+
+    // Agregar campos de archivos al SQL y parámetros
+    if (profilePhoto) {
+        sql += ", profilePhoto = ?";
+        params.push(fileContents.profilePhoto);
+    }
+    if (curriculum) {
+        sql += ", curriculum = ?";
+        params.push(fileContents.curriculum);
+    }
+    if (rut) {
+        sql += ", rut = ?";
+        params.push(fileContents.rut);
+    }
+    if (eps) {
+        sql += ", eps = ?";
+        params.push(fileContents.eps);
+    }
+
+    sql += " WHERE idFreelancer = ?";
+
+    params.push(id);
+
+    try {
+        // Ejecutar la consulta SQL
+        await mysqlExecute(sql, params);
+
+        // Eliminar archivos temporales
+        if (profilePhoto) {
+            fs.unlink(profilePhoto, (error) => {
+                if (error) {
+                    console.error("Error deleting profile photo file:", error);
+                } else {
+                    console.log("Profile photo file deleted successfully.");
+                }
+            });
+        }
+        if (curriculum) {
+            fs.unlink(curriculum, (error) => {
+                if (error) {
+                    console.error("Error deleting curriculum file:", error);
+                } else {
+                    console.log("Curriculum file deleted successfully.");
+                }
+            });
+        }
+        if (rut) {
+            fs.unlink(rut, (error) => {
+                if (error) {
+                    console.error("Error deleting rut file:", error);
+                } else {
+                    console.log("Rut file deleted successfully.");
+                }
+            });
+        }
+        if (eps) {
+            fs.unlink(eps, (error) => {
+                if (error) {
+                    console.error("Error deleting eps file:", error);
+                } else {
+                    console.log("Eps file deleted successfully.");
+                }
+            });
+        }
+
+        // Actualización de la contraseña si es necesario
+        if (password) {
+            const hashedPassword = hashPassword(password);
+            sql = "UPDATE freelancer SET password = ? WHERE idFreelancer = ?";
+            await mysqlExecute(sql, [hashedPassword, id]);
+        }
+
+        console.log("Perfil actualizado correctamente.");
     } catch (error) {
-      console.error("Error al actualizar el perfil:", error);
+        console.error("Error al actualizar el perfil:", error);
     }
   }
 

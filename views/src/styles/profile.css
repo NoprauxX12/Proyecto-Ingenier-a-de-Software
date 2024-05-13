@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
-
+@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
 
 * {
     margin: 0;
@@ -14,28 +14,79 @@
     justify-content: center;
 }
 
+.header-container{
+    box-shadow: 1px 2px 3px #d0d0d0;
+}
 
 .header-container h1{
     font-weight: 400;
     font-size: 4rem;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     color: #363639;
 }
 
 .content-container{
     height: fit-content;
+    justify-content: space-between;
     display: flex;
-    padding: 0 5%;
+    padding: 0% 4%;
     gap: 20px;
 }
 
 .left-container{
     width: 450px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    box-shadow: 2px 2px 2px #d0d0d0;
+    position: sticky;
+    top: 0;
+    padding-bottom: 5%;
 }
+
 .profile-image{
-    width: 450px;
-    border-radius: 20px;
+    margin-top: 20px;
+    width: 350px;
+    border-radius: 50%;
+}
+
+.photo-container {
+    width: 350px;
+    position: relative;
+    cursor: pointer;
+}
+
+.edit-profile-image{
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 50%;
+    display: block;
+}
+
+.edit-icon{
+    width: 100%;
+    height: 95%;
+    border-radius: 50%;
+    margin-top: 20px;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 0.6s;
+}
+
+.edit-icon:hover{
+    opacity: 1;
+}
+
+.edit-icon i{
+    font-size: 200px;
+    color: #EFEFEF;
 }
 
 .mid-container{
@@ -48,7 +99,16 @@
 }
 
 .content-element{
-    margin-bottom: 2px;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-element-inline{
+    flex-direction: row;
+}
+
+.content-element textarea{
+    margin: 1px;
 }
 
 .inside-color{
@@ -61,7 +121,9 @@
 }
 
 .profession-box{
-    width: 279px;
+    width: 280px;
+    padding-left: 2%;
+    outline: none;
 }
 
 .description-box{
@@ -72,25 +134,20 @@
 }
 
 .phone-box{
-    width: 279px;
+    width: 285px;
     padding: 0.5%;
+    padding-left: 2%;
 }
 
 .email-box{
-    width: 347px;
+    width: 350px;
     padding: 0.5%;
-}
-
-.academic-info-box{
-    width: 347px;
-    height: 100px;
-    resize: none;
-    padding: 2%;
+    padding-left: 2%;
 }
 
 .important-info-box{
-    width: 347px;
-    height: 100px;
+    width: 350px;
+    height: 150px;
     resize: none;
     padding: 2%;
 }
@@ -100,7 +157,7 @@
 }
 
 .password-box2{
-    width: 190px;
+    width: 215px;
 }
 
 .button-box{
@@ -112,21 +169,16 @@
   border-radius: 20px;
   border: transparent;
   cursor: pointer;
-  padding: 1.5%;
-  margin-left: 1.5%;
+  width:fit-content;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  margin-left: 10px;
 }
 
 .button-box:hover{
   color: #3D00B7;
   background: #FFFF;
   border: 1.5px solid #3D00B7;
-}
-
-.portfolio-container{
-    padding: 1.5% 5%;
-}
-
-.button-plus{
-    background: transparent;
-    border: transparent;
 }

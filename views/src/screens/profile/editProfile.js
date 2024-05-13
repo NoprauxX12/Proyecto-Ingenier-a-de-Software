@@ -1,337 +1,311 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useLayoutEffect, useState } from "react";
 import UserData from "../../services/user";
+import "../../styles/profile.css";
+import Urls from "../../util/urls";
+import { useNavigate } from "react-router-dom";
 
-function EditProfile() {
-  const params = new URLSearchParams(window.location.search);
-  const [data, setData] = useState({});
-  const [curriculumFile, setCurriculumFile] = useState(null);
-  const [rutFile, setRutFile] = useState(null);
-  const [epsFile, setEpsFile] = useState(null);
-  const [profilePhotoFile, setProfilePhotoFile] = useState(null);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const id = params.get("id");
-  const usertype = params.get("usertype");
+function ViewProfile(){
+    const params = new URLSearchParams(window.location.search);
+    const [user, setUser]= useState({});
+    const id = params.get("id");
+    const usertype = params.get("usertype");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [photo, setPhoto] = useState(null);
+    const [curriculum, setCurriculum] = useState(null);
+    const [curriculumUrl, setCurriculumUrl] = useState(null);
+    const [rut, setRut] = useState(null);
+    const [rutUrl, setRutUrl] = useState(null);
+    const [eps, setEps] = useState(null);
+    const [epsUrl, setEpsUrl] = useState(null);
 
-  useLayoutEffect(() => {
-    const reqView = {id,usertype};
-    document.title = data.name;
-    const getUserData = async () => {
-      UserData.viewProfile(reqView, (res) => {
-        setData(res);
-      });
+    useLayoutEffect(() => {
+      const reqView = {id, usertype};
+      document.title = user.name;
+      const getUserData = async () => {
+        UserData.viewProfile(reqView, (res) => {
+          setUser(res);
+        });
+      };
+
+      getUserData();
+    }, [id, usertype, user.name]);
+
+    function handleSubmit(e) {
+      e.preventDefault();
+  
+      if (newPassword !== confirmPassword) {
+        return;
+      }
+  
+      const formData = new FormData();
+      formData.append("usertype",usertype);
+      formData.append("id",id);
+      formData.append("name", user.name);
+      formData.append("email", user.email);
+      formData.append("description", user.description);
+      formData.append("cellphone", user.cellphone);
+      formData.append("importantInfo", user.importantInfo);
+      formData.append("newPassword", newPassword);
+      if(photo){
+        formData.append("photo",photo);
+      }
+      if(curriculum){
+        formData.append("curriculum",curriculum);
+      }
+      if(rut){
+        formData.append("rut",rut);
+      }
+      if(eps){
+        formData.append("eps",eps);
+      }
+
+      UserData.editProfile(formData);
+      setTimeout(()=>{
+        onSubmit()
+      },500);
     };
 
-    getUserData();
-  }, [id, usertype, data.name]);
+  const navigate = useNavigate();
 
   const onSubmit = async () => {
-    const reqView = {id,usertype};
-    UserData.viewProfile(reqView, (res) => {
-      setData(res);
-    });
+    const dynamicUrl = `${Urls.viewProfile}?id=${id}&usertype=${usertype}`;
+    navigate(dynamicUrl);
   };
 
-  function openPdfInNewTab(pdfUrl) {
-    window.open(pdfUrl, "_blank");
-  };
+  function base64ToArrayBuffer(base64) {
+    const binaryString = window.atob(base64);
+    const length = binaryString.length;
+    const bytes = new Uint8Array(length);
+    for (let i = 0; i < length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
 
   const viewPdf = (type) => {
     if (type === "curriculum") {
-      if (!data.curriculum_blob) {
-        alert(
-          "¡Parece que no has subido todavía tu hoja de vida! ¡Súbela para generar más confianza en tu perfil!"
-        );
-        return;
+      if (curriculumUrl) {
+        window.open(curriculumUrl, "_blank");
+      } else if (user.curriculum) {
+          const pdfBlob = new Blob([base64ToArrayBuffer(user.curriculum)], { type: "application/pdf" });
+          const pdfUrl = URL.createObjectURL(pdfBlob);
+          window.open(pdfUrl, "_blank");
+      } else {
+          alert("¡Parece que no has subido todavía tu hoja de vida! ¡Súbela para generar más confianza en tu perfil!");
       }
-      openPdfInNewTab(data.curriculum_blob);
     } else if (type === "rut") {
-      if (!data.rut_blob) {
-        alert(
-          "¡Parece que no has subido todavía tu RUT! ¡Súbelo para generar más confianza en tu perfil!"
-        );
-        return;
+      if (rutUrl) {
+        window.open(rutUrl, "_blank");
+      } else if (user.rut) {
+        const pdfBlob = new Blob([base64ToArrayBuffer(user.rut)], { type: "application/pdf" });
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        window.open(pdfUrl, "_blank");
+      } else {
+          alert("¡Parece que no has subido todavía tu RUT! ¡Súbelo para generar más confianza en tu perfil!");
       }
-      openPdfInNewTab(data.rut_blob);
     } else if (type === "eps") {
-      if (!data.eps_blob) {
-        alert(
-          "¡Parece que no has subido todavía tu EPS! ¡Súbela para generar más confianza en tu perfil!"
-        );
-        return;
+      if (epsUrl) {
+        window.open(epsUrl, "_blank");
+      } else if (user.eps) {
+        const pdfBlob = new Blob([base64ToArrayBuffer(user.eps)], { type: "application/pdf" });
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        window.open(pdfUrl, "_blank");
+      } else {
+          alert("¡Parece que no has subido todavía tu EPS! ¡Súbela para generar más confianza en tu perfil!");
       }
-      openPdfInNewTab(data.eps_blob);
     } 
   };
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    if (newPassword !== confirmPassword) {
-      return;
+  function handleInputPhoto(event) {
+    const file = event.target.files[0];
+    if (file) {
+      setPhoto(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUser({ ...user, profilePhoto: reader.result });
+      };
+      reader.readAsDataURL(file);
     }
+  };
 
-    const formData = new FormData();
-    formData.append("usertype",usertype);
-    formData.append("id",id);
-    formData.append("name", data.name);
-    formData.append("email", data.email);
-    formData.append("description", data.description);
-    formData.append("cellphone", data.cellphone);
-    formData.append("importantInfo", data.importantInfo);
-    formData.append("photo", profilePhotoFile);
-    formData.append("curriculum", curriculumFile);
-    formData.append("rut", rutFile);
-    formData.append("eps", epsFile);
-    formData.append("newPassword", newPassword);
+  function handleInputCurriculum(event) {
+    const file = event.target.files[0];
+        if (file) {
+            setCurriculum(file);
+            const curriculumUrl = URL.createObjectURL(file);
+            setCurriculumUrl(curriculumUrl);
+        }
+  };
 
-    UserData.editProfile(formData);
-    setTimeout(()=>{
-      onSubmit()
-    },500);
-  }
+  function handleInputRut(event) {
+    const file = event.target.files[0];
+        if (file) {
+            setRut(file);
+            const rutUrl = URL.createObjectURL(file);
+            setRutUrl(rutUrl); 
+        }
+  };
 
-  return (
-    <>
-      <div className="main-container">
-        <div className="header-container">
-          <h1>{data.name}</h1>
-        </div>
-        <form id="profile-form" onSubmit={handleSubmit}>
-          <div className="content-container">
-            <div className="left-container">
-              {!data.profilePhoto ? (
-                <img
-                  className="profile-image"
-                  id="profile-image"
-                  src="/images/defaultUser.png"
-                  alt="usuario por defecto"
-                />
-              ) : (
-                <img
-                  id="profile-image"
-                  src={`data:image/jpeg;base64,${data.profilePhoto}`}
-                  className="profile-image"
-                  alt="Imagen de Perfil"
-                  style={{ maxHeight: "30em" }}
-                />
-              )}
-              <input
-                type="file"
-                id="image-upload"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  setProfilePhotoFile(file);
-                  const reader = new FileReader();
-                  reader.onloadend = () => {
-                    setData({ ...data, profilePhoto: reader.result });
-                  };
-                  if (file) {
-                    reader.readAsDataURL(file);
-                  }
-                }}
-              />
-            </div>
-            <div className="mid-container">
-              <div className="content-element">
-                <label htmlFor="profession">Profesión:</label>{" "}
-                <input
-                  readOnly
-                  type="text"
-                  id="profession"
-                  className="profession-box inside-color"
-                  style={{ cursor: "default" }}
-                  defaultValue={data.knowledge}
-                />
+  function handleInputEps(event) {
+    const file = event.target.files[0];
+        if (file) {
+            setEps(file);
+            const epsUrl = URL.createObjectURL(file);
+            setEpsUrl(epsUrl); 
+        }
+  };
+    
+    return (
+      <>
+        <div className="main-container">
+          <div className="header-container">
+          <a href={Urls.viewProfile+`/?id=${id}&usertype=${usertype}`} style={{display: "inline-block"}}> 
+              <div className="back" style={{position: "absolute", marginTop: "0"}}>
+                <i class='bx bx-chevron-left' style={{color: '#7d7d7d', fontSize: "4em"}} ></i>
               </div>
-              <div className="content-element">
-                <label htmlFor="description">Descripción:</label>
-                <textarea
-                  id="description"
-                  className="description-box inside-color"
-                  defaultValue={data.description}
-                  onChange={(e) =>
-                    setData({ ...data, description: e.target.value })
-                  }
-                />
-              </div>
-              <div className="content-element">
-                <label>Puntuación y reseñas:</label>
-              </div>
-              <div className="content-element">
-                <h1>4.8/5.0</h1>
-                <a href="#">Ver 182 reseñas</a>
-              </div>
-            </div>
-            <div className="right-container">
-              <div className="content-element">
-                <label htmlFor="cellphone">Teléfono:</label>{" "}
-                <input
-                  type="tel"
-                  id="cellphone"
-                  className="phone-box inside-color"
-                  defaultValue={data.cellphone}
-                  size={10}
-                  onChange={(e) =>
-                    setData({ ...data, cellphone: e.target.value })
-                  }
-                />
-              </div>
-              <div>
-                <label htmlFor="email">Correo Electrónico:</label>
-              </div>
-              <div className="content-element">
-                <input
-                  type="email"
-                  id="email"
-                  className="email-box inside-color"
-                  defaultValue={data.email}
-                  onChange={(e) => setData({ ...data, email: e.target.value })}
-                />
-              </div>
-              <div>
-                <div className="content-element">
-                  <label>Hoja de Vida:</label>
-                  <button
-                    type="button"
-                    className="button-box"
-                    onClick={() => viewPdf("curriculum")}
-                  >
-                    Ver
-                  </button>
-                  <input
-                    type="file"
-                    id="curriculum"
-                    className="button-box"
-                    accept=".pdf"
-                    style={{ display: "none" }}
-                    onChange={(e) => setCurriculumFile(e.target.files[0])}
-                  />
-                  <button
-                    type="button"
-                    className="button-box"
-                    onClick={() =>
-                      document.getElementById("curriculum").click()
-                    }
-                  >
-                    Editar
-                  </button>
-                </div>
-                <div className="content-element">
-                  <label>RUT:</label>
-                  <button
-                    type="button"
-                    className="button-box"
-                    onClick={() => viewPdf("rut")}
-                  >
-                    Ver
-                  </button>
-                  <input
-                    type="file"
-                    id="rut"
-                    className="button-box"
-                    accept=".pdf"
-                    style={{ display: "none" }}
-                    onChange={(e) => setRutFile(e.target.files[0])}
-                  />
-                  <button
-                    type="button"
-                    className="button-box"
-                    onClick={() => document.getElementById("rut").click()}
-                  >
-                    Editar
-                  </button>
-                </div>
-                <div className="content-element">
-                  <label>EPS:</label>
-                  <button
-                    type="button"
-                    className="button-box"
-                    onClick={() => viewPdf("eps")}
-                  >
-                    Ver
-                  </button>
-                  <input
-                    type="file"
-                    id="eps"
-                    className="button-box"
-                    accept=".pdf"
-                    style={{ display: "none" }}
-                    onChange={(e) => setEpsFile(e.target.files[0])}
-                  />
-                  <button
-                    type="button"
-                    className="button-box"
-                    onClick={() => document.getElementById("eps").click()}
-                  >
-                    Editar
-                  </button>
-                </div>
-              </div>
-              <div className="content-element">
-                <label htmlFor="important-info">Información Importante:</label>
-                <textarea
-                  id="important-info"
-                  className="important-info-box inside-color"
-                  defaultValue={data.importantInfo}
-                  onChange={(e) =>
-                    setData({ ...data, importantInfo: e.target.value })
-                  }
-                />
-              </div>
-              <div className="content-element">
-                <label htmlFor="password">Nueva Contraseña:</label>{" "}
-                <input
-                  type="password"
-                  id="password"
-                  className="password-box1 inside-color"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-              </div>
-              <div className="content-element">
-                <label htmlFor="confirmPassword">Confirmar Contraseña:</label>{" "}
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  className="password-box2 inside-color"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </div>
-              {newPassword !== confirmPassword && (
-                <p className="error-message">Las contraseñas no coinciden</p>
-              )}
-              <button type="submit" 
-              className="button-box">
-                Guardar Cambios
-              </button>
-            </div>
-          </div>
-        </form>
-
-        <div className="portfolio-container">
-          <label>Portafolio:</label>
-          <div className="add-button">
-            <a className="button-plus" href="#">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={120}
-                height={120}
-                viewBox="0 0 24 24"
-                style={{ fill: "rgba(0, 0, 0, 1)" }}
-              >
-                <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4z" />
-                <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" />
-              </svg>
             </a>
+            <h1>{user.name}</h1>
           </div>
+          <form id="profile-form" onSubmit={handleSubmit}>
+            <div className="content-container">
+              <div className="left-container">
+                <div className="photo-container" onClick={() => document.getElementById("photo").click()}>
+                {photo ? (
+                    <img id="profile-image" src={URL.createObjectURL(photo)} className="edit-profile-image" alt="Imagen de Perfil" style={{maxHeight: "30em"}}/>
+                  ) : (
+                    <img className="edit-profile-image" id="profile-image" src={`data:image/jpeg;base64,${user.profilePhoto}` || "/images/defaultUser.png"} alt="usuario por defecto" />
+                  )}
+                  <input
+                    type="file"
+                    id="photo"
+                    style={{ display: "none" }}
+                    onChange={handleInputPhoto}
+                  />
+                  <div className="edit-icon">
+                    <i className='bx bxs-edit'></i>
+                  </div>
+                </div>
+                <div className="content-element-inline">
+                  <label htmlFor="profession">Profesión:</label>{" "}
+                  <input
+                    readOnly
+                    type="text"
+                    id="profession"
+                    className="profession-box inside-color"
+                    style={{ cursor: "default" }}
+                    defaultValue={user.knowledge}
+                  />
+                </div>
+                <div className="content-element">
+                  <label htmlFor="rating">Puntuación y reseñas:</label>
+                  <h1>4.8/5.0</h1>
+                  <a href="#">Ver 182 reseñas</a>
+                </div>
+                <div className="content-element">
+                  <label htmlFor="description">Descripción:</label>
+                  <textarea
+                    id="description"
+                    className="description-box inside-color"
+                    style={{ cursor: "pointer" }}
+                    defaultValue={user.description !== "null" ? user.description : ""}
+                    onChange={(e) =>
+                      setUser({ ...user, description: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="content-element-inline">
+                  <label htmlFor="phone">Teléfono:</label>{" "}
+                  <input
+                    type="tel"
+                    id="phone"
+                    className="phone-box inside-color"
+                    style={{ cursor: "pointer" }}
+                    defaultValue={user.cellphone}
+                    size={10}
+                    onChange={(e) =>
+                      setUser({ ...user, cellphone: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="content-element">
+                  <label htmlFor="email">Correo Electrónico:</label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="email-box inside-color"
+                    style={{ cursor: "pointer" }}
+                    defaultValue={user.email}
+                    onChange={(e) => setUser({ ...user, email: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <div className="content-element-inline">
+                    <label>Hoja de Vida:</label>
+                    <button type="button" className="button-box" onClick={() => viewPdf("curriculum")}> Ver </button>
+                    <input type="file" id="curriculum" className="button-box" accept=".pdf" style={{ display: "none" }} onChange={handleInputCurriculum}/>
+                    <button type="button" className="button-box" onClick={() => document.getElementById("curriculum").click()}> Editar </button>
+                  </div>
+                  <div className="content-element-inline">
+                    <label>RUT:</label>
+                    <button type="button" className="button-box" onClick={() => viewPdf("rut")}> Ver </button>
+                    <input type="file" id="rut" className="button-box" accept=".pdf" style={{ display: "none" }} onChange={handleInputRut}/>
+                    <button type="button" className="button-box" onClick={() => document.getElementById("rut").click()}> Editar </button>
+                  </div>
+                  <div className="content-element-inline">
+                    <label>EPS:</label>
+                    <button type="button" className="button-box" onClick={() => viewPdf("eps")}> Ver </button>
+                    <input type="file" id="eps" className="button-box" accept=".pdf" style={{ display: "none" }} onChange={handleInputEps}/>
+                    <button type="button" className="button-box" onClick={() => document.getElementById("eps").click()}> Editar </button>
+                  </div>
+                </div>
+                <div className="content-element">
+                  <label htmlFor="important-info">Información Importante:</label>
+                  <textarea
+                    id="important-info"
+                    className="important-info-box inside-color"
+                    style={{ cursor: "pointer" }}
+                    defaultValue={user.importantInfo}
+                    onChange={(e) => setUser({ ...user, importantInfo: e.target.value })}
+                  />
+                </div>
+                <div className="content-element">
+                  <label htmlFor="password">Nueva Contraseña:</label>{" "}
+                  <input
+                    type="password"
+                    id="password"
+                    className="password-box1 inside-color"
+                    style={{ cursor: "pointer" }}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                </div>
+                <div className="content-element">
+                  <label htmlFor="confirmPassword">Confirmar Contraseña:</label>{" "}
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    className="password-box2 inside-color"
+                    style={{ cursor: "pointer" }}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </div>
+                {newPassword !== confirmPassword && (
+                  <p style={{color:"red"}}>Las contraseñas no coinciden</p>
+                )}
+                <button type="submit" className="button-box"> Guardar Cambios </button>
+              </div>
+
+              <div className="right-container">
+                
+              </div>
+            </div>
+          </form>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
 }
 
-export default EditProfile;
+export default ViewProfile;
