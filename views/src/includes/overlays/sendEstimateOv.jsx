@@ -25,7 +25,7 @@ const SendEstimateOv= ({onClose, estimateId, onSend})=>{
     <div className="overlay" >
         <div className="deal-box" style={{height:"30%", width: "30%"}} >
            <div style={{width: "90%"}}>
-            <h2 style={{color:"#55ACEE", fontWeight: "bold"}}> <span style={{color:"#3D00B7", fontWeight: "bold"}}>Enviar la </span> cotizacion</h2>
+            <h2 style={{color:"#55ACEE", fontWeight: "bold"}}> <span style={{color:"#3D00B7", fontWeight: "bold"}}>Enviar la </span> cotización</h2>
                 <form action="" method="post" onSubmit={handleSubmit}>
                     <input
                     className="form-control"

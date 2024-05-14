@@ -40,5 +40,7 @@ router.post("/freelancer-preferences",usersControllers.progressiveProfiling);
 
 router.post("/check-preferences",usersControllers.checkPreferences);
 
+router.post("/add-previouswork", upload.single('img'), usersControllers.addPreviousWork);
+
 module.exports= router;
 

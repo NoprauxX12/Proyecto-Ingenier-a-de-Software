@@ -100,7 +100,8 @@ exports.editProfile = (req, res, next) => {
     } catch (error) {}
 
 
-    console.log([{id: req.body.id},
+    console.log(
+        [{id: req.body.id},
         {name: req.body.name},
         {email: req.body.email},
         {description: req.body.description},
@@ -109,7 +110,7 @@ exports.editProfile = (req, res, next) => {
         {profilePhoto: photoLink},
         {curriculum: curriculumLink},
         {rut: rutLink},
-        {eps: epsLink}])
+        {eps: epsLink}]);
     if (parseInt(req.body.usertype) === 1) {
         FreelancerDAO.updateById({
             id: req.body.id,
@@ -163,6 +164,19 @@ exports.checkPreferences = (req, res)=>{
     FreelancerDAO.checkPreferences(req.body.id, (result)=>{
         //console.log(result);
         res.json(result);
-        
+    })
+}
+
+exports.addPreviousWork = (req, res)=>{
+    let imgLink = "";
+    try {
+        if(req.file){
+            imgLink=req.file.path;
+        }
+    } catch (error) {}
+    req.body["img"]= imgLink;
+    
+    FreelancerDAO.addPreviousWork(req.body, (result)=>{
+        res.json(result);
     })
 }

@@ -412,6 +412,49 @@ class FreelancerDAO {
       console.log(error);
     }
   }
+
+  static async addPreviousWork(formValues, cb) {
+    const {
+      idFreelancer,
+      title,
+      description,
+      date,
+      img
+    } = formValues;
+  
+    let fileContent = {};
+  
+    try {
+
+      let sql = `INSERT INTO previouswork (idFreelancer, title, description, date) VALUES (?, ?, ?, ?)`;
+      let params = [idFreelancer, title, description, date];
+  
+      const res = await mysqlExecute(sql, params);
+  
+      // Obtener el idPreviousWork asignado automáticamente
+      const idPreviousWork = res.insertId;
+      console.log(idPreviousWork);
+  
+      if (img) {
+
+        fileContent.img = await sharp(img)
+          .resize({ width: 800 })
+          .jpeg({ quality: 80 })
+          .toBuffer();
+
+        let imgSql = `INSERT INTO imagespw (idPreviousWork, image) VALUES (?, ?)`;
+        let imgParams = [idPreviousWork, fileContent.img];
+  
+        await mysqlExecute(imgSql, imgParams);
+      }
+  
+      cb({response: true});
+    } catch (error) {
+      console.log(error);
+      cb({response: false});
+    }
+  }
+  
 }
 
 module.exports = FreelancerDAO;

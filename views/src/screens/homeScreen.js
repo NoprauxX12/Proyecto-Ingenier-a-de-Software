@@ -44,7 +44,6 @@ function HomeScreen() {
       if(userData){
         UserData.checkPreferences({id: userData.idCard},(res)=>{
           setPreferences(res);
-          console.log("freelancerPreferences:", res);
         });
       }
     };

@@ -4,15 +4,16 @@ import UserData from "../../services/user";
 import "../../styles/profile.css";
 import { AuthContext } from '../../providers/userProvider';
 import Urls from "../../util/urls";
+import Portfolio from "../../includes/overlays/portfolio";
 
 function ViewProfile(){
     const params = new URLSearchParams(window.location.search);
     const [user, setUser]= useState({});
+    const [showOverlayPortfolio, setshowOverlayPortfolio] = useState(false);
     const {userData} = useContext(AuthContext);
     const id = params.get("id");
     const usertype = params.get("usertype");
 
-  
     useLayoutEffect(() => {
       const reqView = {id, usertype};
       document.title = user.name;
@@ -35,6 +36,10 @@ function ViewProfile(){
       }
       return bytes.buffer;
     }
+
+    const addPreviousWork = () =>{
+      setshowOverlayPortfolio(true);
+    };
 
     const viewPdf = (type) => {
       if (type === "curriculum") {
@@ -167,7 +172,12 @@ function ViewProfile(){
             </div>
 
             <div className="right-container">
-              
+              {userData.idCard === id && (
+                <>
+                  <button type="button" className="button-box-lg" onClick={addPreviousWork}> Añadir Nuevo Elemento al Portafolio<i class='bx bx-plus-circle' style={{fontSize:"60px", color:"white" }}></i> </button>
+                  {showOverlayPortfolio && (<> <Portfolio showOverlayPortfolio={showOverlayPortfolio} setshowOverlayPortfolio={setshowOverlayPortfolio} /> </>)}
+                </>
+              )}
             </div>
           </div>
         </div>

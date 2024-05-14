@@ -97,6 +97,16 @@ class UserData {
       }
     }
 
+    static async addPreviousWork(formValues, cb){
+      try{
+        const response = await axios.post(`${BaseUrl}/add-previouswork`,formValues);
+        
+        cb(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
 }
 
 export default UserData;
