@@ -5,8 +5,8 @@ class ReviewDAO {
         console.log(rank)
         let values =[
             rank.idContract,
-            rank.clientScore,
-            rank.clientComent
+            rank.clientScore+1,
+            rank.clientComment
         ];
 
         let sql = "INSERT INTO review (estimateId, clientScore, clientComment) VALUES (?,?,?)";
