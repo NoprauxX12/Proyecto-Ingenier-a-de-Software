@@ -1,0 +1,56 @@
+/* styles.css */
+.review-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.review-box {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-box h4 {
+    margin: 5px 0;
+}
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.review-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.review-container > h1 {
+    margin-bottom: 20px;
+}
+
+.review-box {
+    flex-grow: 1;
+}
+
+
+.review-container{
+    font-family: "Fredoka", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: 1em;
+    font-style: normal;
+}
+.icon-left {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 48px;
+}

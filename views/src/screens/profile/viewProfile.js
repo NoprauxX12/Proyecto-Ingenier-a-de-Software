@@ -92,7 +92,7 @@ function ViewProfile(){
                 <label htmlFor="rating">Puntuación y reseñas:</label>
               </div>
               <div className="content-element">
-                <h1>{averageRank}/5</h1>
+                <h1>{averageRank}/5.0</h1>
                 <a href={"/review/?id="+ id }>Ver reseñas</a>
               </div>
             </div>

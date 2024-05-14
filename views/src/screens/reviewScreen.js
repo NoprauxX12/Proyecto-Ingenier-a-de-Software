@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-
 import ReviewPage from "../includes/containers/reviews";
-
+import "../styles/reviews.css"
 
 
 function ReviewScreen() {
