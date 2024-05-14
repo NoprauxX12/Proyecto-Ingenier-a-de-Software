@@ -112,7 +112,7 @@ class UserData {
 
     static async progressiveProfiling(json, cb){
       try{
-        const success = await axios.post(`${BaseUrl}/freelancer-preferences`,json);
+        const success = await axios.post(`${BaseUrl.serverUsers}/freelancer-preferences`,json);
         if (success) {
           cb({ response: true });
         } else {
@@ -126,7 +126,7 @@ class UserData {
 
     static async checkPreferences(id, cb){
       try{
-        const response = await axios.post(`${BaseUrl}/check-preferences`,id);  
+        const response = await axios.post(`${BaseUrl.serverUsers}/check-preferences`,id);  
         cb(response.data);
       }catch(error){
         console.log(error);
@@ -135,7 +135,7 @@ class UserData {
 
     static async addPreviousWork(formValues, cb){
       try{
-        const response = await axios.post(`${BaseUrl}/add-previouswork`,formValues);
+        const response = await axios.post(`${BaseUrl.serverUsers}/add-previouswork`,formValues);
         
         cb(response.data);
       } catch (error) {

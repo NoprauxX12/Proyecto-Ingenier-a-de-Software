@@ -351,165 +351,150 @@ class FreelancerDAO {
     } catch (error) {
         console.error("Error al actualizar el perfil:", error);
     }
-  }
-
-    static async logIn(json, cb){
-        let sql = "SELECT name, idFreelancer idCard, email, idCity, adress, password from freelancer where email = ?";
-        try{
-            const response = await mysqlExecute(sql, [ json.email]);
-            if (response.length === 0) {
-                cb({login: false});    
-            } else{
-                comparePassword(json.password, response[0]["password"], (match)=>{
-                if(match) {
-                    let user = response[0];
-                    user["user"]="1";
-                    user["password"]=null;
-                    cb({login : true, user : user})
-                } else {
-                    cb({login: false});
-                }
-                });
-                
-            } 
-        } catch (error){
-            console.log(error);
-        }
     }
-    
-    static async getProfilePhotoById(id, cb){
-        let sql= "select profilePhoto from  freelancer where  idFreelancer=?";
-        try {
-            const res= await mysqlExecute(sql, [id]);
-            if(res.length>0 && res[0].profilePhoto){
-                let photo= res[0].profilePhoto.toString("base64");
-                cb({profilePhoto: photo, response: true});
-            }else{
-                cb({response: false});
+
+  }  
+  static async logIn(json, cb){
+    let sql = "SELECT name, idFreelancer idCard, email, idCity, adress, password from freelancer where email = ?";
+    try{
+        const response = await mysqlExecute(sql, [ json.email]);
+        if (response.length === 0) {
+            cb({login: false});    
+        } else{
+            comparePassword(json.password, response[0]["password"], (match)=>{
+            if(match) {
+                let user = response[0];
+                user["user"]="1";
+                user["password"]=null;
+                cb({login : true, user : user})
+            } else {
+                cb({login: false});
             }
+            });
             
-        } catch (error) {
-            console.log(error);
-        }
+        } 
+    } catch (error){
+        console.log(error);
     }
-  static async logIn(json, cb) {
-    let sql =
-      "SELECT name, idFreelancer idCard, email, idCity, adress, password from freelancer where email = ?";
-    try {
-      const response = await mysqlExecute(sql, [json.email]);
-      if (response.length === 0) {
-        cb({ login: false });
-      } else {
-        comparePassword(json.password, response[0]["password"], (match) => {
-          if (match) {
-            let user = response[0];
-            user["user"] = "1";
-            user["password"] = null;
-            cb({ login: true, user: user });
-          } else {
-            cb({ login: false });
-          }
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  static async getProfilePhotoById(id, cb) {
-    let sql = "select profilePhoto from  freelancer where  idFreelancer=?";
-    try {
-      const res = await mysqlExecute(sql, [id]);
-      if (res[0].profilePhoto) {
-        let photo = res[0].profilePhoto.toString("base64");
-        cb({ profilePhoto: photo, response: true });
-      } else {
-        cb({ response: false });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  static async progressiveProfiling(json, cb) {
-    const values = [json.tools, json.preferredBrands, json.id];
-  
-    let sql = "UPDATE freelancer SET tools = ?, preferredBrands = ? WHERE idFreelancer = ?";
-  
-    try {
-      const res = await mysqlExecute(sql, values);
-      
-      const updatedRows = res.affectedRows;
-  
-      const success = updatedRows > 0;
-  
-      cb({ success });
-    } catch (error) {
-      console.log(error);
-      cb({ success: false });
-    }
-  }
-  
-
-  static async checkPreferences(id, cb) {
-    let sql =
-      "SELECT tools, preferredBrands FROM freelancer WHERE idFreelancer =?";
-    try {
-      const res = await mysqlExecute(sql, [id]);
-  
-      if(res[0].tools && res[0].preferredBrands){
-        cb({response: true});
-      }else{
-        cb({response: false});
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  static async addPreviousWork(formValues, cb) {
-    const {
-      idFreelancer,
-      title,
-      description,
-      date,
-      img
-    } = formValues;
-  
-    let fileContent = {};
-  
-    try {
-
-      let sql = `INSERT INTO previouswork (idFreelancer, title, description, date) VALUES (?, ?, ?, ?)`;
-      let params = [idFreelancer, title, description, date];
-  
-      const res = await mysqlExecute(sql, params);
-  
-      // Obtener el idPreviousWork asignado automáticamente
-      const idPreviousWork = res.insertId;
-      console.log(idPreviousWork);
-  
-      if (img) {
-
-        fileContent.img = await sharp(img)
-          .resize({ width: 800 })
-          .jpeg({ quality: 80 })
-          .toBuffer();
-
-        let imgSql = `INSERT INTO imagespw (idPreviousWork, image) VALUES (?, ?)`;
-        let imgParams = [idPreviousWork, fileContent.img];
-  
-        await mysqlExecute(imgSql, imgParams);
-      }
-  
-      cb({response: true});
-    } catch (error) {
-      console.log(error);
-      cb({response: false});
-    }
-  }
-  
 }
+static async logIn(json, cb) {
+let sql =
+  "SELECT name, idFreelancer idCard, email, idCity, adress, password from freelancer where email = ?";
+try {
+  const response = await mysqlExecute(sql, [json.email]);
+  if (response.length === 0) {
+    cb({ login: false });
+  } else {
+    comparePassword(json.password, response[0]["password"], (match) => {
+      if (match) {
+        let user = response[0];
+        user["user"] = "1";
+        user["password"] = null;
+        cb({ login: true, user: user });
+      } else {
+        cb({ login: false });
+      }
+    });
+  }
+} catch (error) {
+  console.log(error);
+}
+}
+
+static async getProfilephotoById(id, cb) {
+let sql = "select profilePhoto from  freelancer where  idFreelancer=?";
+try {
+  const res = await mysqlExecute(sql, [id]);
+  if (res[0].profilePhoto) {
+    let photo = res[0].profilePhoto.toString("base64");
+    cb({ profilePhoto: photo, response: true });
+  } else {
+    cb({ response: false });
+  }
+} catch (error) {
+  console.log(error);
+}
+}
+
+static async progressiveProfiling(json, cb) {
+const values = [json.tools, json.preferredBrands, json.id];
+
+let sql = "UPDATE freelancer SET tools = ?, preferredBrands = ? WHERE idFreelancer = ?";
+
+try {
+  const res = await mysqlExecute(sql, values);
+  
+  const updatedRows = res.affectedRows;
+
+  const success = updatedRows > 0;
+
+  cb({ success });
+} catch (error) {
+  console.log(error);
+  cb({ success: false });
+}
+}
+
+
+static async checkPreferences(id, cb) {
+let sql =
+  "SELECT tools, preferredBrands FROM freelancer WHERE idFreelancer =?";
+try {
+  const res = await mysqlExecute(sql, [id]);
+
+  if(res[0].tools && res[0].preferredBrands){
+    cb({response: true});
+  }else{
+    cb({response: false});
+  }
+
+} catch (error) {
+  console.log(error);
+}
+}
+
+static async addPreviousWork(formValues, cb) {
+const {
+  idFreelancer,
+  title,
+  description,
+  date,
+  img
+} = formValues;
+
+let fileContent = {};
+
+try {
+
+  let sql = `INSERT INTO previouswork (idFreelancer, title, description, date) VALUES (?, ?, ?, ?)`;
+  let params = [idFreelancer, title, description, date];
+
+  const res = await mysqlExecute(sql, params);
+
+  // Obtener el idPreviousWork asignado automáticamente
+  const idPreviousWork = res.insertId;
+  console.log(idPreviousWork);
+
+  if (img) {
+
+    fileContent.img = await sharp(img)
+      .resize({ width: 800 })
+      .jpeg({ quality: 80 })
+      .toBuffer();
+
+    let imgSql = `INSERT INTO imagespw (idPreviousWork, image) VALUES (?, ?)`;
+    let imgParams = [idPreviousWork, fileContent.img];
+
+    await mysqlExecute(imgSql, imgParams);
+  }
+
+  cb({response: true});
+} catch (error) {
+  console.log(error);
+  cb({response: false});
+}
+}
+
+  }
 
 module.exports = FreelancerDAO;

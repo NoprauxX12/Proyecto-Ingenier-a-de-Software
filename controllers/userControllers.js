@@ -172,7 +172,7 @@ exports. verifyEmail=(req,res)=>{
 
 exports.fetchPhoto= (req, res)=>{
     if(parseInt(req.body.user)===1){
-        FreelancerDAO.getProfilePhotoById(req.body.id, (result)=>{
+        FreelancerDAO.getProfilephotoById(req.body.id, (result)=>{
             res.json(result);
         })
     }else if(parseInt(req.body.user)=== 2){
@@ -218,6 +218,7 @@ exports.getTokenInfo =(req, res, next)=>{
 
 
 exports.progressiveProfiling = (req, res)=>{
+    console.log(req.body)
     FreelancerDAO.progressiveProfiling(req.body, (result)=>{
         res.json(result);
     })
