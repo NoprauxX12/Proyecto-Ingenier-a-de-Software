@@ -1,27 +1,21 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useLayoutEffect, useState, useContext, useEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import UserData from "../../services/user";
-import "../../styles/profile.css";
-import { AuthContext } from '../../providers/userProvider';
-import Urls from "../../util/urls";
-import Portfolio from "../../includes/overlays/portfolio";
 import ReviewData from "../../services/review";
-
 
 function ViewProfile(){
     const params = new URLSearchParams(window.location.search);
     const [user, setUser]= useState({});
-    const [showOverlayPortfolio, setshowOverlayPortfolio] = useState(false);
-    const {userData} = useContext(AuthContext);
     const id = params.get("id");
     const usertype = params.get("usertype");
-    const [averageRank, setAverageRank] = useState(null);
+    const [averageRank, setAverageRank] = useState(null)
 
+  
     useLayoutEffect(() => {
       const reqView = {id, usertype};
       document.title = user.name;
       const getUserData = async () => {
         UserData.viewProfile(reqView, (res) => {
+          console.log(res);
           setUser(res);
         });
       };
@@ -29,62 +23,25 @@ function ViewProfile(){
       getUserData();
     }, [id, usertype, user.name]);
 
-    
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await ReviewData.averageRank(id);
-          setAverageRank(response.data.Promedio_Ranking);
-        } catch (error) {
-          console.error("Error fetching average rank:", error);
+    useEffect(()=>{
+      const fetchData = async () =>{
+        try{
+          ReviewData.averageRank({id: id}, (response)=>{
+            if(response.result){
+              console.log("ola",typeof response.data)
+              setAverageRank(response.data)
+            }else{
+              console.log("Error al mostrar ranking")
+            }
+          })
+        }catch(error){
+          console.log(error)
         }
       };
-
       fetchData();
-    }, [id]);
+    }, [])
 
 
-    function base64ToArrayBuffer(base64) {
-      const binaryString = window.atob(base64);
-      const length = binaryString.length;
-      const bytes = new Uint8Array(length);
-      for (let i = 0; i < length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      return bytes.buffer;
-    }
-
-    const addPreviousWork = () =>{
-      setshowOverlayPortfolio(true);
-    };
-
-    const viewPdf = (type) => {
-      if (type === "curriculum") {
-          if (user.curriculum) {
-            const pdfBlob = new Blob([base64ToArrayBuffer(user.curriculum)], { type: "application/pdf" });
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-            window.open(pdfUrl, "_blank");
-        } else {
-            alert("¡Ups! Este perfil todavía no tiene una hoja de vida");
-        }
-      } else if (type === "rut") {
-        if (user.rut) {
-          const pdfBlob = new Blob([base64ToArrayBuffer(user.rut)], { type: "application/pdf" });
-          const pdfUrl = URL.createObjectURL(pdfBlob);
-          window.open(pdfUrl, "_blank");
-        } else {
-            alert("¡Ups! Este perfil todavía no tiene un RUT");
-        }
-      } else if (type === "eps") {
-        if (user.eps) {
-          const pdfBlob = new Blob([base64ToArrayBuffer(user.eps)], { type: "application/pdf" });
-          const pdfUrl = URL.createObjectURL(pdfBlob);
-          window.open(pdfUrl, "_blank");
-        } else {
-            alert("¡Ups! Este perfil todavía no tiene una EPS");
-        }
-      } 
-    };
     
     return (
       <>
@@ -99,35 +56,26 @@ function ViewProfile(){
           </div>
           <div className="content-container">
             <div className="left-container">
-              {userData.idCard === id && (<>
-                <a href={Urls.editProfile+`/?id=${id}&usertype=${usertype}`} style={{display: "inline-block"}}> 
-                  <div className="back" style={{position: "absolute", marginTop: "5px"}}>
-                    <i class='bx bx-edit-alt' style={{color: '#7d7d7d', fontSize: "3em"}} ></i>
-                  </div>
-                </a>
-              </>)}
-              {!user.profilePhoto ? (<>
-                <img className="profile-image" id="profile-image" src="/images/defaultUser.png" alt="usuario por defecto" />
-                </>):(
-                <>
-                <img id="profile-image" src={`data:image/jpeg;base64,${user.profilePhoto}`} className="profile-image" alt="Imagen de Perfil" style={{maxHeight: "30em"}}/>
-                </>
-              )}
-              <div className="content-element-inline">
+            {!user.profilePhoto? (<>
+                        <img className="profile-image" id="profile-image" src="/images/defaultUser.png" alt="usuario por defecto" />
+                    </>):(
+                        <>
+                        <img id="profile-image" src={`data:image/jpeg;base64,${user.profilePhoto}`} className="profile-image" alt="Imagen de Perfil" style={{maxHeight: "30em"}}/>
+                        </>
+                    )}
+
+            </div>
+            <div className="mid-container">
+              <div className="content-element">
                 <label htmlFor="profession">Profesión:</label>{" "}
                 <input
                   readOnly
                   type="text"
                   id="profession"
                   className="profession-box inside-color"
-                  style={{ cursor:"default", outline: "none" }}
+                  style={{ cursor: "default" }}
                   defaultValue={user.knowledge}
                 />
-              </div>
-              <div className="content-element">
-                <label htmlFor="rating">Puntuación y reseñas:</label>
-                <h1>{averageRank}/5.0</h1>
-                <a href={"/review/?id="+ id }>Ver Reseñas</a>
               </div>
               <div className="content-element">
                 <label htmlFor="description">Descripción:</label>
@@ -135,15 +83,15 @@ function ViewProfile(){
                   readOnly
                   id="description"
                   className="description-box inside-color"
-                  style={{ cursor:"default", outline: "none" }}
-                  defaultValue={user.description !== "null" ? user.description : ""}
+                  style={{ cursor: "default" }}
+                  defaultValue={user.description}
                 />
               </div>
               <div className="content-element">
                 <label htmlFor="rating">Puntuación y reseñas:</label>
               </div>
               <div className="content-element">
-                <h1>{averageRank}/5.0</h1>
+                <h1>{averageRank}/5</h1>
                 <a href={"/review/?id="+ id }>Ver reseñas</a>
               </div>
             </div>
@@ -155,35 +103,33 @@ function ViewProfile(){
                   type="tel"
                   id="phone"
                   className="phone-box inside-color"
-                  style={{ cursor:"default", outline: "none" }}
+                  style={{ cursor: "default" }}
                   defaultValue={user.cellphone}
                   size={10}
                 />
               </div>
-              <div className="content-element">
+              <div>
                 <label htmlFor="email">Correo Electrónico:</label>
+              </div>
+              <div className="content-element">
                 <input
                   readOnly
                   type="email"
                   id="email"
                   className="email-box inside-color"
-                  style={{ cursor:"default", outline: "none" }}
+                  style={{ cursor: "default" }}
                   defaultValue={user.email}
                 />
               </div>
-              <div>
-                <div className="content-element-inline">
-                  <label>Hoja de Vida:</label>
-                  <button type="button" className="button-box" onClick={() => viewPdf("curriculum")}> Ver </button>
-                </div>
-                <div className="content-element-inline">
-                  <label>RUT:</label>
-                  <button type="button" className="button-box" onClick={() => viewPdf("rut")}> Ver </button>
-                </div>
-                <div className="content-element-inline">
-                  <label>EPS:</label>
-                  <button type="button" className="button-box" onClick={() => viewPdf("eps")}> Ver </button>
-                </div>
+              <div className="content-element">
+                <label htmlFor="academic-info">Información Académica:</label>
+                <textarea
+                  readOnly
+                  id="academic-info"
+                  className="academic-info-box inside-color"
+                  style={{ cursor: "default" }}
+                  defaultValue={user.academicInfo}
+                />
               </div>
               <div className="content-element">
                 <label htmlFor="important-info">Información Importante:</label>
@@ -191,20 +137,14 @@ function ViewProfile(){
                   readOnly
                   id="important-info"
                   className="important-info-box inside-color"
-                  style={{ cursor:"default", outline: "none" }}
+                  style={{ cursor: "default" }}
                   defaultValue={user.importantInfo}
                 />
               </div>
             </div>
-
-            <div className="right-container">
-              {userData.idCard === id && (
-                <>
-                  <button type="button" className="button-box-lg" onClick={addPreviousWork}> Añadir Nuevo Elemento al Portafolio<i class='bx bx-plus-circle' style={{fontSize:"60px", color:"white" }}></i> </button>
-                  {showOverlayPortfolio && (<> <Portfolio showOverlayPortfolio={showOverlayPortfolio} setshowOverlayPortfolio={setshowOverlayPortfolio} /> </>)}
-                </>
-              )}
-            </div>
+          </div>
+          <div className="portfolio-container">
+            <label htmlFor="portfolio">Portafolio:</label>
           </div>
         </div>
       </>
