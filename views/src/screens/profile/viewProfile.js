@@ -1,12 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useLayoutEffect, useState, useContext } from "react";
-import React, { useEffect, useLayoutEffect, useState } from "react";
 import UserData from "../../services/user";
 import "../../styles/profile.css";
 import { AuthContext } from '../../providers/userProvider';
 import Urls from "../../util/urls";
 import Portfolio from "../../includes/overlays/portfolio";
-import ReviewData from "../../services/review";
 
 function ViewProfile(){
     const params = new URLSearchParams(window.location.search);
@@ -16,9 +14,6 @@ function ViewProfile(){
     const id = params.get("id");
     const usertype = params.get("usertype");
 
-    const [averageRank, setAverageRank] = useState(null)
-
-  
     useLayoutEffect(() => {
       const reqView = {id, usertype};
       document.title = user.name;
@@ -73,26 +68,6 @@ function ViewProfile(){
         }
       } 
     };
-
-    useEffect(()=>{
-      const fetchData = async () =>{
-        try{
-          ReviewData.averageRank({id: id}, (response)=>{
-            if(response.result){
-              console.log("ola",typeof response.data)
-              setAverageRank(response.data)
-            }else{
-              console.log("Error al mostrar ranking")
-            }
-          })
-        }catch(error){
-          console.log(error)
-        }
-      };
-      fetchData();
-    }, [])
-
-
     
     return (
       <>
@@ -148,16 +123,6 @@ function ViewProfile(){
                 />
               </div>
               <div className="content-element-inline">
-              <div className="content-element">
-                <label htmlFor="rating">Puntuación y reseñas:</label>
-              </div>
-              <div className="content-element">
-                <h1>{averageRank}/5</h1>
-                <a href={"/review/?id="+ id }>Ver reseñas</a>
-              </div>
-            </div>
-            <div className="right-container">
-              <div className="content-element">
                 <label htmlFor="phone">Teléfono:</label>{" "}
                 <input
                   readOnly
