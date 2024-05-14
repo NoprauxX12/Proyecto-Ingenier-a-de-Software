@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useLayoutEffect, useState, useContext } from "react";
+import React, { useLayoutEffect, useState, useContext, useEffect } from "react";
 import UserData from "../../services/user";
 import "../../styles/profile.css";
 import { AuthContext } from '../../providers/userProvider';
 import Urls from "../../util/urls";
 import Portfolio from "../../includes/overlays/portfolio";
+import ReviewData from "../../services/review";
+
 
 function ViewProfile(){
     const params = new URLSearchParams(window.location.search);
@@ -13,6 +15,7 @@ function ViewProfile(){
     const {userData} = useContext(AuthContext);
     const id = params.get("id");
     const usertype = params.get("usertype");
+    const [averageRank, setAverageRank] = useState(null);
 
     useLayoutEffect(() => {
       const reqView = {id, usertype};
@@ -25,6 +28,20 @@ function ViewProfile(){
 
       getUserData();
     }, [id, usertype, user.name]);
+
+    
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await ReviewData.averageRank(id);
+          setAverageRank(response.data.Promedio_Ranking);
+        } catch (error) {
+          console.error("Error fetching average rank:", error);
+        }
+      };
+
+      fetchData();
+    }, [id]);
 
 
     function base64ToArrayBuffer(base64) {
@@ -109,8 +126,8 @@ function ViewProfile(){
               </div>
               <div className="content-element">
                 <label htmlFor="rating">Puntuación y reseñas:</label>
-                <h1>4.8/5.0</h1>
-                <a href="#">Ver 182 reseñas</a>
+                <h1>{averageRank}/5.0</h1>
+                <a href={"/review/?id="+ id }>Ver Reseñas</a>
               </div>
               <div className="content-element">
                 <label htmlFor="description">Descripción:</label>
@@ -122,7 +139,6 @@ function ViewProfile(){
                   defaultValue={user.description !== "null" ? user.description : ""}
                 />
               </div>
-<<<<<<< HEAD
               <div className="content-element">
                 <label htmlFor="rating">Puntuación y reseñas:</label>
               </div>
@@ -133,9 +149,6 @@ function ViewProfile(){
             </div>
             <div className="right-container">
               <div className="content-element">
-=======
-              <div className="content-element-inline">
->>>>>>> 6cb5b5d3b7f7aface3a362fb667ed2841f73657d
                 <label htmlFor="phone">Teléfono:</label>{" "}
                 <input
                   readOnly
