@@ -473,7 +473,6 @@ try {
 
   // Obtener el idPreviousWork asignado automáticamente
   const idPreviousWork = res.insertId;
-  console.log(idPreviousWork);
 
   if (img) {
 
