@@ -11,6 +11,7 @@ import "../../styles/siderBar.css";
 const SiderBar = () => {
     const [isActive, setIsActive] = useState(false);
     const [not, setNot]= useState(0);
+    const [contNot, setContNOt]= useState(0);
     const [initialLoad, setInitialLoad] = useState(false);
     const params= new URLSearchParams(window.location.search);
     const {userData, logout} = useContext(AuthContext);
@@ -34,6 +35,7 @@ const SiderBar = () => {
             MessageData.getNotifications({user: userData.user, idUser: userData.idCard, name: userData.name}, (res)=>{
                 console.log(res);
                 setNot(res.notifications);
+                setContNOt(res.contractsNotifications);
             })
 
         }
@@ -108,7 +110,6 @@ const SiderBar = () => {
                 <li>
                     <a href={Urls.home}>
                     <i className="bx bx-home-alt-2" style={{color: 'rgba(255,255,255,0.29)'}} />
-
                     <span className="nav-item">Home</span>
                     </a>
                     <span className="tooltip">Home</span>
@@ -116,9 +117,25 @@ const SiderBar = () => {
                 </>)}
                 
                 <li>
-                    <a href="#">
+                    <a href={Urls.contract} style={{ position: 'relative' }}>
                     <i className="bx bx-notepad"/>
                     <span className="nav-item">Contratos</span>
+                    {contNot>0 &&(<>
+                        <div style={{ 
+                            position: 'absolute', 
+                            top: '-5px', 
+                            right: '-5px', 
+                            backgroundColor: '#55ACEE', 
+                            color: 'white', 
+                            borderRadius: '50%', 
+                            width: '20px', 
+                            height: '20px', 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            alignItems: 'center' }}>
+                            {contNot}
+                        </div>
+                        </>)}
                     </a>
                     <span className="tooltip">Contratos</span>
                 </li>
@@ -154,7 +171,7 @@ const SiderBar = () => {
                 </li>
             </ul>
         </div>
-        {document.title!=="chat"&& (<>
+        {(document.title!=="cotizaciones" && document.title!=="Contratos") && (<>
             <div className="navBar">
             <h1 className="pageTitle" style={{color: '#3D00B7'}}>El Que <span style={{color: '#55ACEE'}}>Sabe</span></h1>
             <div className="searchBox">

@@ -8,6 +8,7 @@ import axios from "axios";
 import EstimateData from "../../services/estimate";
 import EstimateContainer from "../../includes/containers/stimateContainer";
 import { AuthContext } from "../../providers/userProvider";
+import { BaseUrl } from "../../util/apiUrl";
 
 const Chat = ({ socket, username }) => {
     const {userData} = useContext(AuthContext);
@@ -28,7 +29,7 @@ const Chat = ({ socket, username }) => {
         let _messages = null;
         console.log("Consulta principal")
         try {
-          const response = await axios.get(`http://localhost:3001/messages/${roomId}`);
+          const response = await axios.get(`${BaseUrl.chatsserver}/messages/${roomId}`);
           _messages = response.data;
         } catch (error) {
           console.error('Error fetching messages:', error);
@@ -42,6 +43,10 @@ const Chat = ({ socket, username }) => {
             await EstimateData.setState({state:2, id:roomId},(res)=>{
                 console.log(res);
             })
+        }else if(parseInt(state)===3){
+            await EstimateData.setState({state: 4, id:roomId},(res)=>{
+                console.log(res);
+            })   
         }
         socket.emit("view");
         await setMessages(searchMessages(roomId));
@@ -65,7 +70,7 @@ const Chat = ({ socket, username }) => {
         socket.on("recive_message",fetchestimates)
         if(!initialLoad){
             fetchestimates();
-            document.title="chat";
+            document.title="cotizaciones";
             setMessages(searchMessages(selectedRoom));
             setInitialLoad(true);
         }

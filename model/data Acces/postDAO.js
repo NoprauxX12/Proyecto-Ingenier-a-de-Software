@@ -25,13 +25,14 @@ class PostDAO{
       } catch (err) {
         console.error(err);
       }
-    let sql= " INSERT INTO contractOffer (description, title, idClient, idCity, adress) VALUES (?,?,?,?,?)";
-    let imgSql= "INSERT INTO imegesco (image, idContractOffer) VALUES (?,?)"
+    let sql= " INSERT INTO contractoffer (description, title, idClient, idCity, adress) VALUES (?,?,?,?,?)";
+    let imgSql= "INSERT INTO imegesco (image, idContractoffer) VALUES (?,?)"
     try {
         let res= await mysqlExecute(sql, values);
         if(fileContent) mysqlExecute(imgSql, [fileContent, res.insertId]);
         cb({result: true});
     } catch (error) {
+        console.log(error);
         cb({result: false});
     }
     
@@ -52,14 +53,14 @@ class PostDAO{
     }
     
     static async fetchAll(city, cb){
-        let sql=city?"select idContractOffer, c.description, title, idClient, l.name, t.name city, c.idCity, c.adress from contractOffer c join client l using(idClient) join town t on t.idCity= c.idCity WHERE l.idCity=?" : 
-        "select idContractOffer, c.description, title, idClient, l.name, t.name city, c.idCity, c.adress from contractOffer c join client l using(idClient) join town t on t.idCity= c.idCity";
+        let sql=city?"select idContractoffer, c.description, title, idClient, l.name, t.name city, c.idCity, c.adress from contractoffer c join client l using(idClient) join town t on t.idCity= c.idCity WHERE c.idCity=?" : 
+        "select idContractoffer, c.description, title, idClient, l.name, t.name city, c.idCity, c.adress from contractoffer c join client l using(idClient) join town t on t.idCity= c.idCity";
         try {
             const response =city? await mysqlExecute(sql, [parseFloat(city)]) : await mysqlExecute(sql);
             for (let i = 0; i < response.length; i++) {
                 await new Promise(async (resolve)=>{
-                    sql= "select image from imegesco where idContractOffer=?";
-                    let res= await mysqlExecute(sql, response[i].idContractOffer);
+                    sql= "select image from imegesco where idContractoffer=?";
+                    let res= await mysqlExecute(sql, response[i].idContractoffer);
                     if(res.length>0){
                         response[i]["img"]= res[0].image.toString("base64");
                     }else{
@@ -77,11 +78,23 @@ class PostDAO{
 
     static async fetchByKeyword(city, search, cb){
         let sql = city ?
-        "SELECT idContractOffer, c.description, title, idClient, l.name, t.name AS city FROM contractOffer c JOIN client l USING(idClient) JOIN town t USING(idCity) WHERE l.idCity = ? AND c.description LIKE ?" :
-        "SELECT idContractOffer, c.description, title, idClient, l.name, t.name AS city FROM contractOffer c JOIN client l USING(idClient) JOIN town t USING(idCity) WHERE c.description LIKE ?";
+        "SELECT idContractoffer, c.description, title, idClient, l.name, t.name AS city FROM contractoffer c JOIN client l USING(idClient) JOIN town t ON c.idCity=t.idCity WHERE c.idCity = ? AND c.description LIKE ?" :
+        "SELECT idContractoffer, c.description, title, idClient, l.name, t.name AS city FROM contractoffer c JOIN client l USING(idClient) JOIN town t ON c.idCity=t.idCity WHERE c.description LIKE ?";
         const descriptionValue = `%${search}%`;
         try {
             const response =city? await mysqlExecute(sql, [parseFloat(city), descriptionValue]) : await mysqlExecute(sql,[descriptionValue]);
+            for (let i = 0; i < response.length; i++) {
+                await new Promise(async (resolve)=>{
+                    sql= "select image from imegesco where idContractoffer=?";
+                    let res= await mysqlExecute(sql, response[i].idContractoffer);
+                    if(res.length>0){
+                        response[i]["img"]= res[0].image.toString("base64");
+                    }else{
+                        response[i]["img"]=null;
+                    }
+                    resolve()
+                })
+            }
             cb(response);
         } catch (error) {
             console.log(error);

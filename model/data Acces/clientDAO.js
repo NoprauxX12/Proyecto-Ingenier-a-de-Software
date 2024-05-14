@@ -25,7 +25,7 @@ const hashPassword = async (password) => {
 class ClientDAO {
   static async createClient(client, cb) {
     let sql =
-      "INSERT INTO Client (idClient, `name`, phoneNumber,cellphone,adress, email, `password`, idCity, `description`, profilePhoto ) VALUES (?,?,?,?,?,?,?,?,?,?);";
+      "INSERT INTO client (idClient, `name`, phoneNumber,cellphone,adress, email, `password`, idCity, `description`, profilePhoto ) VALUES (?,?,?,?,?,?,?,?,?,?);";
     const password = await hashPassword(client.password);
     let link = client.profilePhoto; 
     let fileContent = null;
@@ -111,6 +111,24 @@ class ClientDAO {
       let user = response[0];
       cb(user);
     } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async updatePassword(data, cb) {
+
+    let sql = "UPDATE client SET password = ? WHERE email = ?";
+    let hashedPassword = await hashPassword(data.password)
+
+    try{  
+      console.log(hashedPassword)
+        const res = await mysqlExecute(sql, [hashedPassword, data.email])
+        if (res.affectedRows > 0){
+          cb(true)
+        } else {
+          cb(false)
+        }
+    } catch (error){
       console.log(error);
     }
   }

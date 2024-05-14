@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fontsource/comfortaa": "^5.0.19",
+    "@fontsource/comfortaa": "^5.0.20",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "bcrypt": "^5.1.1",
@@ -30,9 +31,11 @@
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.9.1",
+    "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
     "react-scroll-to-bottom": "^4.2.0",
     "react-simple-chatbot": "^0.5.0",
+    "resend": "^3.2.0",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",
     "sharp": "^0.33.2",
@@ -40,6 +43,7 @@
     "socket.io-client": "^4.7.5",
     "styled-components": "^4.4.1",
     "tailwindcss": "^3.4.1",
+    "uuid": "^9.0.1",
     "wikipedia": "^2.1.2"
   }
 }

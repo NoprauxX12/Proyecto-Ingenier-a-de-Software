@@ -23,6 +23,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
     const [estimate, setEstimate] = useState({});
     const [showRealizar, setShowRealizar]= useState(false);
     const [showAsk, setshowAsk]= useState(false);
+    const [dateStart, setDateStart]= useState(null);
     const {userData} = useContext(AuthContext);
     var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
     snd.volume = 0.05;
@@ -42,10 +43,8 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
         
                     if (dateStart) {
                         let date = new Date(dateStart);
-                        setEstimate((prevEstimate) => ({
-                            ...prevEstimate,
-                            dateStart: `${date.getDate()} - ${mesesDelAnio[date.getMonth()]} de ${date.getFullYear()}` , // Obtener el día del mes
-                        }));
+                        console.log(dateStart)
+                        setDateStart(`${date.getDate()} - ${mesesDelAnio[date.getMonth()]} de ${date.getFullYear()}`)
                     }
                 });
             };
@@ -61,9 +60,13 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
         }, [estimateId, socket]); // Eliminado estimate de las dependencias del efecto
 
         const onAcept=()=>{
-            EstimateData.setState({state: 4, id: estimateId}, (res)=>{
+            EstimateData.setState({state: 5, id: estimateId}, (res)=>{
                 console.log(res)
             })
+            socket.emit("sendEstimateChange", {
+                estimateId: estimateId,
+                autorId: userData.idCard
+            });
             show();
             setshowAsk(false);
         }
@@ -116,7 +119,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                         <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={onClose}>Realizar Cotización</a>
                     </>)}
                 </>): (<>
-                    {3===parseInt(estimate.state)&& (<>
+                    {(4===parseInt(estimate.state) ||3===parseInt(estimate.state))&& (<>
                         <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={()=>{setshowAsk(true)}}>Aceptar Cotización</a>
                     </>)}
                 </>)}
@@ -147,7 +150,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
             <div className="contentBox">
                 <p style={{float: "right"}}>{estimate.sendDate}</p>
                 <h5 style={{}}>{estimate.city} - {estimate.adress}</h5>
-                {(3===parseInt(estimate.state) || estimate.cost) && (<>
+                {(3===parseInt(estimate.state) || 4===parseInt(estimate.state)) && (<>
                     <h1 style={{color: "#3D00B7", fontWeight: "bold", marginBottom: "1em"}}>Valor: <span style={{float: "right", marginRight:"1em",color: "#3D00B7"}}>{estimate.cost}.000</span></h1>
                     <p>Importante: las cotizaciones incluyen unicamente el costo de la mano de obra.</p>
                 </>)}
@@ -159,8 +162,8 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                 </>)}
                 <h3>Descripción:</h3>
                 <p className="textDescriptio">{estimate.description}</p>
-                <h3>Fecha de inicio:</h3>
-                <p className="textDescriptio">{estimate.dateStart==="" || estimate.dateStart===null? "No especificada": estimate.dateStart }</p>
+                <h3>Fecha de inicio - fin:</h3>
+                <p className="textDescriptio">{estimate.dateStart==="" || estimate.dateStart===null? "No especificada": dateStart }</p>
                 <h3>Foto: </h3>
                 {estimate.dercriptiveImg && (<>
                     <img src={`data:image/jpeg;base64,${estimate.dercriptiveImg}`} alt="descrictive img" style={{height: "40%"}}/>
@@ -173,7 +176,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
 export default EstimateContainer;
 
 
-const AskOv= ({onClose, cost, onAcept, show})=>{
+const AskOv= ({onClose, cost, onAcept})=>{
     return(<>
     <div className="overlay" >
         <div className="deal-box" style={{height:"40%", width: "50%"}} >
@@ -189,3 +192,5 @@ const AskOv= ({onClose, cost, onAcept, show})=>{
     </div>
     </>);
 }
+
+//{userData.user==="2"&& (<><form action=""><input type="date"/><input type="date" style={{marginLeft: "1em"}}/><button className="btne_dark" style={{marginLeft: "1em"}}>Cambiar</button></form></>)}

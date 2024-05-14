@@ -15,7 +15,7 @@ const ChatList = ({handler, estimates, userData})=>{
                 </div>
             <div id="estimatesList">
                 {estimates.map(estimate => (<>
-                    {estimate.state!==4&& (<>
+                    {estimate.state<5&& (<>
                         <div key={estimate.id} onClick={() => {
                                 handler(estimate.id, estimate.user, estimate.state);
                                 setSelected(estimate.id);
@@ -29,7 +29,7 @@ const ChatList = ({handler, estimates, userData})=>{
                                         </>)}
                                         </div>
                                 <div style={{ fontFamily: 'Comfortaa, sans-serif', fontWeight: 'bold' }}>{estimate.name}</div>
-                                {((parseInt(estimate.user)!== parseInt(userData.user) && estimate.state===1) ||  estimate.msg>0) &&(<>
+                                {((parseInt(estimate.user)!== parseInt(userData.user) && (estimate.state===1 || estimate.state===3)) ||  estimate.msg>0) &&(<>
                                     <div style={{width: "1.5em", height: "1.5em", borderRadius: "50%", backgroundColor: "#55ACEE", marginLeft: "2.3em", textAlign: "center"}}><p style={{color: "#fff", fontWeight: "bold"}}>{parseInt(estimate.msg)>0 ? estimate.msg: ""}</p></div>
                                 </>)}  </div>
                             <p style={{marginLeft: "1em", marginTop: "0.3em"}}>{estimate.description.slice(0,28)}...</p>

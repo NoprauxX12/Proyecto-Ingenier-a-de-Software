@@ -69,7 +69,7 @@ function Portfolio({showOverlayPortfolio, setshowOverlayPortfolio}){
   return (
     <>
       <div className="overlay">
-        <div className="deal-box">
+        <div className="deal-box" style={{overflow: "auto"}}>
           <h2 style={{color:"black", fontWeight:"bolder"}}>Publicar un Trabajo Previo</h2>
           <p style={{color: "red"}}>{error}</p>
           <form onSubmit={handleSubmit}>

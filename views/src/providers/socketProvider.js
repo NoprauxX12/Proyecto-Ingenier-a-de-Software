@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from 'react';
+import { BaseUrl } from '../util/apiUrl';
 import io from 'socket.io-client';
 // Crear un contexto para el socket
 const SocketContext = createContext();
@@ -7,7 +8,7 @@ const SocketContext = createContext();
 export const SocketProvider = ({ children }) => {
     const storedUserData = localStorage.getItem('userData');
     const userData =  storedUserData ? JSON.parse(storedUserData) : null;
-    const socket = io('http://localhost:3001'); // Establecer la conexión del socket
+    const socket = io(`${BaseUrl.chatsserver}`); // Establecer la conexión del socket
     if(userData) {
         socket.emit("join_room", userData.idCard + userData.user);
         socket.emit("save_user", {
