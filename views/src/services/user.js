@@ -110,6 +110,39 @@ class UserData {
       }
     }
 
+    static async progressiveProfiling(json, cb){
+      try{
+        const success = await axios.post(`${BaseUrl}/freelancer-preferences`,json);
+        if (success) {
+          cb({ response: true });
+        } else {
+          cb({ response: false });
+        }
+      } catch (error) {
+        console.log(error);
+        cb({ response: false });
+      }
+    }
+
+    static async checkPreferences(id, cb){
+      try{
+        const response = await axios.post(`${BaseUrl}/check-preferences`,id);  
+        cb(response.data);
+      }catch(error){
+        console.log(error);
+      }
+    }
+
+    static async addPreviousWork(formValues, cb){
+      try{
+        const response = await axios.post(`${BaseUrl}/add-previouswork`,formValues);
+        
+        cb(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
 }
 
 export default UserData;

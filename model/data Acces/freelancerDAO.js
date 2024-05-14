@@ -1,27 +1,37 @@
 const mysqlExecute = require("../../util/mysqlConnexion");
-const fs= require("fs")
-const bcrypt = require('bcrypt');
-const sharp= require("sharp");
+const fs = require("fs");
+const fs2 = require("fs").promises;
+const bcrypt = require("bcrypt");
+const sharp = require("sharp");
 const GeneralDAO = require("./generalDAO");
 const { response } = require("express");
+
+// Esta función envuelve la función fs.readFile en una promesa para uso asíncrono
+const readFileAsync = async (path) => {
+    try {
+        return await fs2.readFile(path);
+    } catch (error) {
+        throw error;
+    }
+};
 const { error } = require("console");
 
 const hashPassword = async (password) => {
-    const saltRounds = 10; // Número de rondas de salado
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    return hashedPassword;
-  };
+  const saltRounds = 10; // Número de rondas de salado
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
+};
 
-  const comparePassword = async (password, hashedPassword, cb) => {
-    try {
-      const match = await bcrypt.compare(password, hashedPassword);
-      cb(match);
-    } catch (error) {
-      // Manejar el error, si ocurre
-      console.error("Error al comparar contraseñas:", error);
-      return false;
-    }
-  };  
+const comparePassword = async (password, hashedPassword, cb) => {
+  try {
+    const match = await bcrypt.compare(password, hashedPassword);
+    cb(match);
+  } catch (error) {
+    // Manejar el error, si ocurre
+    console.error("Error al comparar contraseñas:", error);
+    return false;
+  }
+};
 
 class FreelancerDAO {
   static async createFreelancer(free, cb) {
@@ -92,22 +102,28 @@ class FreelancerDAO {
       cb({ result: false });
     }
   }
-    static async fetchAll(p,cb){
-        let sql=p.city!=="00"?  "select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto from freelancer f left join town t using (idCity) where f.idCity=?" :"select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto from freelancer f left join town t using (idCity)";
-        try{
-            const results=p.city!=="00"? await mysqlExecute(sql, [parseFloat(p.city)]): await mysqlExecute(sql);
-            results.map((freelancer)=>{
-                if(freelancer.profilePhoto){
-                    let photo=freelancer.profilePhoto.toString('base64');
-                    freelancer["profilePhoto"]=photo;
-                } 
-            });
-            cb(results);
-        }catch(err){
-            console.log(err);
-            cb({result: false});
+  static async fetchAll(p, cb) {
+    let sql =
+      p.city !== "00"
+        ? "select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto from freelancer f left join town t using (idCity) where f.idCity=?"
+        : "select f.idFreelancer, f.name , t.name city, f.description, f.profilePhoto from freelancer f left join town t using (idCity)";
+    try {
+      const results =
+        p.city !== "00"
+          ? await mysqlExecute(sql, [parseFloat(p.city)])
+          : await mysqlExecute(sql);
+      results.map((freelancer) => {
+        if (freelancer.profilePhoto) {
+          let photo = freelancer.profilePhoto.toString("base64");
+          freelancer["profilePhoto"] = photo;
         }
+      });
+      cb(results);
+    } catch (err) {
+      console.log(err);
+      cb({ result: false });
     }
+  }
 
   static async fetchByKeyword(p, cb) {
     let sql =
@@ -171,7 +187,7 @@ class FreelancerDAO {
     try {
       const response = await mysqlExecute(sql, [id]);
       const user = response[0];
-      
+
       // Convertir blobs a URLs de datos base64 si existen
       if (user.profilePhoto) {
         user.profilePhoto = user.profilePhoto.toString("base64");
@@ -185,148 +201,266 @@ class FreelancerDAO {
       if (user.eps) {
         user.eps = user.eps.toString("base64");
       }
-  
+
       // Obtener títulos de conocimientos académicos y agregarlos a la respuesta
-      sql = "SELECT title FROM academicdegrees JOIN technicalknowledge USING(idTechnicalKnowledge) WHERE idFreelancer = ?";
+      sql =
+        "SELECT title FROM academicdegrees JOIN technicalknowledge USING(idTechnicalKnowledge) WHERE idFreelancer = ?";
       const knowledge = await mysqlExecute(sql, [id]);
       const knowledgeList = knowledge.map((e) => e.title).join(", ");
       user["knowledge"] = knowledgeList;
-  
+
       cb(user);
     } catch (error) {
       console.log(error);
     }
   }
-
-  static async updatePassword(data, cb) {
-
-    let sql = "UPDATE freelancer SET password = ? WHERE email = ?";
-    let hashedPassword = await hashPassword(data.password)
-
-    try{  
-        const res = await mysqlExecute(sql, [hashedPassword, data.email])
-        if (res.affectedRows > 0){
-          cb(true)
-        } else {
-          cb(false)
-        }
-    } catch (error){
-      console.log(error);
-    }
-  }
+  
 
   static async updateById(formData) {
     const {
-      id,
-      name,
-      description,
-      cellphone,
-      email,
-      importantInfo,
-      photo,
-      curriculum,
-      rut,
-      eps,
-      password,
-    } = formData;
-
-    let fileContent = null;
-
-    if (photo !== null) {
-      fileContent = await sharp(photo)
-        .resize({ width: 800 })
-        .jpeg({ quality: 80 })
-        .toBuffer();
-    }
-
-    let sql = `UPDATE freelancer SET
-                name = ?,
-                description = ?,
-                cellphone = ?,
-                email = ?,
-                importantInfo = ?,
-                profilePhoto = ?,
-                curriculum = ?,
-                rut = ?,
-                eps = ?
-                WHERE idFreelancer = ?`;
-
-    try {
-      // Ejecutar la consulta SQL para actualizar el perfil
-      await mysqlExecute(sql, [
+        id,
         name,
         description,
         cellphone,
         email,
         importantInfo,
-        fileContent,
+        profilePhoto,
         curriculum,
         rut,
         eps,
-        id,
-      ]);
+        password,
+    } = formData;
 
-      if (photo !== null) {
-        fs.unlink(photo, (error) => {
-          if (error) {
-            console.error("Error deleting file:", error);
-          } else {
-            console.log("File deleted successfully.");
-          }
-        });
-      }
+    let fileContents = {};
 
-      if (password) {
-        const hashedPassword = hashPassword(password);
-        sql = "UPDATE freelancer SET password = ? WHERE idFreelancer = ?";
-        await mysqlExecute(sql, [hashedPassword, id]);
-      }
+    // Verificar y procesar los archivos adjuntos
+    if (profilePhoto) {
+        fileContents.profilePhoto = await sharp(profilePhoto)
+            .resize({ width: 800 })
+            .jpeg({ quality: 80 })
+            .toBuffer();
+    }
+    if (curriculum) {
+        fileContents.curriculum = await readFileAsync(curriculum);
+    }
+    if (rut) {
+        fileContents.rut = await readFileAsync(rut);
+    }
+    if (eps) {
+        fileContents.eps = await readFileAsync(eps);
+    }
 
-      console.log("Perfil actualizado correctamente.");
+    // Consulta SQL para actualizar el perfil
+    let sql = `UPDATE freelancer SET
+                name = ?,
+                description = ?,
+                cellphone = ?,
+                email = ?,
+                importantInfo = ?`;
+
+    const params = [
+        name,
+        description,
+        cellphone,
+        email,
+        importantInfo,
+    ];
+
+    // Agregar campos de archivos al SQL y parámetros
+    if (profilePhoto) {
+        sql += ", profilePhoto = ?";
+        params.push(fileContents.profilePhoto);
+    }
+    if (curriculum) {
+        sql += ", curriculum = ?";
+        params.push(fileContents.curriculum);
+    }
+    if (rut) {
+        sql += ", rut = ?";
+        params.push(fileContents.rut);
+    }
+    if (eps) {
+        sql += ", eps = ?";
+        params.push(fileContents.eps);
+    }
+
+    sql += " WHERE idFreelancer = ?";
+
+    params.push(id);
+
+    try {
+        // Ejecutar la consulta SQL
+        await mysqlExecute(sql, params);
+
+        // Eliminar archivos temporales
+        if (profilePhoto) {
+            fs.unlink(profilePhoto, (error) => {
+                if (error) {
+                    console.error("Error deleting profile photo file:", error);
+                } else {
+                    console.log("Profile photo file deleted successfully.");
+                }
+            });
+        }
+        if (curriculum) {
+            fs.unlink(curriculum, (error) => {
+                if (error) {
+                    console.error("Error deleting curriculum file:", error);
+                } else {
+                    console.log("Curriculum file deleted successfully.");
+                }
+            });
+        }
+        if (rut) {
+            fs.unlink(rut, (error) => {
+                if (error) {
+                    console.error("Error deleting rut file:", error);
+                } else {
+                    console.log("Rut file deleted successfully.");
+                }
+            });
+        }
+        if (eps) {
+            fs.unlink(eps, (error) => {
+                if (error) {
+                    console.error("Error deleting eps file:", error);
+                } else {
+                    console.log("Eps file deleted successfully.");
+                }
+            });
+        }
+
+        // Actualización de la contraseña si es necesario
+        if (password) {
+            const hashedPassword = hashPassword(password);
+            sql = "UPDATE freelancer SET password = ? WHERE idFreelancer = ?";
+            await mysqlExecute(sql, [hashedPassword, id]);
+        }
+
+        console.log("Perfil actualizado correctamente.");
     } catch (error) {
-      console.error("Error al actualizar el perfil:", error);
+        console.error("Error al actualizar el perfil:", error);
     }
   }
 
-    static async logIn(json, cb){
-        let sql = "SELECT name, idFreelancer idCard, email, idCity, adress, password from freelancer where email = ?";
-        try{
-            const response = await mysqlExecute(sql, [ json.email]);
-            if (response.length === 0) {
-                cb({login: false});    
-            } else{
-                comparePassword(json.password, response[0]["password"], (match)=>{
-                if(match) {
-                    let user = response[0];
-                    user["user"]="1";
-                    user["password"]=null;
-                    cb({login : true, user : user})
-                } else {
-                    cb({login: false});
-                }
-                });
-                
-            } 
-        } catch (error){
-            console.log(error);
-        }
+  static async logIn(json, cb) {
+    let sql =
+      "SELECT name, idFreelancer idCard, email, idCity, adress, password from freelancer where email = ?";
+    try {
+      const response = await mysqlExecute(sql, [json.email]);
+      if (response.length === 0) {
+        cb({ login: false });
+      } else {
+        comparePassword(json.password, response[0]["password"], (match) => {
+          if (match) {
+            let user = response[0];
+            user["user"] = "1";
+            user["password"] = null;
+            cb({ login: true, user: user });
+          } else {
+            cb({ login: false });
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
-    
-    static async getProfilePhotoById(id, cb){
-        let sql= "select profilePhoto from  freelancer where  idFreelancer=?";
-        try {
-            const res= await mysqlExecute(sql, [id]);
-            if(res[0].profilePhoto){
-                let photo= res[0].profilePhoto.toString("base64");
-                cb({profilePhoto: photo, response: true});
-            }else{
-                cb({response: false});
-            }
-            
-        } catch (error) {
-            console.log(error);
-        }
+  }
+
+  static async getProfilePhotoById(id, cb) {
+    let sql = "select profilePhoto from  freelancer where  idFreelancer=?";
+    try {
+      const res = await mysqlExecute(sql, [id]);
+      if (res[0].profilePhoto) {
+        let photo = res[0].profilePhoto.toString("base64");
+        cb({ profilePhoto: photo, response: true });
+      } else {
+        cb({ response: false });
+      }
+    } catch (error) {
+      console.log(error);
     }
+  }
+
+  static async progressiveProfiling(json, cb) {
+    const values = [json.tools, json.preferredBrands, json.id];
+  
+    let sql = "UPDATE freelancer SET tools = ?, preferredBrands = ? WHERE idFreelancer = ?";
+  
+    try {
+      const res = await mysqlExecute(sql, values);
+      
+      const updatedRows = res.affectedRows;
+  
+      const success = updatedRows > 0;
+  
+      cb({ success });
+    } catch (error) {
+      console.log(error);
+      cb({ success: false });
+    }
+  }
+  
+
+  static async checkPreferences(id, cb) {
+    let sql =
+      "SELECT tools, preferredBrands FROM freelancer WHERE idFreelancer =?";
+    try {
+      const res = await mysqlExecute(sql, [id]);
+  
+      if(res[0].tools && res[0].preferredBrands){
+        cb({response: true});
+      }else{
+        cb({response: false});
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async addPreviousWork(formValues, cb) {
+    const {
+      idFreelancer,
+      title,
+      description,
+      date,
+      img
+    } = formValues;
+  
+    let fileContent = {};
+  
+    try {
+
+      let sql = `INSERT INTO previouswork (idFreelancer, title, description, date) VALUES (?, ?, ?, ?)`;
+      let params = [idFreelancer, title, description, date];
+  
+      const res = await mysqlExecute(sql, params);
+  
+      // Obtener el idPreviousWork asignado automáticamente
+      const idPreviousWork = res.insertId;
+      console.log(idPreviousWork);
+  
+      if (img) {
+
+        fileContent.img = await sharp(img)
+          .resize({ width: 800 })
+          .jpeg({ quality: 80 })
+          .toBuffer();
+
+        let imgSql = `INSERT INTO imagespw (idPreviousWork, image) VALUES (?, ?)`;
+        let imgParams = [idPreviousWork, fileContent.img];
+  
+        await mysqlExecute(imgSql, imgParams);
+      }
+  
+      cb({response: true});
+    } catch (error) {
+      console.log(error);
+      cb({response: false});
+    }
+  }
+  
 }
 
 module.exports = FreelancerDAO;

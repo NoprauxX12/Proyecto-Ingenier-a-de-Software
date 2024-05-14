@@ -16,6 +16,7 @@ import SiderBar from '../includes/navs/SiderBar';
 import Card from '../includes/cards/freelancerCard';
 import PostCard from '../includes/cards/postCard';
 import ElQueSabeChatbot from '../includes/chatBot/homeChatbot';
+import FreelancerPreferences from '../includes/overlays/freelancerPreferences';
 
 function HomeScreen() {
   const navigate = useNavigate(); 
@@ -34,9 +35,18 @@ function HomeScreen() {
   const [name, setName]= useState("Ciudad");
   const [selectedCity, setSelectedCity] = useState("00");
   const mt = (userData===null || userData==="2")? "1em":"3em";
+  const [freelancerPreferences, setPreferences] = useState("");
 
   useEffect(() => {
-    document.title="Home";
+    document.title="El Que Sabe";
+    
+    const checkPreferences = async () =>{
+      if(userData){
+        UserData.checkPreferences({id: userData.idCard},(res)=>{
+          setPreferences(res);
+        });
+      }
+    };
     
     const fetchCityes = async () => {
         TownData.fetchCityes((res) => {
@@ -61,13 +71,15 @@ function HomeScreen() {
     }else{
       fetchCityes();
       FetchPosts();
+      checkPreferences();
     }
     fetchFreelancers();
+
     const params = new URLSearchParams(window.location.search);
     const valor = params.get('search'); 
     // Actualizar el estado con el valor obtenido
     setSearch(valor);
-  },[search, selectedCity, userData]); 
+  },[search, selectedCity, userData, freelancerPreferences]); 
   
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
@@ -75,8 +87,11 @@ function HomeScreen() {
         <Navbar />
       </>):(<>
         <SiderBar user={userData.user}/>
+        {userData.user === "1" && !freelancerPreferences.response && (
+      <FreelancerPreferences />
+      )}
       </>)}
-      
+    
       {(search === null && userData === null) && (
         <>
           <InfoContainer />

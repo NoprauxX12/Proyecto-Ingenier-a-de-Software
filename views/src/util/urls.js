@@ -8,6 +8,8 @@ const Urls = {
     editProfile: "/edit-profile",
     post: '/post',
     chat: "/estimate",
+    freelancerPreferences: "/freelancer-preferences"
+    chat: "/estimate",
     recovery: "/recovery",
     change: "/change-password",
     review: "/review",
