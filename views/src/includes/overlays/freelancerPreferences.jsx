@@ -57,7 +57,7 @@ function SecondStep({ onPrev, onSubmit, values, handleChange }) {
   );
 }
 
-function FreelancerPreferences() {
+function FreelancerPreferences({showOverlayPrefrefences, setShowOverlayPreferences}) {
   const { userData } = useContext(AuthContext);
   const [paso, setPaso] = useState(1);
   const [formValues, setFormValues] = useState({
@@ -95,9 +95,14 @@ function FreelancerPreferences() {
     );
   };
 
+  const exitClick = async () =>{
+    setShowOverlayPreferences(false);
+  }
+
   return (
     <div className="overlay">
-      <div className="alert-box" style={{maxHeight: "50%", width: "30%"}}>
+      <div className="alert-box" style={{maxHeight: "100%", width: "30%"}}>
+        <button type="button" onClick={exitClick} style={{border:"transparent", background:"transparent", margin:"0px"}}> <i class='bx bx-x-circle exit-button' style={{color:"gray", fontSize:"30px"}}></i> </button>
         <div>
           {paso === 1 && <FirstStep onNext={handleNext} values={formValues} handleChange={handleChange} />}
           {paso === 2 && (

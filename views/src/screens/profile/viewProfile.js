@@ -82,13 +82,16 @@ function ViewProfile(){
           </div>
           <div className="content-container">
             <div className="left-container">
-              {userData.idCard === id && (<>
+              {userData && (<>
+                {userData.idCard === id && (<>
                 <a href={Urls.editProfile+`/?id=${id}&usertype=${usertype}`} style={{display: "inline-block"}}> 
                   <div className="back" style={{position: "absolute", marginTop: "5px"}}>
                     <i class='bx bx-edit-alt' style={{color: '#7d7d7d', fontSize: "3em"}} ></i>
                   </div>
                 </a>
               </>)}
+              </>
+              )}
               {!user.profilePhoto ? (<>
                 <img className="profile-image" id="profile-image" src="/images/defaultUser.png" alt="usuario por defecto" />
                 </>):(
@@ -172,11 +175,14 @@ function ViewProfile(){
             </div>
 
             <div className="right-container">
-              {userData.idCard === id && (
+              {userData && (<>
+                {userData.idCard === id && (
                 <>
                   <button type="button" className="button-box-lg" onClick={addPreviousWork}> Añadir Nuevo Elemento al Portafolio<i class='bx bx-plus-circle' style={{fontSize:"60px", color:"white" }}></i> </button>
                   {showOverlayPortfolio && (<> <Portfolio showOverlayPortfolio={showOverlayPortfolio} setshowOverlayPortfolio={setshowOverlayPortfolio} /> </>)}
                 </>
+              )}
+              </>
               )}
             </div>
           </div>

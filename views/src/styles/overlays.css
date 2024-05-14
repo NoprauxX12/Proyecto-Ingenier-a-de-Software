@@ -68,6 +68,10 @@
     height: 7em;
 }
 
+.expand{
+  height: 5em;
+}
+
 .expanded::placeholder {
     position: absolute;
     top: 0;

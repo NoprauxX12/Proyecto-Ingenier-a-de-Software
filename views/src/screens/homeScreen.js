@@ -23,6 +23,7 @@ function HomeScreen() {
   const params = new URLSearchParams(window.location.search);
   const { userData, isLoggedIn } = useContext(AuthContext);
   const [search, setSearch] = useState(params.get('search'));
+  const [showOverlayPreferences, setshowOverlayPreferences] = useState(true);
 
   const handleButtonClick = () => {
     if(isLoggedIn){
@@ -87,9 +88,9 @@ function HomeScreen() {
         <Navbar />
       </>):(<>
         <SiderBar user={userData.user}/>
-        {userData.user === "1" && !freelancerPreferences.response && (
-      <FreelancerPreferences />
-      )}
+        {((userData.user === "1" && !freelancerPreferences.response) && (showOverlayPreferences))  && (
+      <FreelancerPreferences showOverlayPreferences={showOverlayPreferences} setShowOverlayPreferences={setshowOverlayPreferences}/>
+        )}
       </>)}
     
       {(search === null && userData === null) && (

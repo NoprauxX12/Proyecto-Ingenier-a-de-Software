@@ -79,7 +79,7 @@ function Portfolio({showOverlayPortfolio, setshowOverlayPortfolio}){
             </div>
             <div className="form-group">
               <label htmlFor="description" className="left form-label mt-4">Descripción del trabajo realizado</label>
-              <textarea value={formValues.description} onChange={(e)=>setFormValues({...formValues, description: e.target.value})}  type="text" name="description" className="expanded form-control" />
+              <textarea value={formValues.description} onChange={(e)=>setFormValues({...formValues, description: e.target.value})}  type="text" name="description" className="expand form-control" />
             </div>
             <div className="form-group">
               <label htmlFor="date" className="left form-label mt-4">Fecha de realización (opcional)</label>
