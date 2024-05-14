@@ -20,8 +20,8 @@ function FistStep({ onNext, handleChange }) {
         <label><span style={{color: "#3D00B7"}}>Puntuación de </span><span style={{color: "#55ACEE"}}>Freelancer</span></label>
       </div>
       <div className="star-container">
-      {[...Array(5)].map((_, index) => {
-        return (
+        {[...Array(5)].map((_, index) => {
+          return (
           <label htmlFor="rating" key={index}>
             <i className="bx bxs-star"
             onClick={()=>handleChangeRating(index)}

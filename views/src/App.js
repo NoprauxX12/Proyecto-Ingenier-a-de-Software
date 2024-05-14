@@ -6,7 +6,7 @@ import LoginScreen from './screens/login/loginScreen';
 import Urls from "./util/urls";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "./styles/App.css";
-import "./styles/profile.css"
+import "./styles/profile.css";
 import UploadPhotoScreen from './screens/Uploadphoto/photoScreen';
 import PostPage from './screens/postScreen'
 import ViewProfile from './screens/profile/viewProfile';

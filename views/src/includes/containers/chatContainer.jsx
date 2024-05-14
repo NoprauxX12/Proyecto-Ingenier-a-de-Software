@@ -3,6 +3,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from "../../providers/userProvider";
+import { BaseUrl } from "../../util/apiUrl";
 
 const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend} )=>{
     const {userData} = useContext(AuthContext);
@@ -43,7 +44,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend} )
 
             socket.emit("send_message", info); // Emitir el mensaje al servidor    
             try {
-                const response = axios.post('http://localhost:3001/messages', info);
+                const response = axios.post(`${BaseUrl.chatsserver}/messages`, info);
                 console.log('Mensaje enviado correctamente:', response.data);
                 setMessages(prevMessages => [...prevMessages, info]);
                 scrollToBottom();
@@ -99,7 +100,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend} )
             console.log(info)
 
             try {
-                const response = axios.post('http://localhost:3001/photo', info);
+                const response = axios.post(`${BaseUrl.chatsserver}/photo`, info);
                 console.log('Foto enviada correctamente:', response.data);
                 fetchMessages(selectedRoom);
                 scrollToBottom();

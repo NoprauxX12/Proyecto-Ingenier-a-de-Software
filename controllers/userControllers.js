@@ -92,17 +92,58 @@ exports.viewProfile=(req,res,next)=>{
     }
 };
 
-exports.editProfile=(req,res,next)=>{
-    let link = null;
+exports.editProfile = (req, res, next) => {
+    let photoLink = "";
+    let curriculumLink = "";
+    let rutLink = "";
+    let epsLink = "";
+
     try {
-      link = req.file.path;
-      req.body["photo"] = link;
+        if (req.files) {
+            if (req.files.photo) {
+                photoLink = req.files.photo[0].path;
+            }
+            if (req.files.curriculum) {
+                curriculumLink = req.files.curriculum[0].path;
+            }
+            if (req.files.rut) {
+                rutLink = req.files.rut[0].path;
+            }
+            if (req.files.eps) {
+                epsLink = req.files.eps[0].path;
+            }
+        }
     } catch (error) {}
-    if(parseInt(req.body.usertype)===1){
-        FreelancerDAO.updateById(req.body);
+
+
+    console.log(
+        [{id: req.body.id},
+        {name: req.body.name},
+        {email: req.body.email},
+        {description: req.body.description},
+        {cellphone: req.body.cellphone},
+        {importantInfo: req.body.importantInfo},
+        {profilePhoto: photoLink},
+        {curriculum: curriculumLink},
+        {rut: rutLink},
+        {eps: epsLink}]);
+    if (parseInt(req.body.usertype) === 1) {
+        FreelancerDAO.updateById({
+            id: req.body.id,
+            name: req.body.name,
+            email: req.body.email,
+            description: req.body.description,
+            cellphone: req.body.cellphone,
+            importantInfo: req.body.importantInfo,
+            profilePhoto: photoLink,
+            curriculum: curriculumLink,
+            rut: rutLink,
+            eps: epsLink,
+        });
     }
-    res.json({response:true});
+    res.json({ response: true });
 };
+
 
 
 exports.logIn =(req,res, next)=>{
@@ -131,7 +172,7 @@ exports. verifyEmail=(req,res)=>{
 
 exports.fetchPhoto= (req, res)=>{
     if(parseInt(req.body.user)===1){
-        FreelancerDAO.getProfilePhotoById(req.body.id, (result)=>{
+        FreelancerDAO.getProfilephotoById(req.body.id, (result)=>{
             res.json(result);
         })
     }else if(parseInt(req.body.user)=== 2){
@@ -174,3 +215,32 @@ exports.getTokenInfo =(req, res, next)=>{
     
 };
 
+
+
+exports.progressiveProfiling = (req, res)=>{
+    console.log(req.body)
+    FreelancerDAO.progressiveProfiling(req.body, (result)=>{
+        res.json(result);
+    })
+}
+
+exports.checkPreferences = (req, res)=>{
+    FreelancerDAO.checkPreferences(req.body.id, (result)=>{
+        //console.log(result);
+        res.json(result);
+    })
+}
+
+exports.addPreviousWork = (req, res)=>{
+    let imgLink = "";
+    try {
+        if(req.file){
+            imgLink=req.file.path;
+        }
+    } catch (error) {}
+    req.body["img"]= imgLink;
+    
+    FreelancerDAO.addPreviousWork(req.body, (result)=>{
+        res.json(result);
+    })
+}
