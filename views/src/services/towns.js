@@ -4,7 +4,7 @@ import axios from "axios";
   class TownData {
     static async fetchCityes(cb) {
       try {
-        const response = await axios.post(BaseUrl + "/towns");
+        const response = await axios.post(BaseUrl.serverUsers + "/towns");
         cb(response.data); // Aquí pasas solo response.data en lugar de response
       } catch (error) {
         cb({}); // Si hay un error, puedes manejarlo pasando un objeto vacío

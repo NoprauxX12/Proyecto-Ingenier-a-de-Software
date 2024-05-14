@@ -4,7 +4,7 @@ import { BaseUrl } from "../util/apiUrl";
 class UserData {
   static async signUp(formValues, cb) {
     try {
-      const response = await axios.post(BaseUrl + "/sign-up", formValues);
+      const response = await axios.post(BaseUrl.serverUsers + "/sign-up", formValues);
       cb(response.data);
     } catch (error) {
       cb({ response: false });
@@ -13,7 +13,7 @@ class UserData {
 
   static async fetchFreelancers(params, cb) {
     try {
-      const response = await axios.post(BaseUrl + "/getFreelancers", params);
+      const response = await axios.post(BaseUrl.serverUsers + "/getFreelancers", params);
       cb(response.data);
     } catch (error) {
       console.error("Error al obtener freelancers:", error);
@@ -22,7 +22,7 @@ class UserData {
 
   static async verifyForSigunUp(params, cb) {
     try {
-      const response = await axios.post(BaseUrl + "/user_exist", params);
+      const response = await axios.post(BaseUrl.serverUsers + "/user_exist", params);
       cb(response.data);
     } catch (error) {
       cb({ result: false });
@@ -31,7 +31,7 @@ class UserData {
 
   static async viewProfile(reqView, cb) {
     try {
-      const response = await axios.post(BaseUrl + "/view-profile", reqView);
+      const response = await axios.post(BaseUrl.serverUsers + "/view-profile", reqView);
       cb(response.data);
     } catch (error) {
       cb({ response: false });
@@ -40,7 +40,7 @@ class UserData {
 
   static async editProfile(formValues) {
     try {
-      await axios.post(BaseUrl + "/edit-profile", formValues);  
+      await axios.post(BaseUrl.serverUsers + "/edit-profile", formValues);  
     } catch (error) {
       console.error("Error al editar el perfil:", error);
       return { success: false, message: "Error al editar el perfil" };
@@ -57,7 +57,7 @@ class UserData {
     }
     static async logIn(json, cb){
         try{
-            const response = await axios.post(`${BaseUrl}/log-in`, json);
+            const response = await axios.post(`${BaseUrl.serverUsers}/log-in`, json);
             cb(response.data);    
               
         }catch (error){
@@ -67,7 +67,7 @@ class UserData {
 
     static async verifyEmailvalid(json, cb){
       try{
-        const response = await axios.post(`${BaseUrl}/verify-email`, json);
+        const response = await axios.post(`${BaseUrl.serverUsers}/verify-email`, json);
         cb(response.data)
       }catch(error){
         cb({response: false});
@@ -76,7 +76,7 @@ class UserData {
 
     static async fetchProfilePhoto(json, cb){
         try{
-            const response = await axios.post(`${BaseUrl}/profile-photo`, json);
+            const response = await axios.post(`${BaseUrl.serverUsers}/profile-photo`, json);
             cb(response.data);    
         }catch (error){
             cb({response: false});
@@ -85,7 +85,7 @@ class UserData {
 
     static async recoveryPass(json, cb){
       try{
-        const response = await axios.post(`${BaseUrl}/recovery-pass`, json);
+        const response = await axios.post(`${BaseUrl.serverUsers}/recovery-pass`, json);
         cb(response.data);
       }catch (error){
         cb({response: false})
@@ -94,7 +94,7 @@ class UserData {
 
     static async fecthTokenInfo(token, cb){
       try {
-          const  response = await axios.post( `${BaseUrl}/getTokenInfo`, {token: token});
+          const  response = await axios.post( `${BaseUrl.serverUsers}/getTokenInfo`, {token: token});
           cb(response.data);
       } catch (error) {
           cb({response: false});
@@ -103,7 +103,7 @@ class UserData {
 
     static async updatePassword(data, cb){
       try{
-        const response = await axios.post( `${BaseUrl}/change-pass`, data )
+        const response = await axios.post( `${BaseUrl.serverUsers}/change-pass`, data )
         cb(response.data);  
       } catch (error) {
         cb(false)
