@@ -42,6 +42,7 @@ const RecoveryPassword = () => {
     };
 
     const toggleAlert = () => {
+        if(showAlert) window.location.href = "/";
         setShowAlert(!showAlert);
     };
 
@@ -54,9 +55,9 @@ const RecoveryPassword = () => {
                 } else {
                     setMessage("Ha ocurrido un error al enviar el correo de recuperación.");
                 }
-                toggleAlert();
             });
-            window.location.href = "https://www.google.com/search"
+            toggleAlert()
+            
     };
 
     return (

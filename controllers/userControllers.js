@@ -2,8 +2,6 @@ const Freelancer = require("../model/entities/freelancer")
 const FreelancerDAO = require("../model/data Acces/freelancerDAO")
 const client = require("../model/entities/client")
 const ClientDAO = require("../model/data Acces/clientDAO")
-const GeneralDAO = require("../model/data Acces/generalDAO")
-const Client = require("../model/entities/client")
 const RecoveryPass = require("../model/entities/recoveryPasword")
 const RecoveryDAO = require("../model/data Acces/recoveryDAO")
 

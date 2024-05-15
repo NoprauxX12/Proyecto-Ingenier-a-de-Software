@@ -2,9 +2,9 @@ const mysqlExecute = require("../../util/mysqlConnexion");
 
 class RecoveryDAO {
     static async insertRecoveryToken(user, email, token, dateTime, cb) {
-        let sql = "INSERT INTO recovery_tokens (user, email, token, dateTime) VALUES (?, ?, ?, ?)";
+        let sql = "INSERT INTO recovery_tokens (user, email, token, dateTime) VALUES (?, ?, ?, NOW())";
         try {
-            await mysqlExecute(sql, [user, email, token, dateTime]);
+            await mysqlExecute(sql, [user, email, token]);
             cb(null, "Datos del token de recuperación insertados correctamente en la tabla.");
         } catch (error) {
             console.error('Error al insertar los datos del token de recuperación en la tabla:', error);
