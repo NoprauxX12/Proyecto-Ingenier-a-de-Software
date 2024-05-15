@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useContext } from "react";
 import UserData from "../../services/user";
 import { AuthContext } from "../../providers/userProvider";

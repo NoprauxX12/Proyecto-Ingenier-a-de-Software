@@ -146,7 +146,7 @@ const UploadPhotoScreen = () => {
                   ref={fileInputRef}
                   className="form-control-file"
                   id="photo"
-                  accept="image/*"
+                  accept="image/png, image/jpeg"
                   onChange={handleChange}
                   style={{ display: 'none' }}
                 />
