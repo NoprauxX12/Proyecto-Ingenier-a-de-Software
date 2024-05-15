@@ -70,22 +70,25 @@ function Portfolio({showOverlayPortfolio, setshowOverlayPortfolio}){
     <>
       <div className="overlay">
         <div className="deal-box" style={{overflow: "auto"}}>
-          <h2 style={{color:"black", fontWeight:"bolder"}}>Publicar un Trabajo Previo</h2>
+          <div className="title-container">
+            <h2 style={{color:"black", fontWeight:"bolder",marginBottom:"0px"}}>Publicar un Trabajo Previo</h2>
+            <button type="button" onClick={onSubmit} style={{border:"transparent", background:"transparent", margin:"0px"}}> <i class='bx bx-x-circle exit-button' style={{color:"gray", fontSize:"30px"}}></i> </button>
+          </div>
           <p style={{color: "red"}}>{error}</p>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="title" className="left form-label mt-4">Título</label>
+              <label htmlFor="title" className="left form-label mt-0">Título</label>
               <input value={formValues.title} onChange={(e)=>setFormValues({...formValues, title: e.target.value})} type="text" name="title" className="form-control" required />
             </div>
             <div className="form-group">
-              <label htmlFor="description" className="left form-label mt-4">Descripción del trabajo realizado</label>
+              <label htmlFor="description" className="left form-label mt-3">Descripción del trabajo realizado</label>
               <textarea value={formValues.description} onChange={(e)=>setFormValues({...formValues, description: e.target.value})}  type="text" name="description" className="expand form-control" />
             </div>
             <div className="form-group">
-              <label htmlFor="date" className="left form-label mt-4">Fecha de realización (opcional)</label>
+              <label htmlFor="date" className="left form-label mt-3">Fecha de realización (opcional)</label>
               <input value={formValues.date} onChange={(e)=>setFormValues({...formValues, date: e.target.value})}  type="date" name="date" className="form-control" />
             </div>
-              <p className="left form-label mt-4">Agregar una imagen: </p>
+              <p className="left form-label mt-3">Agregar una imagen: </p>
               <input
                 type="file"
                 id="img"
@@ -96,7 +99,7 @@ function Portfolio({showOverlayPortfolio, setshowOverlayPortfolio}){
                 onChange={handleInputImg}
               /> 
             <div>
-              <label htmlFor="img" className="left form-label mt-4" style={{ display: 'block', width: '100%', textAlign: 'left' }}>
+              <label htmlFor="img" className="left form-label mt-0" style={{ display: 'block', width: '100%', textAlign: 'left', margin:"0px" }}>
                 {img? (<>
                   <img src={preview} alt="imagen referencia" style={{height: "4em"}}/>
                 </>): (<>
