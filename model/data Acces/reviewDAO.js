@@ -34,7 +34,7 @@ class ReviewDAO {
     }
 
     static async selectReviews(id,cb){
-        let sql = "SELECT r.clientComment, r.clientScore FROM review r INNER JOIN contract c ON r.estimateId = c.estimateId INNER JOIN estimate e ON c.estimate_estimateId = e.estimateId INNER JOIN freelancer f ON e.idFreelancer = f.idFreelancer WHERE f.idFreelancer = ?";   
+        let sql = "SELECT r.clientScore, r.clientComment from review r, estimate e where e.idFreelancer =?";   
         try{
             const rows = await mysqlExecute(sql, [id]);
             cb({result: true, data: rows});
