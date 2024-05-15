@@ -12,13 +12,31 @@
 
 .main-container{
     justify-content: center;
+    padding-bottom: 2%;
 }
 
 .header-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     box-shadow: 1px 2px 3px #d0d0d0;
+    width: 100%;
+    padding: 1%;
 }
 
-.header-container h1{
+.header-container-nolog{
+    box-shadow: 1px 2px 3px #d0d0d0;
+    width: 100%;
+    padding-bottom: 1%;
+}
+
+.header-container-edit{
+    box-shadow: 1px 2px 3px #d0d0d0;
+    width: 100%;
+    padding-bottom: 1%;
+}
+
+.header-container h1, .header-container-edit h1, .header-container-nolog h1{
     font-weight: 400;
     font-size: 4rem;
     text-align: center;
@@ -29,45 +47,43 @@
 .content-container{
     height: fit-content;
     display: flex;
-    padding: 0% 4%;
     gap: 20px;
+    padding-bottom: 1%;
+    padding-top: 3%;
+    padding-left: 4%;
+    padding-right: 4%;
+    justify-content: space-between;
 }
 
 .left-container{
-    width: 600px;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    row-gap: 15px;
-    box-shadow: 2px 2px 2px #d0d0d0;
-    position: sticky;
-    top: 0;
-    padding-bottom: 5%;
+    justify-content: space-between;
+    row-gap: 40px;
 }
 
 .profile-image{
-    margin-top: 20px;
-    width: 350px;
-    border-radius: 50%;
+    width: 100%;
+    border-radius: 20px;
 }
 
 .photo-container {
-    width: 350px;
+    width: 100%;
     position: relative;
     cursor: pointer;
 }
 
 .edit-profile-image{
-    margin-top: 20px;
     width: 100%;
-    border-radius: 50%;
+    border-radius: 20px;
     display: block;
 }
 
 .edit-icon{
     width: 100%;
-    height: 95%;
-    border-radius: 50%;
-    margin-top: 20px;
+    height: 100%;
+    border-radius: 20px;
     top: 0;
     left: 0;
     position: absolute;
@@ -88,17 +104,37 @@
     color: #EFEFEF;
 }
 
+.mid-container{
+    width: 100%;
+}
 
 .right-container{
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+}
+
+.portfolio-container{
+    padding-left: 4%;
+    padding-right:4%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    overflow-x: auto; /* Agregar scroll horizontal si es necesario */
+    white-space: nowrap;
+    padding-bottom: 20px;
+    height: 290px;
+}
+
+.portfolio-label{
+    padding-left: 4%;
+    padding-bottom: 1%;
 }
 
 .content-element{
     display: flex;
     flex-direction: column;
+    margin-top: 5px;
 }
 
 .content-element-inline{
@@ -119,32 +155,32 @@
 }
 
 .profession-box{
-    width: 280px;
+    width: 83.6%;
     padding-left: 2%;
     outline: none;
 }
 
 .description-box{
-    width: 350px;
+    width: 100%;
     height: 290px;
     resize: none;
     padding: 2%;
 }
 
 .phone-box{
-    width: 285px;
+    width: 84.8%;
     padding: 0.5%;
     padding-left: 2%;
 }
 
 .email-box{
-    width: 350px;
+    width: 100%;
     padding: 0.5%;
     padding-left: 2%;
 }
 
 .important-info-box{
-    width: 350px;
+    width: 100%;
     height: 150px;
     resize: none;
     padding: 2%;
@@ -168,10 +204,7 @@
   border: transparent;
   cursor: pointer;
   width:fit-content;
-  padding-left: 3%;
-  padding-right: 3%;
-  padding-top: 0.5%;
-  padding-bottom: 0.5%;
+  padding: 0.7% 4%;
   margin-left: 10px;
 }
 
@@ -183,19 +216,19 @@
 
 .button-box-lg{
     display: flex;
-    flex-direction: column;
     align-items: center;
     text-decoration: none;
     font: inherit;
-    font-size: 30px;
+    font-size: 16px;
     color: #FFFF;
     background: #3D00B7;
     border-radius: 20px;
     border: transparent;
     cursor: pointer;
-    width:70%;
-    padding: 0.5% 3%;
-    margin-left: 10px;
+    width:fit-content;
+    height: fit-content;
+    padding: 1% 2%;
+    margin-top: 10px;
 }
 
 .button-box-lg:hover{

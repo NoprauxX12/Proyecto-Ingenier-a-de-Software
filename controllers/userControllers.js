@@ -158,7 +158,7 @@ exports.logIn =(req,res, next)=>{
     }
 }
 
-exports. verifyEmail=(req,res)=>{
+exports.verifyEmail=(req,res)=>{
     if(parseInt(req.body.user)===1){
         FreelancerDAO.emailExist(req.body, (result)=>{
             res.json(result);
@@ -241,6 +241,26 @@ exports.addPreviousWork = (req, res)=>{
     req.body["img"]= imgLink;
     
     FreelancerDAO.addPreviousWork(req.body, (result)=>{
+        res.json(result);
+    })
+}
+
+exports.fetchPortfolio = (req, res)=>{
+    FreelancerDAO.fetchPortfolio(req.body.id, (result)=>{
+        res.json(result);
+    })
+};
+
+exports.editPreviousWork = (req, res)=>{
+    let imgLink = "";
+    try {
+        if(req.file){
+            imgLink=req.file.path;
+        }
+    } catch (error) {}
+    req.body["img"]= imgLink;
+    
+    FreelancerDAO.editPreviousWork(req.body, (result)=>{
         res.json(result);
     })
 }

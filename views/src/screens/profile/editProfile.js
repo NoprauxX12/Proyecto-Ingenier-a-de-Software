@@ -1,9 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import UserData from "../../services/user";
 import "../../styles/profile.css";
 import Urls from "../../util/urls";
 import { useNavigate } from "react-router-dom";
+import Portfolio from "../../includes/overlays/portfolio";
+import ReviewData from "../../services/review";
+import PortfolioCard from "../../includes/cards/portfolioCard";
 
 function ViewProfile(){
     const params = new URLSearchParams(window.location.search);
@@ -19,6 +22,9 @@ function ViewProfile(){
     const [rutUrl, setRutUrl] = useState(null);
     const [eps, setEps] = useState(null);
     const [epsUrl, setEpsUrl] = useState(null);
+    const [showOverlayPortfolio, setshowOverlayPortfolio] = useState(false);
+    const [averageRank, setAverageRank] = useState(null)
+    const [portfolio, setPortfolio] = useState([]);
 
     useLayoutEffect(() => {
       const reqView = {id, usertype};
@@ -31,6 +37,39 @@ function ViewProfile(){
 
       getUserData();
     }, [id, usertype, user.name]);
+
+    useEffect(()=>{
+      const fetchData = async () =>{
+        try{
+          ReviewData.averageRank({id: id}, (response)=>{
+            if(response.result){
+              setAverageRank(response.data)
+            }else{
+              console.log("Error al mostrar ranking")
+            }
+          })
+        }catch(error){
+          console.log(error)
+        }
+      };
+      fetchData(); // eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
+      const fetchData = async () => {
+        if (usertype === "1") {
+          try {
+            UserData.fetchPortfolio({ id: id },(data)=>{
+              setPortfolio(data);
+            });
+          } catch (error) {
+            console.error("Error al obtener trabajos previos:", error);
+          }
+        }
+      };
+    
+      fetchData(); // eslint-disable-next-line
+    }, []);
 
     function handleSubmit(e) {
       e.preventDefault();
@@ -72,6 +111,10 @@ function ViewProfile(){
   const onSubmit = async () => {
     const dynamicUrl = `${Urls.viewProfile}?id=${id}&usertype=${usertype}`;
     navigate(dynamicUrl);
+  };
+
+  const addPreviousWork = () =>{
+    setshowOverlayPortfolio(true);
   };
 
   function base64ToArrayBuffer(base64) {
@@ -160,7 +203,7 @@ function ViewProfile(){
     return (
       <>
         <div className="main-container">
-          <div className="header-container">
+          <div className="header-container-edit">
           <a href={Urls.viewProfile+`/?id=${id}&usertype=${usertype}`} style={{display: "inline-block"}}> 
               <div className="back" style={{position: "absolute", marginTop: "0"}}>
                 <i class='bx bx-chevron-left' style={{color: '#7d7d7d', fontSize: "4em"}} ></i>
@@ -172,7 +215,7 @@ function ViewProfile(){
             <div className="content-container">
               <div className="left-container">
                 <div className="photo-container" onClick={() => document.getElementById("photo").click()}>
-                {photo ? (
+                  {photo ? (
                     <img id="profile-image" src={URL.createObjectURL(photo)} className="edit-profile-image" alt="Imagen de Perfil" style={{maxHeight: "30em"}}/>
                   ) : (
                     <img className="edit-profile-image" id="profile-image" src={`data:image/jpeg;base64,${user.profilePhoto}` || "/images/defaultUser.png"} alt="usuario por defecto" />
@@ -187,34 +230,38 @@ function ViewProfile(){
                     <i className='bx bxs-edit'></i>
                   </div>
                 </div>
+              </div>
+              <div className="mid-container">
                 <div className="content-element-inline">
-                  <label htmlFor="profession">Profesión:</label>{" "}
-                  <input
-                    readOnly
-                    type="text"
-                    id="profession"
-                    className="profession-box inside-color"
-                    style={{ cursor: "default" }}
-                    defaultValue={user.knowledge}
-                  />
+                    <label htmlFor="profession">Profesión:</label>{" "}
+                    <input
+                      readOnly
+                      type="text"
+                      id="profession"
+                      className="profession-box inside-color"
+                      style={{ cursor: "default" }}
+                      defaultValue={user.knowledge}
+                    />
+                  </div>
+                  <div className="content-element">
+                    <label htmlFor="description">Descripción:</label>
+                    <textarea
+                      id="description"
+                      className="description-box inside-color"
+                      style={{ cursor: "pointer" }}
+                      defaultValue={user.description !== "null" ? user.description : ""}
+                      onChange={(e) =>
+                        setUser({ ...user, description: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="content-element">
+                    <label htmlFor="rating">Puntuación y reseñas:</label>
+                    <h1>{averageRank}/5</h1>
+                    <a href={"/review/?id="+ id }>Ver reseñas</a>
+                  </div>
                 </div>
-                <div className="content-element">
-                  <label htmlFor="rating">Puntuación y reseñas:</label>
-                  <h1>4.8/5.0</h1>
-                  <a href="#">Ver 182 reseñas</a>
-                </div>
-                <div className="content-element">
-                  <label htmlFor="description">Descripción:</label>
-                  <textarea
-                    id="description"
-                    className="description-box inside-color"
-                    style={{ cursor: "pointer" }}
-                    defaultValue={user.description !== "null" ? user.description : ""}
-                    onChange={(e) =>
-                      setUser({ ...user, description: e.target.value })
-                    }
-                  />
-                </div>
+              <div className="right-container">
                 <div className="content-element-inline">
                   <label htmlFor="phone">Teléfono:</label>{" "}
                   <input
@@ -297,12 +344,23 @@ function ViewProfile(){
                 )}
                 <button type="submit" className="button-box"> Guardar Cambios </button>
               </div>
-
-              <div className="right-container">
-                
-              </div>
             </div>
           </form>
+          <div className="portfolio-label">
+            <h3 htmlFor="portfolio">Portafolio:</h3>
+          </div>
+          <div className="portfolio-container">
+            <button type="button" className="button-box-lg" onClick={addPreviousWork}><i class='bx bx-plus-circle' style={{fontSize:"90px", color:"white" }}></i> </button>
+            {showOverlayPortfolio && (<> <Portfolio showOverlayPortfolio={showOverlayPortfolio} setshowOverlayPortfolio={setshowOverlayPortfolio} /> </>)}
+            
+            {portfolio.length>0 && (
+              <>
+              {portfolio.map((portfolioItem) => (
+                <PortfolioCard portfolioItem={portfolioItem}/> 
+              ))}
+              </>
+            )}
+          </div>
         </div>
       </>
     );

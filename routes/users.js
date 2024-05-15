@@ -58,5 +58,9 @@ router.post("/check-preferences",usersControllers.checkPreferences);
 
 router.post("/add-previouswork", upload.single('img'), usersControllers.addPreviousWork);
 
+router.post("/get-previouswork", usersControllers.fetchPortfolio);
+
+router.post("/edit-previouswork", upload.single('img'), usersControllers.editPreviousWork);
+
 module.exports= router;
 
