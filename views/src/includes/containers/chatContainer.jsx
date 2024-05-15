@@ -5,7 +5,7 @@ import { faPaperPlane, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from "../../providers/userProvider";
 import { BaseUrl } from "../../util/apiUrl";
 
-const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend} )=>{
+const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend, toggleChat} )=>{
     const {userData} = useContext(AuthContext);
     const [currentMessage, setCurrentMessage] = useState("");
     const [messages, setMessages] = useState([]);
@@ -53,8 +53,6 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend} )
             } catch (error) {
                 console.error('Error al enviar el mensaje:', error);
             }
-            
-
             setCurrentMessage(""); // Limpiar el campo de mensaje
             onSend();
         }
@@ -165,7 +163,9 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend} )
                 </>):(<>
                     <img src="/images/defaultUser.png" alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />                            
                 </>)}  
-                    
+                </div>
+                <div onClick={toggleChat} style={{cursor: "pointer"}}>
+                    <p><i className="bx bx-chevron-left" style={{ color: '#4f4f4f', fontSize: "2.5em" }} /></p>
                 </div>
                     </div>
                             <div className="contentBox" style={{

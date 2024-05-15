@@ -100,7 +100,7 @@ function ContractScreen() {
             <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}> {/* Columna principal */}
                 {selectedRoom ? (<>
                     {showchat? (<>
-                        <ChatContainer onSend={onSend} socket={socket} rooms={estimates} username={userData.name} mesgs={searchMessages} selectedRoom={selectedRoom} />
+                        <ChatContainer onSend={onSend} socket={socket} rooms={estimates} username={userData.name} mesgs={searchMessages} selectedRoom={selectedRoom} toggleChat={toggleChats} />
                     </>): (<>
                         <ContractContainer onOpen={fetchestimates} socket={socket} estimateId={selectedRoom} toggleChat={toggleChats} show={()=>{
                             setSelectedRoom(null);

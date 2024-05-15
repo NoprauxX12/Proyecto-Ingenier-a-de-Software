@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ReviewData from "../../services/review";
-import { AuthContext } from "../../providers/userProvider";
+import Urls from "../../util/urls";
 
 const ReviewPage = () =>{
     const params = new URLSearchParams(window.location.search);
@@ -22,17 +22,21 @@ const ReviewPage = () =>{
             }
         };
         fechReviews();
-    }, []);
+    }, [id]);
 
 
     return(
         <div>
-            <h1>Lista de Reseñas</h1>
+            <h1>Lista de Reseñas</h1> 
+            <a style={{float: "right", marginTop: "-2em"}} href={Urls.viewProfile+`/?id=${id}&usertype=1`}>
+                <i class='bx bx-chevron-left' style={{color: '#7d7d7d', fontSize: "4em"}} ></i>
+            </a>
             {reviews.length > 0 ? (
                 reviews.map((review) =>(
-                    <div key={review.idFreelancer}>
+                    <div key={review.idFreelancer} style={{margin: "1.5em"}}>
                         <h4>Puntuación:{review.clientScore}</h4>
-                        <h4>Reseña: {review.clientComment}</h4>
+                        <h4>Reseña:</h4>
+                        <p>{review.clientComment}</p>
                     </div>
                 ))  
             ) : (

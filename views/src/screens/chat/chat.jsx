@@ -92,7 +92,7 @@ const Chat = ({ socket, username }) => {
             <div style={{ flex: '9', height: '100%', overflowY: 'hidden' }}> {/* Columna principal */}
                 {selectedRoom ? (<>
                     {showchat? (<>
-                        <ChatContainer onSend={onSend} socket={socket} rooms={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} />
+                        <ChatContainer onSend={onSend} socket={socket} rooms={estimates} username={username} mesgs={searchMessages} selectedRoom={selectedRoom} toggleChat={toggleChats}/>
                     </>): (<>
                         <EstimateContainer onOpen={fetchestimates} socket={socket} estimateId={selectedRoom} toggleChat={toggleChats} show={()=>{
                             setSelectedRoom(null);

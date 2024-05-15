@@ -24,7 +24,7 @@ class ReviewDAO {
         try{
             let res = await mysqlExecute(sql, [id]);
             const promedio = res[0].Promedio_Ranking;
-            cb({result: true, data: promedio});
+            cb({result: true, data: promedio.toFixed(2)});
         }catch(error){
             console.error("Error al hacer la consulta", error)
             cb({result: false})
@@ -34,7 +34,7 @@ class ReviewDAO {
     }
 
     static async selectReviews(id,cb){
-        let sql = "SELECT r.clientScore, r.clientComment from review r, estimate e where e.idFreelancer=?";
+        let sql = "SELECT r.clientScore, r.clientComment from review r left join estimate e using(estimateId) where e.idFreelancer=?";
         try{
             const rows = await mysqlExecute(sql, [id]);
             cb({result: true, data: rows});

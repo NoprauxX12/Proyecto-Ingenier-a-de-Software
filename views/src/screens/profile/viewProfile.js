@@ -117,7 +117,6 @@ function ViewProfile(){
             <h1>{user.name}</h1>
             {userData && (<>
                 {userData.idCard === id && (<>
-
                     <a href={Urls.editProfile+`/?id=${id}&usertype=${usertype}`}> 
                       <div className="edit" style={{ marginTop: "5px"}}>
                         <i class='bx bx-edit-alt' style={{color: '#7d7d7d', fontSize: "3em"}} ></i>
@@ -199,14 +198,16 @@ function ViewProfile(){
                   <label>Hoja de Vida:</label>
                   <button type="button" className="button-box" onClick={() => viewPdf("curriculum")}> Ver </button>
                 </div>
-                <div className="content-element-inline">
-                  <label>RUT:</label>
-                  <button type="button" className="button-box" onClick={() => viewPdf("rut")}> Ver </button>
-                </div>
-                <div className="content-element-inline">
-                  <label>EPS:</label>
-                  <button type="button" className="button-box" onClick={() => viewPdf("eps")}> Ver </button>
-                </div>
+                {userData.idCard === id && (<>
+                  <div className="content-element-inline">
+                    <label>RUT:</label>
+                    <button type="button" className="button-box" onClick={() => viewPdf("rut")}> Ver </button>
+                  </div>
+                  <div className="content-element-inline">
+                    <label>EPS:</label>
+                    <button type="button" className="button-box" onClick={() => viewPdf("eps")}> Ver </button>
+                  </div>
+                </>)}
               </div>
               <div className="content-element">
                 <label htmlFor="important-info">Información Importante:</label>

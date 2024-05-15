@@ -110,8 +110,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                     <img src={`data:image/jpeg;base64,${estimate.profilePhoto}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Profile" />
                 </>):(<>
                     <img src="/images/defaultUser.png" alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />                            
-                </>)}  
-                    
+                </>)}
                 </div>
                 <span style={{ fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>{userData.user==="2"? estimate.freelancerName : estimate.clientName}</span>
                 {userData.user==="1"? (<>

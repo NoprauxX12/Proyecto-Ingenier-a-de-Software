@@ -61,7 +61,8 @@ const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
 
         const onAcept=(action)=>{
             if(action==="1"){
-                EstimateData.setState({state: 6, id: estimateId}, (res)=>{})
+                EstimateData.setState({state: 6, id: estimateId}, (res)=>{});
+                estimate["state"]=6;
                 setShowRealizar(false);
             }else{
                 EstimateData.setState({state: 7, id: estimateId}, (res)=>{})
@@ -115,7 +116,7 @@ const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                 <span style={{ fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>{userData.user==="2"? estimate.freelancerName : estimate.clientName}</span>
                 {userData.user==="1"? (<>
                     {(5===parseInt(estimate.state))&& (<>
-                        <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={onClose}>Pago realizado</a>
+                        <a className="btne_dark" style={{display: "block", width: "max-content", marginRight: "1.5em", fontSize: "1.1em"}} onClick={onClose}> Pago realizado</a>
                     </>)}
                 </>): (<>
                     {(6===parseInt(estimate.state) ||3===parseInt(estimate.state))&& (<>

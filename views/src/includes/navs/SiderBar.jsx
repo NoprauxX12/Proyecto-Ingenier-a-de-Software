@@ -67,7 +67,6 @@ const SiderBar = () => {
             <div className="top">
                 <div className="logo">
                     <i className="bx bx-hard-hat" style={{color: '#FFFF'}} />
-                    <span>{userData.user==="1"? "Freelancer": "Cliente"}</span>
                 </div>
                 <i className="bx bx-menu" id="btn" onClick={toggleSidebar} style={{fontSize: '2.3rem', color:"#fff"}} />
             </div>
@@ -93,7 +92,7 @@ const SiderBar = () => {
                 
                 <div className="letter">
                 <a href={Urls.viewProfile+`/?id=${userData.idCard}&usertype=${userData.user}`}><p style={{fontWeight: "800", fontSize: "1.3em", color: "#55ACEE" }}>{name[0]}</p></a>
-                    <p style={{color: "#FFFF"}}>carpintera</p>
+                    <p style={{color: "#FFFF", fontWeight: "bold"}}>{userData.user==="1"? "Freelancer": "Cliente"}</p>
                 </div>
             </div>
             <ul> 
