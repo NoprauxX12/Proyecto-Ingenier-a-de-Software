@@ -6,6 +6,7 @@ import Urls from "../../util/urls";
 import { useNavigate } from "react-router-dom";
 import Portfolio from "../../includes/overlays/portfolio";
 import ReviewData from "../../services/review";
+import PortfolioCard from "../../includes/cards/portfolioCard";
 
 function ViewProfile(){
     const params = new URLSearchParams(window.location.search);
@@ -23,6 +24,7 @@ function ViewProfile(){
     const [epsUrl, setEpsUrl] = useState(null);
     const [showOverlayPortfolio, setshowOverlayPortfolio] = useState(false);
     const [averageRank, setAverageRank] = useState(null)
+    const [portfolio, setPortfolio] = useState([]);
 
     useLayoutEffect(() => {
       const reqView = {id, usertype};
@@ -50,8 +52,24 @@ function ViewProfile(){
           console.log(error)
         }
       };
-      fetchData();
+      fetchData(); // eslint-disable-next-line
     }, [])
+
+    useEffect(() => {
+      const fetchData = async () => {
+        if (usertype === "1") {
+          try {
+            UserData.fetchPortfolio({ id: id },(data)=>{
+              setPortfolio(data);
+            });
+          } catch (error) {
+            console.error("Error al obtener trabajos previos:", error);
+          }
+        }
+      };
+    
+      fetchData(); // eslint-disable-next-line
+    }, []);
 
     function handleSubmit(e) {
       e.preventDefault();
@@ -328,10 +346,20 @@ function ViewProfile(){
               </div>
             </div>
           </form>
+          <div className="portfolio-label">
+            <h3 htmlFor="portfolio">Portafolio:</h3>
+          </div>
           <div className="portfolio-container">
-            <label htmlFor="portfolio">Portafolio:</label>
-            <button type="button" className="button-box-lg" onClick={addPreviousWork}><i class='bx bx-plus-circle' style={{fontSize:"60px", color:"white" }}></i> </button>
+            <button type="button" className="button-box-lg" onClick={addPreviousWork}><i class='bx bx-plus-circle' style={{fontSize:"90px", color:"white" }}></i> </button>
             {showOverlayPortfolio && (<> <Portfolio showOverlayPortfolio={showOverlayPortfolio} setshowOverlayPortfolio={setshowOverlayPortfolio} /> </>)}
+            
+            {portfolio.length>0 && (
+              <>
+              {portfolio.map((portfolioItem) => (
+                <PortfolioCard portfolioItem={portfolioItem}/> 
+              ))}
+              </>
+            )}
           </div>
         </div>
       </>

@@ -231,16 +231,7 @@ class FreelancerDAO {
         password,
     } = formData;
 
-    let fileContent = null;
-    try {
-      if (photo !== null) {
-        fileContent = await sharp(photo)
-          .resize({ width: 800 })
-          .jpeg({ quality: 80 })
-          .toBuffer();
-      }
-    } catch (error) {
-      console.log(error)
+    
     let fileContents = {};
 
     // Verificar y procesar los archivos adjuntos
@@ -351,9 +342,8 @@ class FreelancerDAO {
     } catch (error) {
         console.error("Error al actualizar el perfil:", error);
     }
-    }
+  }
 
-  }  
   static async logIn(json, cb){
     let sql = "SELECT name, idFreelancer idCard, email, idCity, adress, password from freelancer where email = ?";
     try{
@@ -485,15 +475,116 @@ try {
     let imgParams = [idPreviousWork, fileContent.img];
 
     await mysqlExecute(imgSql, imgParams);
+
+    if (img) {
+      fs.unlink(img, (error) => {
+          if (error) {
+              console.error("Error deleting profile photo file:", error);
+          } else {
+              console.log("Profile photo file deleted successfully.");
+          }
+      });
+    }
   }
 
   cb({response: true});
-} catch (error) {
+  }catch (error) {
   console.log(error);
   cb({response: false});
-}
+  }
 }
 
+static async fetchPortfolio(id, cb) {
+  try {
+    let sql = "SELECT * FROM previouswork WHERE idFreelancer = ?";
+    const previousWorks = await mysqlExecute(sql, [id]);
+
+    let portfolio = [];
+
+    for (let work of previousWorks) {
+      sql = "SELECT image FROM imagespw WHERE idPreviousWork = ?";
+      const images = await mysqlExecute(sql, [work.idPreviousWork]);
+
+      let portfolioItem = {
+        idPreviousWork: work.idPreviousWork,
+        title: work.title,
+        description: work.description,
+        date: work.date,
+        img: null
+      };
+      // Si hay una imagen, convertirla a base64
+      if (images.length > 0) {
+        const imageBlob = images[0].image;
+        const base64Image = imageBlob.toString('base64');
+        portfolioItem.img = base64Image;
+      }
+
+      // Añadir el objeto al array de trabajos previos con imágenes
+      portfolio.push(portfolioItem);
+    }
+
+    cb(portfolio);
+  } catch (error) {
+    console.log(error);
+    cb(error, null);
   }
+}
+
+static async editPreviousWork(formValues, cb) {
+  const {
+    idPreviousWork,
+    title,
+    description,
+    date,
+    img
+  } = formValues;
+  
+  let fileContent = {};
+  
+  try {
+    // Verificar si ya existe una imagen para el trabajo previo
+    let imgSql = `SELECT COUNT(*) AS count FROM imagespw WHERE idPreviousWork = ?`;
+    let imgParams = [idPreviousWork];
+    let imgResult = await mysqlExecute(imgSql, imgParams);
+    let imgExists = imgResult[0].count > 0;
+
+    if (imgExists) {
+      // Si existe una imagen, actualizarla
+      fileContent.img = await sharp(img)
+        .resize({ width: 800 })
+        .jpeg({ quality: 80 })
+        .toBuffer();
+  
+      let updateImgSql = `UPDATE imagespw SET image = ? WHERE idPreviousWork = ?`;
+      let updateImgParams = [fileContent.img, idPreviousWork];
+  
+      await mysqlExecute(updateImgSql, updateImgParams);
+    } else {
+      // Si no existe una imagen, insertarla
+      fileContent.img = await sharp(img)
+        .resize({ width: 800 })
+        .jpeg({ quality: 80 })
+        .toBuffer();
+  
+      let insertImgSql = `INSERT INTO imagespw (idPreviousWork, image) VALUES (?, ?)`;
+      let insertImgParams = [idPreviousWork, fileContent.img];
+  
+      await mysqlExecute(insertImgSql, insertImgParams);
+    }
+
+    // Actualizar la información del trabajo previo
+    let sql = `UPDATE previouswork SET title = ?, description = ?, date = ? WHERE idPreviousWork = ?`;
+    let params = [title, description, date, idPreviousWork];
+    await mysqlExecute(sql, params);
+
+    cb({ response: true });
+  } catch (error) {
+    console.error("Error al editar el trabajo previo:", error);
+    cb({ response: false });
+  }
+}
+
+
+}
 
 module.exports = FreelancerDAO;

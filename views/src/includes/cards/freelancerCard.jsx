@@ -47,12 +47,12 @@ const Card = (props) => {
       <div className="card__item card" style={{marginBottom: "0.5em"}}>
           {!freelancer.profilePhoto? (<>
           <a href={Urls.viewProfile+`/?id=${freelancer.idFreelancer}&usertype=1`}>
-            <img src="/images/defaultUser.png" className="card-img-top"  alt="usuario por defecto" style={{width: "12em",margin: "auto", cursor: "pointer"}} />
+            <img src="/images/defaultUser.png" className="card-img-top"  alt="usuario por defecto" style={{ maxHeight: "10rem", objectFit: "contain", cursor:"pointer",borderRadius:"20px" }} />
           </a>
           </>):(
             <>
             <a href={Urls.viewProfile+`/?id=${freelancer.idFreelancer}&usertype=1`}>
-              <img src={`data:image/jpeg;base64,${freelancer.profilePhoto}`} id={"cardIm"} className="card-img-top" alt="Profile" />
+              <img src={`data:image/jpeg;base64,${freelancer.profilePhoto}`} style={{ maxHeight:"10em", objectFit: "contain", cursor:"pointer", borderRadius:"20px" }} className="card-img-top" alt="Profile" />
             </a>
             </>
           )}

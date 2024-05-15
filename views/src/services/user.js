@@ -143,6 +143,25 @@ class UserData {
       }
     }
 
+    static async fetchPortfolio(json, cb) {
+      try {
+        const response = await axios.post(`${BaseUrl.serverUsers}/get-previouswork`, json);
+        cb(response.data);
+      } catch (error) {
+        console.error("Error al obtener trabajos previos:", error);
+      }
+    }
+
+    static async editPreviousWork(formValues, cb){
+      try{
+        const response = await axios.post(`${BaseUrl.serverUsers}/edit-previouswork`,formValues);
+        
+        cb(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
 }
 
 export default UserData;

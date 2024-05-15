@@ -24,13 +24,19 @@
     padding: 1%;
 }
 
+.header-container-nolog{
+    box-shadow: 1px 2px 3px #d0d0d0;
+    width: 100%;
+    padding-bottom: 1%;
+}
+
 .header-container-edit{
     box-shadow: 1px 2px 3px #d0d0d0;
     width: 100%;
     padding-bottom: 1%;
 }
 
-.header-container h1, .header-container-edit h1{
+.header-container h1, .header-container-edit h1, .header-container-nolog h1{
     font-weight: 400;
     font-size: 4rem;
     text-align: center;
@@ -110,6 +116,19 @@
 
 .portfolio-container{
     padding-left: 4%;
+    padding-right:4%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    overflow-x: auto; /* Agregar scroll horizontal si es necesario */
+    white-space: nowrap;
+    padding-bottom: 20px;
+    height: 290px;
+}
+
+.portfolio-label{
+    padding-left: 4%;
+    padding-bottom: 1%;
 }
 
 .content-element{
@@ -197,7 +216,6 @@
 
 .button-box-lg{
     display: flex;
-    flex-direction: column;
     align-items: center;
     text-decoration: none;
     font: inherit;
@@ -208,7 +226,8 @@
     border: transparent;
     cursor: pointer;
     width:fit-content;
-    padding: 1% 3%;
+    height: fit-content;
+    padding: 1% 2%;
     margin-top: 10px;
 }
 

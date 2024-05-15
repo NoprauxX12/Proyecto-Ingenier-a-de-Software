@@ -1,10 +1,12 @@
 import React, { useState, useContext, useRef} from "react";
 import "../../styles/overlays.css";
 import { AuthContext } from "../../providers/userProvider";
+import { useNavigate } from "react-router-dom";
+import Urls from "../../util/urls";
 import UserData from "../../services/user";
 
 
-function Portfolio({showOverlayPortfolio, setshowOverlayPortfolio}){
+function Portfolio({setshowOverlayPortfolio}){
   const {userData} = useContext(AuthContext);
   const [error, setError] = useState(null);
   const [img, setImg] = useState(null);
@@ -61,9 +63,12 @@ function Portfolio({showOverlayPortfolio, setshowOverlayPortfolio}){
       },1000);
   };
 
+  const navigate = useNavigate();
 
   const onSubmit = async () => {
     setshowOverlayPortfolio(false);
+    const dynamicUrl = `${Urls.viewProfile}?id=${userData.idCard}&usertype=${userData.user}`;
+    navigate(dynamicUrl);
   };
 
   return (

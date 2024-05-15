@@ -6,6 +6,7 @@ import { AuthContext } from '../../providers/userProvider';
 import Urls from "../../util/urls";
 import Portfolio from "../../includes/overlays/portfolio";
 import ReviewData from "../../services/review";
+import PortfolioCard from "../../includes/cards/portfolioCard";
 
 function ViewProfile(){
     const params = new URLSearchParams(window.location.search);
@@ -15,6 +16,7 @@ function ViewProfile(){
     const id = params.get("id");
     const usertype = params.get("usertype");
     const [averageRank, setAverageRank] = useState(null)
+    const [portfolio, setPortfolio] = useState([]);
 
     useLayoutEffect(() => {
       const reqView = {id, usertype};
@@ -42,8 +44,24 @@ function ViewProfile(){
           console.log(error)
         }
       };
-      fetchData();
+      fetchData(); // eslint-disable-next-line
     }, [])
+
+    useEffect(() => {
+      const fetchData = async () => {
+        if (usertype === "1") {
+          try {
+            UserData.fetchPortfolio({ id: id },(data)=>{
+              setPortfolio(data);
+            });
+          } catch (error) {
+            console.error("Error al obtener trabajos previos:", error);
+          }
+        }
+      };
+    
+      fetchData(); // eslint-disable-next-line
+    }, []);
 
     function base64ToArrayBuffer(base64) {
       const binaryString = window.atob(base64);
@@ -90,7 +108,7 @@ function ViewProfile(){
     return (
       <>
         <div className="main-container">
-          <div className="header-container">
+          <div className={userData===null?"header-container-nolog": "header-container"}>
             <a href="/" style={{display: "inline-block"}}> 
               <div className="back" style={{position: "absolute", marginTop: "0"}}>
                 <i class='bx bx-chevron-left' style={{color: '#7d7d7d', fontSize: "4em"}} ></i>
@@ -202,15 +220,24 @@ function ViewProfile(){
               </div>
             </div>
           </div>
+          <div className="portfolio-label">
+            <h3 htmlFor="portfolio">Portafolio:</h3>
+          </div>
           <div className="portfolio-container">
-            <label htmlFor="portfolio">Portafolio:</label>
             {userData && (<>
               {userData.idCard === id && (
                 <>
-                <button type="button" className="button-box-lg" onClick={addPreviousWork}><i class='bx bx-plus-circle' style={{fontSize:"60px", color:"white" }}></i> </button>
+                <button type="button" className="button-box-lg" onClick={addPreviousWork}><i class='bx bx-plus-circle' style={{fontSize:"90px", color:"white" }}></i> </button>
                 {showOverlayPortfolio && (<> <Portfolio showOverlayPortfolio={showOverlayPortfolio} setshowOverlayPortfolio={setshowOverlayPortfolio} /> </>)}
                 </>
               )}
+              </>
+            )}
+            {portfolio.length>0 && (
+              <>
+              {portfolio.map((portfolioItem) => (
+                <PortfolioCard portfolioItem={portfolioItem}/> 
+              ))}
               </>
             )}
           </div>
