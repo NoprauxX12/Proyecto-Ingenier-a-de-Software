@@ -46,6 +46,7 @@ class UserData {
       return { success: false, message: "Error al editar el perfil" };
     }
   }
+  
     static async fetchFreelancerById(id, cb){
         try {
             const  response = await axios.post( "http://localhost:3200/getFreelancerInfo", {id: id});

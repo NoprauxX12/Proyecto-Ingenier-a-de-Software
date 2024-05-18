@@ -25,7 +25,7 @@ const EstimateContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
     const [showAsk, setshowAsk]= useState(false);
     const [dateStart, setDateStart]= useState(null);
     const {userData} = useContext(AuthContext);
-    var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
+    var snd = new Audio('/sounds/sendmsg.mp3');
     snd.volume = 0.05;
         useEffect(() => {
             const getEst = () => {

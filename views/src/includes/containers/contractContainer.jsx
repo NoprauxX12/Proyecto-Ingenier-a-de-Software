@@ -25,7 +25,7 @@ const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
     const [showRealizar, setShowRealizar]= useState(false);
     const [showAsk, setshowAsk]= useState(false);
     const {userData} = useContext(AuthContext);
-    var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
+    var snd = new Audio('/sounds/sendmsg.mp3');
     snd.volume = 0.05;
         useEffect(() => {
             const getEst = () => {
@@ -151,7 +151,7 @@ const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                 <p style={{float: "right"}}>{estimate.sendDate}</p>
                 <h5 style={{}}>{estimate.city} - {estimate.adress}</h5>
                 <h1 style={{color: "#3D00B7", fontWeight: "bold", marginBottom: "1em"}}>Valor: <span style={{float: "right", marginRight:"1em",color: "#3D00B7"}}>{estimate.cost}.000</span></h1>
-                <p>Importante: las cotizaciones realizadas incluyen unicamente el costo de la mano de obra.</p>
+                <p>Importante: las cotizaciones realizadas incluyen únicamente el costo de la mano de obra.</p>
                 {showRealizar && (<>
                 <AskOv  onAcept={onAcept} onClose={()=>{setShowRealizar(false)}} text={`¿Te han pagado los ${estimate.cost}.000?`} action="1"/>
                 </>)}
@@ -160,7 +160,7 @@ const ContractContainer =({toggleChat, estimateId, socket, show, onOpen})=>{
                     setshowAsk(false);
                     }} text={`¿Quieres finalizar el servicio?`} action="2" />
                 </>)}
-                <h3>Codigo de autenticacion:</h3>
+                <h3>Código de autenticación:</h3>
                 <h2 style={{margin: "1em 0", color: "#55ACEE"}}>{estimate.authenticationCode}</h2>
                 <h3>Descripción:</h3>
                 <p className="textDescriptio">{estimate.description}</p>

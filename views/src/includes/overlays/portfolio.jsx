@@ -90,8 +90,8 @@ function Portfolio({setshowOverlayPortfolio}){
               <textarea value={formValues.description} onChange={(e)=>setFormValues({...formValues, description: e.target.value})}  type="text" name="description" className="expand form-control" />
             </div>
             <div className="form-group">
-              <label htmlFor="date" className="left form-label mt-3">Fecha de realización (opcional)</label>
-              <input value={formValues.date} onChange={(e)=>setFormValues({...formValues, date: e.target.value})}  type="date" name="date" className="form-control" />
+              <label htmlFor="date" className="left form-label mt-3">Fecha de realización</label>
+              <input required value={formValues.date} onChange={(e)=>setFormValues({...formValues, date: e.target.value})}  type="date" name="date" className="form-control" />
             </div>
               <p className="left form-label mt-3">Agregar una imagen: </p>
               <input

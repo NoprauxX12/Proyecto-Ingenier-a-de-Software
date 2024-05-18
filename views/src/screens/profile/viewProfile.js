@@ -18,6 +18,7 @@ function ViewProfile(){
     const [averageRank, setAverageRank] = useState(null)
     const [portfolio, setPortfolio] = useState([]);
 
+
     useLayoutEffect(() => {
       const reqView = {id, usertype};
       document.title = user.name;
@@ -33,13 +34,15 @@ function ViewProfile(){
     useEffect(()=>{
       const fetchData = async () =>{
         try{
-          ReviewData.averageRank({id: id}, (response)=>{
-            if(response.result){
-              setAverageRank(response.data)
-            }else{
-              console.log("Error al mostrar ranking")
-            }
-          })
+          if(usertype==="1"){
+            ReviewData.averageRank({id: id}, (response)=>{
+              if(response.result){
+                setAverageRank(response.data)
+              }else{
+                console.log("Error al mostrar ranking")
+              }
+            })
+          }
         }catch(error){
           console.log(error)
         }
@@ -108,24 +111,28 @@ function ViewProfile(){
     return (
       <>
         <div className="main-container">
-          <div className={userData===null?"header-container-nolog": "header-container"}>
-            <a href="/" style={{display: "inline-block"}}> 
-              <div className="back" style={{position: "absolute", marginTop: "0"}}>
-                <i class='bx bx-chevron-left' style={{color: '#7d7d7d', fontSize: "4em"}} ></i>
+          <div className={((userData === null) || (userData.user === "2")) ? "header-container-nolog" : "header-container"}>
+            <div>
+            <a href="/" style={{ display: "inline-block" }}>
+              <div className="back" style={{ marginTop: "0" }}>
+                <i className='bx bx-chevron-left' style={{ color: '#7d7d7d', fontSize: "4em" }}></i>
               </div>
             </a>
-            <h1>{user.name}</h1>
-            {userData && (<>
-                {userData.idCard === id && (<>
-                    <a href={Urls.editProfile+`/?id=${id}&usertype=${usertype}`}> 
-                      <div className="edit" style={{ marginTop: "5px"}}>
-                        <i class='bx bx-edit-alt' style={{color: '#7d7d7d', fontSize: "3em"}} ></i>
-                      </div>
+            </div>
+            <div className="header-content">
+              <div className="header-name">
+                <h1 style={{marginRight: "6em"}}>{user.name}</h1>
+              </div>
+              {userData && (
+                <div className="edit" style={{ marginTop: "5px", marginLeft: "10px" }}>
+                  {userData.idCard === id && (
+                    <a href={Urls.editProfile + `/?id=${id}&usertype=${usertype}`}>
+                      <i className='bx bx-edit-alt' style={{ color: '#7d7d7d', fontSize: "3em" }}></i>
                     </a>
-
-                </>)}
-              </>
-            )}
+                  )}
+                </div>
+              )}
+            </div>
           </div>
           <div className="content-container">
             <div className="left-container">
@@ -141,20 +148,23 @@ function ViewProfile(){
                 </>
               )}
             </div>
-            <div className="mid-container">
-              <div className="content-element-inline">
-                <label htmlFor="profession">Profesión:</label>{" "}
-                <input
-                  readOnly
-                  type="text"
-                  id="profession"
-                  className="profession-box inside-color"
-                  style={{ cursor:"default", outline: "none" }}
-                  defaultValue={user.knowledge}
-                />
-              </div>
+            <div className={usertype==="1" ? "mid-container": "client-mid-container"}>
+              {(usertype==="1")? (<>
+                <div className="content-element-inline">
+                  <label htmlFor="profession">Profesión:</label>{" "}
+                  <input
+                    readOnly
+                    type="text"
+                    id="profession"
+                    className="profession-box inside-color"
+                    style={{ cursor:"default", outline: "none" }}
+                    defaultValue={user.knowledge}
+                  />
+                </div>
+                </>): (<>
+              </>)}
               <div className="content-element">
-                <label htmlFor="description">Descripción:</label>
+                <label htmlFor="description">{usertype === "1" ? "Descripción" : "Información Importante"}</label>
                 <textarea
                   readOnly
                   id="description"
@@ -163,13 +173,16 @@ function ViewProfile(){
                   defaultValue={user.description !== "null" ? user.description : ""}
                 />
               </div>
-              <div className="content-element">
-                <label htmlFor="rating">Puntuación y reseñas:</label>
-                <h1>{averageRank}/5</h1>
-                <a href={"/review/?id="+ id }>Ver reseñas</a>
-              </div>
+              {(userData && (userData.idCard===id && userData.user==="2"))? (<>
+              </>): (<>
+                <div className="content-element">
+                  <label htmlFor="rating">Puntuación y reseñas:</label>
+                  <h1>{averageRank}/5</h1>
+                  <a href={"/review/?id="+ id }>Ver reseñas</a>
+                </div>
+              </>)}
             </div>
-            <div className="right-container">
+            <div className={usertype==="1" ? "right-container": "client-right-container"}>
               <div className="content-element-inline">
                 <label htmlFor="phone">Teléfono:</label>{" "}
                 <input
@@ -193,21 +206,23 @@ function ViewProfile(){
                   defaultValue={user.email}
                 />
               </div>
-              <div>
-                <div className="content-element-inline">
-                  <label>Hoja de Vida:</label>
-                  <button type="button" className="button-box" onClick={() => viewPdf("curriculum")}> Ver </button>
-                </div>
-                {userData.idCard === id && (<>
+              {usertype==="1" ? (
+                <>
+                <div>
                   <div className="content-element-inline">
-                    <label>RUT:</label>
-                    <button type="button" className="button-box" onClick={() => viewPdf("rut")}> Ver </button>
+                    <label>Hoja de Vida:</label>
+                    <button type="button" className="button-box" onClick={() => viewPdf("curriculum")}> Ver </button>
                   </div>
-                  <div className="content-element-inline">
-                    <label>EPS:</label>
-                    <button type="button" className="button-box" onClick={() => viewPdf("eps")}> Ver </button>
-                  </div>
-                </>)}
+                  {userData && userData.idCard === id && (<>
+                    <div className="content-element-inline">
+                      <label>RUT:</label>
+                      <button type="button" className="button-box" onClick={() => viewPdf("rut")}> Ver </button>
+                    </div>
+                    <div className="content-element-inline">
+                      <label>EPS:</label>
+                      <button type="button" className="button-box" onClick={() => viewPdf("eps")}> Ver </button>
+                    </div>
+                  </>)}
               </div>
               <div className="content-element">
                 <label htmlFor="important-info">Información Importante:</label>
@@ -216,32 +231,50 @@ function ViewProfile(){
                   id="important-info"
                   className="important-info-box inside-color"
                   style={{ cursor:"default", outline: "none" }}
-                  defaultValue={user.importantInfo}
+                  defaultValue={user.importantInfo !== "null" ? user.importantInfo : "" }
                 />
               </div>
+              </>
+              ):(
+              <div className="content-element">
+                <label htmlFor="adress">Dirección:</label>
+                <input
+                  readOnly
+                  type="adress"
+                  id="adress"
+                  className="adress-box inside-color"
+                  style={{ cursor:"default", outline: "none" }}
+                  defaultValue={user.adress}
+                />
+              </div>
+              )}
             </div>
           </div>
-          <div className="portfolio-label">
-            <h3 htmlFor="portfolio">Portafolio:</h3>
-          </div>
-          <div className="portfolio-container">
-            {userData && (<>
-              {userData.idCard === id && (
-                <>
-                <button type="button" className="button-box-lg" onClick={addPreviousWork}><i class='bx bx-plus-circle' style={{fontSize:"90px", color:"white" }}></i> </button>
-                {showOverlayPortfolio && (<> <Portfolio showOverlayPortfolio={showOverlayPortfolio} setshowOverlayPortfolio={setshowOverlayPortfolio} /> </>)}
+          {usertype==="1" && (
+            <>
+            <div className="portfolio-label">
+              <h3 htmlFor="portfolio">Portafolio:</h3>
+            </div>
+            <div className="portfolio-container">
+              {userData && (<>
+                {userData.idCard === id && (
+                  <>
+                  <button type="button" className="button-box-lg" onClick={addPreviousWork}><i class='bx bx-plus-circle' style={{fontSize:"90px", color:"white" }}></i> </button>
+                  {showOverlayPortfolio && (<> <Portfolio showOverlayPortfolio={showOverlayPortfolio} setshowOverlayPortfolio={setshowOverlayPortfolio} /> </>)}
+                  </>
+                )}
                 </>
               )}
-              </>
-            )}
-            {portfolio.length>0 && (
-              <>
-              {portfolio.map((portfolioItem) => (
-                <PortfolioCard portfolioItem={portfolioItem}/> 
-              ))}
-              </>
-            )}
-          </div>
+              {portfolio.length>0 && (
+                <>
+                {portfolio.map((portfolioItem) => (
+                  <PortfolioCard portfolioItem={portfolioItem}/> 
+                ))}
+                </>
+              )}
+            </div>
+            </>
+          )}
         </div>
       </>
     );

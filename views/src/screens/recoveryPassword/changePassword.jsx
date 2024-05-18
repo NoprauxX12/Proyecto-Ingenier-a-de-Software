@@ -23,7 +23,8 @@ const ChangePassword = () => {
         setToken(window.location.search.substring(1));
         if(token !== null){
             delay()} 
-    }, [trigger]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [trigger, token]);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -46,8 +47,9 @@ const ChangePassword = () => {
             setLinkExpired(false)
             const expirationTime = new Date(tokenInfo[0].dateTime).getTime(); 
             const currentTime = new Date().getTime(); 
-            const timeDifference = (expirationTime - currentTime) / (1000 * 60);
-            if (timeDifference < 284) {
+            const timeDifference = Math.abs((expirationTime - currentTime) / (1000 * 60));
+            console.log(timeDifference, expirationTime, currentTime)
+            if (timeDifference > 15) {
                 setLinkExpired(true);
             }
             setData({
@@ -70,7 +72,7 @@ const ChangePassword = () => {
                 if(args === true ){
                     console.log("contraseña cambiada")
                     setMessage("Contraseña actualizada correctamente")
-                    window.location.href = "http://localhost:3000"
+                    window.location.href = "/"
                 } else {
                     setMessage("No se pudo actualizar tu contraseña")
                     console.log("contraseña NO cambiada")
@@ -134,7 +136,7 @@ const ChangePassword = () => {
             <div className="text-center">
                 <h1 className="text-blue-700 text-2xl font-bold mb-4">Enlace Expirado :(</h1>
                 <p className="text-gray-700 text-xl mb-4">El enlace para restablecer la contraseña ha expirado. Por favor, solicita un nuevo enlace.</p>
-                <button onClick={() => window.location.href = "http://localhost:3000"} className="btne">Ir al Inicio</button>
+                <button onClick={() => window.location.href = "/"} className="btne">Ir al Inicio</button>
             </div>
         );
     }

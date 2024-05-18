@@ -12,7 +12,7 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend, t
     const [cameraAvailable, setCameraAvailable] = useState(true);
     const contact = rooms.find(room => room.id === selectedRoom);
     const messagesEndRef = useRef(null);
-    var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
+    var snd = new Audio('/sounds/sendmsg.mp3');
     snd.volume = 0.05;
     username= userData.name;
     const scrollToBottom = () => {
@@ -126,9 +126,9 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend, t
     }, [selectedRoom]);
 
     const messageHandle = useCallback((data) => {
-        setMessages(prevMessages => [...prevMessages, data]);
+        if(data.room_id===selectedRoom) setMessages(prevMessages => [...prevMessages, data]);
         scrollToBottom();
-    }, []);
+    }, [selectedRoom]);
 
     useEffect(() => {
         socket.on("recive_message", messageHandle);
@@ -163,14 +163,17 @@ const ChatContainer = ( {socket, rooms, username, mesgs, selectedRoom, onSend, t
                 </>):(<>
                     <img src="/images/defaultUser.png" alt="Not" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />                            
                 </>)}  
+                
                 </div>
+                
+                <span style={{ fontSize: '1.8rem', color: '#333', fontFamily: 'Comfortaa, sans-serif', marginRight: 'auto' }}>{contact.name}</span>
                 <div onClick={toggleChat} style={{cursor: "pointer"}}>
                     <p><i className="bx bx-chevron-left" style={{ color: '#4f4f4f', fontSize: "2.5em" }} /></p>
                 </div>
                     </div>
                             <div className="contentBox" style={{
                                 margin: "0",
-                                backgroundImage: "url('http://localhost:3000/images/fondo.jpg')"}}>
+                                backgroundImage: "url(/images/fondo.jpg)"}}>
                                 <div style={{marginBottom: '55px', marginTop: "5em"}}>
 
                                     

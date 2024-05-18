@@ -26,7 +26,6 @@ const Card = (props) => {
         }
       }
     }
-
     
     if (!freelancer) {
         return null; // Manejar el caso de datos incompletos o nulos
@@ -61,7 +60,7 @@ const Card = (props) => {
               <a href={Urls.viewProfile+`/?id=${freelancer.idFreelancer}&usertype=1`} style={{textDecoration: "none", color: "inherit"}}>
                 <h5 className="card-title">{freelancer.name}</h5>
               </a>
-              <p style={{display: "block"}}>{freelancer.description.length>26? freelancer.description.slice(0,25)+"..." : freelancer.description}</p>
+              <p style={{display: "block"}}>{freelancer.description==="null" ? "": (freelancer.description.length>26? freelancer.description.slice(0,25)+"..." : freelancer.description)}</p>
             <div className="city-icon">
               <a onClick={toggleOverlay} className="btne_dark" style={{fontSize: "0.8em"}}><p style={{color: "#fff", margin:"0 0.5em", fontWeight: "bold"}}>Cotizar</p></a>
               <p style={{padding: "0.2em", marginTop: "0.5em", marginLeft: "1em", display: "flex", flexDirection: "row"}}><i className="bx bxs-star" style={{color: '#55ACEE', fontSize: "1.5em"}} /><span style={{color: "#55ACEE", marginLeft: "0.5em", fontSize: "1em"}}> 4/5</span> </p>

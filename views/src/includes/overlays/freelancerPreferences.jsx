@@ -101,7 +101,7 @@ function FreelancerPreferences({showOverlayPrefrefences, setShowOverlayPreferenc
 
   return (
     <div className="overlay">
-      <div className="alert-box" style={{maxHeight: "100%", width: "30%"}}>
+      <div className="alert-box" style={{maxHeight: "100%", width: "50%"}}>
         <button type="button" onClick={exitClick} style={{border:"transparent", background:"transparent", margin:"0px"}}> <i class='bx bx-x-circle exit-button' style={{color:"gray", fontSize:"30px"}}></i> </button>
         <div>
           {paso === 1 && <FirstStep onNext={handleNext} values={formValues} handleChange={handleChange} />}

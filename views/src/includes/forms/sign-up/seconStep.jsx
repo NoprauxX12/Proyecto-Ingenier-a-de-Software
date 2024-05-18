@@ -24,7 +24,7 @@ const SecondStep = ({formValues, cityes, handleChange, step})=>{
                             </select>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="cellphone" className="form-label mt-4">celular</label>
+                            <label htmlFor="cellphone" className="form-label mt-4">Celular</label>
                             <input
                             className="form-control" 
                             type="text"
@@ -36,7 +36,7 @@ const SecondStep = ({formValues, cityes, handleChange, step})=>{
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="telphone" className="form-label mt-4">telefono</label>
+                            <label htmlFor="telphone" className="form-label mt-4">Teléfono</label>
                             <input
                             className="form-control" 
                             type="text"

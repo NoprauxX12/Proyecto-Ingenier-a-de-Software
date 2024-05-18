@@ -158,7 +158,7 @@ function SignUpScreen() {
                     Siguiente
                 </button>
                 ) : (
-                <button style={{margin: 10, display: "inline"}} className="btne_dark" type="submit">Enviar</button>
+                <button style={{margin: 10, display: "inline"}} className="btne_dark" type="submit">Siguiente</button>
                 )}
                 </div>
             </form>

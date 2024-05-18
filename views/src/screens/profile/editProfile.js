@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useLayoutEffect, useState, useEffect } from "react";
+import React, { useLayoutEffect, useState, useEffect, useContext } from "react";
+import { AuthContext } from '../../providers/userProvider';
 import UserData from "../../services/user";
 import "../../styles/profile.css";
 import Urls from "../../util/urls";
@@ -11,6 +12,7 @@ import PortfolioCard from "../../includes/cards/portfolioCard";
 function ViewProfile(){
     const params = new URLSearchParams(window.location.search);
     const [user, setUser]= useState({});
+    const {userData} = useContext(AuthContext);
     const id = params.get("id");
     const usertype = params.get("usertype");
     const [newPassword, setNewPassword] = useState("");
@@ -77,33 +79,56 @@ function ViewProfile(){
       if (newPassword !== confirmPassword) {
         return;
       }
-  
-      const formData = new FormData();
-      formData.append("usertype",usertype);
-      formData.append("id",id);
-      formData.append("name", user.name);
-      formData.append("email", user.email);
-      formData.append("description", user.description);
-      formData.append("cellphone", user.cellphone);
-      formData.append("importantInfo", user.importantInfo);
-      formData.append("newPassword", newPassword);
-      if(photo){
-        formData.append("photo",photo);
-      }
-      if(curriculum){
-        formData.append("curriculum",curriculum);
-      }
-      if(rut){
-        formData.append("rut",rut);
-      }
-      if(eps){
-        formData.append("eps",eps);
-      }
-
+      if(userData.user === "1"){
+        const formData = new FormData();
+        formData.append("usertype",usertype);
+        formData.append("id",id);
+        formData.append("name", user.name);
+        formData.append("email", user.email);
+        formData.append("description", user.description);
+        formData.append("cellphone", user.cellphone);
+        formData.append("importantInfo", user.importantInfo);
+        formData.append("password", newPassword);
+        if(photo){
+          formData.append("photo",photo);
+        }
+        if(curriculum){
+          formData.append("curriculum",curriculum);
+        }
+        if(rut){
+          formData.append("rut",rut);
+        }
+        if(eps){
+          formData.append("eps",eps);
+        }
+      
       UserData.editProfile(formData);
+
       setTimeout(()=>{
         onSubmit()
-      },500);
+      },1000);
+
+      }else if(userData.user === "2"){
+        const formData = new FormData();
+
+        formData.append("usertype",usertype);
+        formData.append("id",id);
+        formData.append("name", user.name);
+        formData.append("email", user.email);
+        formData.append("description", user.description);
+        formData.append("cellphone", user.cellphone);
+        formData.append("adress", user.adress);
+        formData.append("password", newPassword);
+        if(photo){
+          formData.append("photo",photo);
+        }
+
+        UserData.editProfile(formData);
+
+        setTimeout(()=>{
+          onSubmit()
+        },1000);
+      }
     };
 
   const navigate = useNavigate();
@@ -163,8 +188,8 @@ function ViewProfile(){
 
   function handleInputPhoto(event) {
     const file = event.target.files[0];
+    setPhoto(file)
     if (file) {
-      setPhoto(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setUser({ ...user, profilePhoto: reader.result });
@@ -218,7 +243,7 @@ function ViewProfile(){
                   {photo ? (
                     <img id="profile-image" src={URL.createObjectURL(photo)} className="edit-profile-image" alt="Imagen de Perfil" style={{maxHeight: "30em"}}/>
                   ) : (
-                    <img className="edit-profile-image" id="profile-image" src={`data:image/jpeg;base64,${user.profilePhoto}` || "/images/defaultUser.png"} alt="usuario por defecto" />
+                    <img className="edit-profile-image" id="profile-image" src={user.profilePhoto ? `data:image/jpeg;base64,${user.profilePhoto}` : "/images/defaultUser.png"} alt="usuario por defecto" />
                   )}
                   <input
                     type="file"
@@ -231,20 +256,23 @@ function ViewProfile(){
                   </div>
                 </div>
               </div>
-              <div className="mid-container">
-                <div className="content-element-inline">
-                    <label htmlFor="profession">Profesión:</label>{" "}
-                    <input
-                      readOnly
-                      type="text"
-                      id="profession"
-                      className="profession-box inside-color"
-                      style={{ cursor: "default" }}
-                      defaultValue={user.knowledge}
-                    />
-                  </div>
+              <div className={usertype==="1" ? "mid-container": "client-mid-container"}>
+                  {(usertype==="1")? (<>
+                    <div className="content-element-inline">
+                        <label htmlFor="profession">Profesión:</label>{" "}
+                        <input
+                          readOnly
+                          type="text"
+                          id="profession"
+                          className="profession-box inside-color"
+                          style={{ cursor: "default" }}
+                          defaultValue={user.knowledge}
+                        />
+                      </div>
+                      </>): (<>
+                  </>)}
                   <div className="content-element">
-                    <label htmlFor="description">Descripción:</label>
+                    <label htmlFor="description">{usertype === "1" ? "Descripción" : "Información Importante"}</label>
                     <textarea
                       id="description"
                       className="description-box inside-color"
@@ -255,13 +283,16 @@ function ViewProfile(){
                       }
                     />
                   </div>
-                  <div className="content-element">
-                    <label htmlFor="rating">Puntuación y reseñas:</label>
-                    <h1>{averageRank}/5</h1>
-                    <a href={"/review/?id="+ id }>Ver reseñas</a>
-                  </div>
+                  {(userData && (userData.idCard===id && userData.user==="2"))? (<>
+                    </>): (<>
+                    <div className="content-element">
+                      <label htmlFor="rating">Puntuación y reseñas:</label>
+                      <h1>{averageRank}/5</h1>
+                      <a href={"/review/?id="+ id }>Ver reseñas</a>
+                    </div>
+                  </>)}
                 </div>
-              <div className="right-container">
+              <div className={usertype==="1" ? "right-container": "client-right-container"}>
                 <div className="content-element-inline">
                   <label htmlFor="phone">Teléfono:</label>{" "}
                   <input
@@ -287,36 +318,52 @@ function ViewProfile(){
                     onChange={(e) => setUser({ ...user, email: e.target.value })}
                   />
                 </div>
-                <div>
-                  <div className="content-element-inline">
-                    <label>Hoja de Vida:</label>
-                    <button type="button" className="button-box" onClick={() => viewPdf("curriculum")}> Ver </button>
-                    <input type="file" id="curriculum" className="button-box" accept=".pdf" style={{ display: "none" }} onChange={handleInputCurriculum}/>
-                    <button type="button" className="button-box" onClick={() => document.getElementById("curriculum").click()}> Editar </button>
-                  </div>
-                  <div className="content-element-inline">
-                    <label>RUT:</label>
-                    <button type="button" className="button-box" onClick={() => viewPdf("rut")}> Ver </button>
-                    <input type="file" id="rut" className="button-box" accept=".pdf" style={{ display: "none" }} onChange={handleInputRut}/>
-                    <button type="button" className="button-box" onClick={() => document.getElementById("rut").click()}> Editar </button>
-                  </div>
-                  <div className="content-element-inline">
-                    <label>EPS:</label>
-                    <button type="button" className="button-box" onClick={() => viewPdf("eps")}> Ver </button>
-                    <input type="file" id="eps" className="button-box" accept=".pdf" style={{ display: "none" }} onChange={handleInputEps}/>
-                    <button type="button" className="button-box" onClick={() => document.getElementById("eps").click()}> Editar </button>
-                  </div>
-                </div>
+                {usertype === "1" ? (
+                  <>
+                    <div>
+                      <div className="content-element-inline">
+                        <label>Hoja de Vida:</label>
+                        <button type="button" className="button-box" onClick={() => viewPdf("curriculum")}> Ver </button>
+                        <input type="file" id="curriculum" className="button-box" accept=".pdf" style={{ display: "none" }} onChange={handleInputCurriculum}/>
+                        <button type="button" className="button-box" onClick={() => document.getElementById("curriculum").click()}> Editar </button>
+                      </div>
+                      <div className="content-element-inline">
+                        <label>RUT:</label>
+                        <button type="button" className="button-box" onClick={() => viewPdf("rut")}> Ver </button>
+                        <input type="file" id="rut" className="button-box" accept=".pdf" style={{ display: "none" }} onChange={handleInputRut}/>
+                        <button type="button" className="button-box" onClick={() => document.getElementById("rut").click()}> Editar </button>
+                      </div>
+                      <div className="content-element-inline">
+                        <label>EPS:</label>
+                        <button type="button" className="button-box" onClick={() => viewPdf("eps")}> Ver </button>
+                        <input type="file" id="eps" className="button-box" accept=".pdf" style={{ display: "none" }} onChange={handleInputEps}/>
+                        <button type="button" className="button-box" onClick={() => document.getElementById("eps").click()}> Editar </button>
+                      </div>
+                    </div>
+                    <div className="content-element">
+                      <label htmlFor="important-info">Información Importante:</label>
+                      <textarea
+                        id="important-info"
+                        className="important-info-box inside-color"
+                        style={{ cursor: "pointer" }}
+                        defaultValue={user.importantInfo}
+                        onChange={(e) => setUser({ ...user, importantInfo: e.target.value })}
+                      />
+                    </div>
+                  </>
+                ):(
                 <div className="content-element">
-                  <label htmlFor="important-info">Información Importante:</label>
-                  <textarea
-                    id="important-info"
-                    className="important-info-box inside-color"
+                  <label htmlFor="adress">Dirección:</label>
+                  <input
+                    type="adress"
+                    id="adress"
+                    className="adress-box inside-color"
                     style={{ cursor: "pointer" }}
-                    defaultValue={user.importantInfo}
-                    onChange={(e) => setUser({ ...user, importantInfo: e.target.value })}
+                    defaultValue={user.adress}
+                    onChange={(e) => setUser({ ...user, adress: e.target.value })}
                   />
                 </div>
+                )}
                 <div className="content-element">
                   <label htmlFor="password">Nueva Contraseña:</label>{" "}
                   <input
@@ -346,21 +393,31 @@ function ViewProfile(){
               </div>
             </div>
           </form>
-          <div className="portfolio-label">
-            <h3 htmlFor="portfolio">Portafolio:</h3>
-          </div>
-          <div className="portfolio-container">
-            <button type="button" className="button-box-lg" onClick={addPreviousWork}><i class='bx bx-plus-circle' style={{fontSize:"90px", color:"white" }}></i> </button>
-            {showOverlayPortfolio && (<> <Portfolio showOverlayPortfolio={showOverlayPortfolio} setshowOverlayPortfolio={setshowOverlayPortfolio} /> </>)}
-            
-            {portfolio.length>0 && (
-              <>
-              {portfolio.map((portfolioItem) => (
-                <PortfolioCard portfolioItem={portfolioItem}/> 
-              ))}
-              </>
-            )}
-          </div>
+          {usertype==="1" && (
+            <>
+            <div className="portfolio-label">
+              <h3 htmlFor="portfolio">Portafolio:</h3>
+            </div>
+            <div className="portfolio-container">
+              {userData && (<>
+                {userData.idCard === id && (
+                  <>
+                  <button type="button" className="button-box-lg" onClick={addPreviousWork}><i class='bx bx-plus-circle' style={{fontSize:"90px", color:"white" }}></i> </button>
+                  {showOverlayPortfolio && (<> <Portfolio showOverlayPortfolio={showOverlayPortfolio} setshowOverlayPortfolio={setshowOverlayPortfolio} /> </>)}
+                  </>
+                )}
+                </>
+              )}
+              {portfolio.length>0 && (
+                <>
+                {portfolio.map((portfolioItem) => (
+                  <PortfolioCard portfolioItem={portfolioItem}/> 
+                ))}
+                </>
+              )}
+            </div>
+            </>
+          )}
         </div>
       </>
     );

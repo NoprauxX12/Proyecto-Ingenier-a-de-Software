@@ -23,7 +23,7 @@ function ContractScreen() {
   const [initialLoad, setInitialLoad] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [estimates, setEstimates] = useState([]);
-  var snd = new Audio('http://localhost:3000/sounds/sendmsg.mp3');
+  var snd = new Audio('/sounds/sendmsg.mp3');
   snd.volume = 0.05;
 
   function toggleChats(){ 

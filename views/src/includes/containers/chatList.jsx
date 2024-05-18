@@ -25,7 +25,7 @@ const ChatList = ({handler, estimates, userData})=>{
                                         {estimate.profilePhoto ? (<>
                                             <img src={`data:image/jpeg;base64,${estimate.profilePhoto}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Profile" />
                                         </>):(<>
-                                            <img src='http://localhost:3000/images/profiledf.png' alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                            <img src='/images/profiledf.png' alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                         </>)}
                                         </div>
                                 <div style={{ fontFamily: 'Comfortaa, sans-serif', fontWeight: 'bold' }}>{estimate.name}</div>

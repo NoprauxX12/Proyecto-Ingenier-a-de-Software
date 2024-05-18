@@ -34,7 +34,7 @@ const ThirdStep = ({formValues, handleChange, step})=>{
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="adress" className="form-label mt-4">direccion</label>
+                            <label htmlFor="adress" className="form-label mt-4">Dirección</label>
                             
                             <input
                             className="form-control" 

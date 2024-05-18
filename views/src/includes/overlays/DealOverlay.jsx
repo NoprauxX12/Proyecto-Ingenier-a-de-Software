@@ -33,7 +33,7 @@ function DealOverlay({onClose, cities, idFreelancer}){
     formData.append('description', formValues.description);
     formData.append('dateStart', formValues.dateStart);
     formData.append('img', img);
-
+    
     EstimateData.Create(formData,(res)=>{
       setTimeout(onClose(res),500);
       let idToNotify = userData.user==="2"? res.idFreelancer+"1" : res.idClient+"2";
@@ -115,7 +115,7 @@ function DealOverlay({onClose, cities, idFreelancer}){
             {step===1 && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="city" className="left form-label mt-4">ciudad donde se realizará el servicio</label>
+                  <label htmlFor="city" className="left form-label mt-4">Ciudad donde se realizará el servicio</label>
                   <select onChange={handleChange} className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="exampleFreelancer/client" name="city" >
                   <option value={userData.idCity}>{selectedCity}</option>
                       {cities.length>0 && (
@@ -179,7 +179,7 @@ function DealOverlay({onClose, cities, idFreelancer}){
             {step===1 ? (
               <button type="button" className="botn" id="button" onClick={onClose}>Cerrar</button>
             ) : (
-              <button type="button" className="botn" id="button" onClick={back}>atras</button>
+              <button type="button" className="botn" id="button" onClick={back}>Atrás</button>
             )}
              {step ===1 ? (
                 <button type="submit" className="botn" id="button_b">Siguiente</button>

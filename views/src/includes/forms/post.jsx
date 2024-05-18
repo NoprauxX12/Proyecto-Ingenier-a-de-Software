@@ -44,7 +44,9 @@ const Postform = () => {
     };
 
     const toggleAlert=()=>{
+      if(alerta) window.location.href = '/';
       setAlerta(!alerta);
+      
     }
 
     const handleChange = (e) => {
@@ -66,10 +68,8 @@ const Postform = () => {
       formData.append("city", postValues.city);
       PostData.createPost(formData, (arg)=>{
         if(arg.result){
-          setMessage("El post se ha creado correctamente");
+          setMessage("El post se ha creado correctamente uno de nuestros freelancer se pondra en contacto contigo posteriormente");
           toggleAlert();
-          window.location.href = '/';
-
         }else{
           setMessage("Oops, ha habido un error :(");
           toggleAlert();
@@ -103,7 +103,7 @@ const Postform = () => {
     </>): (<>
     </>)}
     <form onSubmit={handlePost}>
-    <legend className="Info"><span style={{color: '#3D00B7'}}>Nuevo</span> <span style={{color:'#55ACEE' }}>Servicio</span></legend>
+    <legend className="Info"><span style={{color: '#3D00B7'}}>Publica un nuevo</span> <span style={{color:'#55ACEE' }}>Servicio</span></legend>
       <div className="cuadro">
           <section className="cuadrito">
             <div className="form-group ">
@@ -135,7 +135,7 @@ const Postform = () => {
           </section>
           <section className="cuadrito" >
             <div className="form-group">
-              <label htmlFor="city" className="left form-label mt-4">ciudad donde se realizará el servicio</label>
+              <label htmlFor="city" className="left form-label mt-4">Ciudad donde se realizará el servicio</label>
               <select onChange={handleChange} className="form-control" style={{ backgroundColor: 'rgb(236, 236, 236)' }} id="exampleFreelancer/client" name="city" >
                   <option value={userData.idCity}>{selectedCity}</option>
                       {cities.length>0 && (
@@ -163,7 +163,7 @@ const Postform = () => {
                   style={{ display: 'block', width: '100%', textAlign: 'left' }}
             >
               {img? (<>
-                    <img id="postImg" src={preview} alt="imagen referencia"/>
+                    <img id="postImg" src={preview} style={{marginLeft: "30%", marginBottom: "1em"}} alt="imagen referencia"/>
                   </>): (<>
                     <div className="addContent">
                       <h4>Añadir a tu post <span ><i class='bx bxs-image-add'></i></span></h4>

@@ -36,7 +36,7 @@ const FormularioLogIn = () => {
   };
 
   const toggleSignUP = () => {
-    window.location.href = "http://localhost:3000/sign-up"
+    window.location.href = "/sign-up"
   }
 
   const handleChange = (e) => {
