@@ -1,0 +1,353 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema el_que_sabe
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema el_que_sabe
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `el_que_sabe` DEFAULT CHARACTER SET utf8mb3 ;
+USE `el_que_sabe` ;
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`department`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`department` (
+  `idDepartment` INT NOT NULL,
+  `name` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`idDepartment`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`town`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`town` (
+  `idCity` FLOAT UNSIGNED NOT NULL,
+  `name` TEXT NULL DEFAULT NULL,
+  `idDepartment` INT NOT NULL,
+  PRIMARY KEY (`idCity`),
+  INDEX `fk_city_department1_idx` (`idDepartment` ASC),
+  CONSTRAINT `fk_city_department1`
+    FOREIGN KEY (`idDepartment`)
+    REFERENCES `el_que_sabe`.`department` (`idDepartment`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`freelancer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`freelancer` (
+  `idFreelancer` VARCHAR(15) NOT NULL,
+  `name` TEXT NULL DEFAULT NULL,
+  `phoneNumber` VARCHAR(10) NULL DEFAULT NULL,
+  `cellphone` VARCHAR(10) NULL DEFAULT NULL,
+  `adress` VARCHAR(150) NULL DEFAULT NULL,
+  `email` TEXT NULL DEFAULT NULL,
+  `password` TEXT NULL DEFAULT NULL,
+  `idCity` FLOAT UNSIGNED NOT NULL,
+  `rut` LONGBLOB NULL DEFAULT NULL,
+  `profilePhoto` LONGBLOB NULL DEFAULT NULL,
+  `description` VARCHAR(300) NULL DEFAULT NULL,
+  `curriculum` BLOB NULL DEFAULT NULL,
+  `eps` BLOB NULL DEFAULT NULL,
+  `importantInfo` VARCHAR(250) NULL DEFAULT NULL,
+  `tools` VARCHAR(255) NULL DEFAULT NULL,
+  `preferredBrands` VARCHAR(255) NULL DEFAULT NULL,
+  PRIMARY KEY (`idFreelancer`),
+  INDEX `fk_freelancer_department1_idx` (`idCity` ASC),
+  CONSTRAINT `fk_freelancer_department1`
+    FOREIGN KEY (`idCity`)
+    REFERENCES `el_que_sabe`.`town` (`idCity`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`technicalknowledge`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`technicalknowledge` (
+  `idTechnicalKnowledge` INT NOT NULL AUTO_INCREMENT,
+  `title` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`idTechnicalKnowledge`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 16
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`academicdegrees`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`academicdegrees` (
+  `idFreelancer` VARCHAR(15) NOT NULL,
+  `idTechnicalKnowledge` INT NOT NULL,
+  `institution` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`idTechnicalKnowledge`, `idFreelancer`),
+  INDEX `fk_degrees_freelancer1_idx` (`idFreelancer` ASC),
+  INDEX `fk_degrees_technicalKnowledge1_idx` (`idTechnicalKnowledge` ASC),
+  CONSTRAINT `fk_degrees_freelancer1`
+    FOREIGN KEY (`idFreelancer`)
+    REFERENCES `el_que_sabe`.`freelancer` (`idFreelancer`),
+  CONSTRAINT `fk_degrees_technicalKnowledge1`
+    FOREIGN KEY (`idTechnicalKnowledge`)
+    REFERENCES `el_que_sabe`.`technicalknowledge` (`idTechnicalKnowledge`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`client`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`client` (
+  `idClient` VARCHAR(15) NOT NULL,
+  `name` TEXT NULL DEFAULT NULL,
+  `phoneNumber` VARCHAR(10) NULL DEFAULT NULL,
+  `cellphone` VARCHAR(10) NULL DEFAULT NULL,
+  `adress` TEXT NULL DEFAULT NULL,
+  `email` TEXT NULL DEFAULT NULL,
+  `password` TEXT NULL DEFAULT NULL,
+  `idCity` FLOAT UNSIGNED NOT NULL,
+  `profilePhoto` LONGBLOB NULL DEFAULT NULL,
+  `description` VARCHAR(300) NULL DEFAULT NULL,
+  PRIMARY KEY (`idClient`),
+  INDEX `fk_client_department_idx` (`idCity` ASC),
+  CONSTRAINT `fk_client_department`
+    FOREIGN KEY (`idCity`)
+    REFERENCES `el_que_sabe`.`town` (`idCity`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`clients`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`clients` (
+  `idClient` TEXT NULL DEFAULT NULL,
+  `name` TEXT NULL DEFAULT NULL,
+  `phoneNumber` INT NULL DEFAULT NULL,
+  `cellphone` TEXT NULL DEFAULT NULL,
+  `adress` TEXT NULL DEFAULT NULL,
+  `email` TEXT NULL DEFAULT NULL,
+  `password` TEXT NULL DEFAULT NULL,
+  `idCity` DOUBLE NULL DEFAULT NULL,
+  `profilePhoto` TEXT NULL DEFAULT NULL,
+  `description` TEXT NULL DEFAULT NULL)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`contractoffer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`contractoffer` (
+  `idContractOffer` INT NOT NULL AUTO_INCREMENT,
+  `description` TEXT NULL DEFAULT NULL,
+  `title` VARCHAR(45) NULL DEFAULT NULL,
+  `idClient` VARCHAR(15) NOT NULL,
+  `date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `adress` VARCHAR(255) NULL DEFAULT '',
+  `idCity` FLOAT(8,2) NOT NULL,
+  PRIMARY KEY (`idContractOffer`),
+  INDEX `fk_hireOffer_client1_idx` (`idClient` ASC),
+  CONSTRAINT `fk_hireOffer_client1`
+    FOREIGN KEY (`idClient`)
+    REFERENCES `el_que_sabe`.`client` (`idClient`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 17
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`state`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`state` (
+  `stateId` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(120) NULL DEFAULT NULL,
+  PRIMARY KEY (`stateId`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 8
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`estimate`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`estimate` (
+  `estimateId` INT NOT NULL AUTO_INCREMENT,
+  `idClient` VARCHAR(15) NOT NULL,
+  `idFreelancer` VARCHAR(15) NOT NULL,
+  `description` TEXT NULL DEFAULT NULL,
+  `sendDate` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `adress` VARCHAR(250) NULL DEFAULT NULL,
+  `dateStart` DATETIME NULL DEFAULT NULL,
+  `dercriptiveImg` LONGBLOB NULL DEFAULT NULL,
+  `idCity` FLOAT UNSIGNED NOT NULL,
+  `sendedBy` INT NULL DEFAULT NULL,
+  `state_stateId` INT NOT NULL,
+  `cost` FLOAT NULL DEFAULT NULL,
+  `authenticationCode` VARCHAR(255) NULL DEFAULT NULL,
+  `finishdate` DATETIME NULL DEFAULT NULL,
+  PRIMARY KEY (`estimateId`),
+  INDEX `fk_message_client1_idx` (`idClient` ASC),
+  INDEX `fk_message_freelancer1_idx` (`idFreelancer` ASC),
+  INDEX `fk_estimate_town1_idx` (`idCity` ASC) VISIBLE,
+  INDEX `fk_estimate_state1_idx` (`state_stateId` ASC),
+  CONSTRAINT `fk_estimate_state1`
+    FOREIGN KEY (`state_stateId`)
+    REFERENCES `el_que_sabe`.`state` (`stateId`),
+  CONSTRAINT `fk_estimate_town1`
+    FOREIGN KEY (`idCity`)
+    REFERENCES `el_que_sabe`.`town` (`idCity`),
+  CONSTRAINT `fk_message_client1`
+    FOREIGN KEY (`idClient`)
+    REFERENCES `el_que_sabe`.`client` (`idClient`),
+  CONSTRAINT `fk_message_freelancer1`
+    FOREIGN KEY (`idFreelancer`)
+    REFERENCES `el_que_sabe`.`freelancer` (`idFreelancer`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 69
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`previouswork`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`previouswork` (
+  `idPreviousWork` INT NOT NULL AUTO_INCREMENT,
+  `idFreelancer` VARCHAR(15) NOT NULL,
+  `date` DATETIME NULL DEFAULT NULL,
+  `description` TEXT NULL DEFAULT NULL,
+  `title` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`idPreviousWork`),
+  INDEX `fk_previousWork_freelancer1_idx` (`idFreelancer` ASC),
+  CONSTRAINT `fk_previousWork_freelancer1`
+    FOREIGN KEY (`idFreelancer`)
+    REFERENCES `el_que_sabe`.`freelancer` (`idFreelancer`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`imagespw`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`imagespw` (
+  `idImagesPW` INT NOT NULL AUTO_INCREMENT,
+  `idPreviousWork` INT NOT NULL,
+  `image` LONGBLOB NULL DEFAULT NULL,
+  PRIMARY KEY (`idImagesPW`),
+  INDEX `fk_imagesPW_previousWork1_idx` (`idPreviousWork` ASC),
+  CONSTRAINT `fk_imagesPW_previousWork1`
+    FOREIGN KEY (`idPreviousWork`)
+    REFERENCES `el_que_sabe`.`previouswork` (`idPreviousWork`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`imegesco`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`imegesco` (
+  `idImagesHO` INT NOT NULL AUTO_INCREMENT,
+  `image` LONGBLOB NULL DEFAULT NULL,
+  `idContractOffer` INT NOT NULL,
+  PRIMARY KEY (`idImagesHO`),
+  INDEX `fk_imegesHO_hireOffer1_idx` (`idContractOffer` ASC),
+  CONSTRAINT `fk_imegesHO_hireOffer1`
+    FOREIGN KEY (`idContractOffer`)
+    REFERENCES `el_que_sabe`.`contractoffer` (`idContractOffer`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 6
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`knex_migrations`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`knex_migrations` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NULL DEFAULT NULL,
+  `batch` INT NULL DEFAULT NULL,
+  `migration_time` TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 10
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`knex_migrations_lock`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`knex_migrations_lock` (
+  `index` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `is_locked` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`index`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`messages`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`messages` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `content` TEXT NULL DEFAULT NULL,
+  `autor` TEXT NULL DEFAULT NULL,
+  `attachment` TEXT NULL DEFAULT NULL,
+  `estimateId` INT NOT NULL,
+  `time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `visto` TINYINT(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_messages_estimate1_idx` (`estimateId` ASC),
+  CONSTRAINT `fk_messages_estimate1`
+    FOREIGN KEY (`estimateId`)
+    REFERENCES `el_que_sabe`.`estimate` (`estimateId`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 257
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`recovery_tokens`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`recovery_tokens` (
+  `user` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `token` VARCHAR(255) NOT NULL,
+  `dateTime` DATETIME NOT NULL,
+  PRIMARY KEY (`token`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `el_que_sabe`.`review`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `el_que_sabe`.`review` (
+  `estimateId` INT NOT NULL,
+  `clientScore` ENUM('0', '1', '2', '3', '4', '5') NULL DEFAULT NULL,
+  `clientComment` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`estimateId`),
+  INDEX `review_estimateid_index` (`estimateId` ASC),
+  CONSTRAINT `review_estimateid_foreign`
+    FOREIGN KEY (`estimateId`)
+    REFERENCES `el_que_sabe`.`estimate` (`estimateId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

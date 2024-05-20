@@ -1,0 +1,126 @@
+idCity,name,idDepartment
+5.03,Amaga,5
+5.04,Anori,5
+5.12,Caceres,5
+5.15,Carolina,5
+5.19,Cisneros,5
+5.24,Ebejico,5
+5.25,"El Bagre",5
+5.31,"Gomez Plata",5
+5.36,Itagui,5
+5.38,"La Estrella",5
+5.39,"La Pintada",5
+5.4,"La Union",5
+5.44,Marinilla,5
+5.48,Mutata,5
+5.49,Necocli,5
+5.66,"San Luis",5
+5.67,"San Roque",5
+5.69,"Santo Domingo",5
+5.79,Taraza,5
+5.89,Yolombo,5
+5001,Medellin,5
+5002,Abejorral,5
+5004,Abriaqui,5
+5021,Alejandria,5
+5031,Amalfi,5
+5034,Andes,5
+5036,Angelopolis,5
+5038,Angostura,5
+5042,"Santafe de Antioquia",5
+5044,Anza,5
+5045,Apartado,5
+5051,Arboletes,5
+5055,Argelia,5
+5059,Armenia,5
+5079,Barbosa,5
+5086,Belmira,5
+5088,Bello,5
+5091,Betania,5
+5093,Betulia,5
+5101,"Ciudad Bolivar",5
+5107,BriceÃ±o,5
+5113,Buritica,5
+5125,Caicedo,5
+5129,Caldas,5
+5134,Campamento,5
+5138,CaÃ±asgordas,5
+5142,Caracoli,5
+5145,Caramanta,5
+5147,Carepa,5
+5148,"El Carmen de Viboral",5
+5154,Caucasia,5
+5172,Chigorodo,5
+5197,Cocorna,5
+5206,Concepcion,5
+5209,Concordia,5
+5212,Copacabana,5
+5234,Dabeiba,5
+5237,"Don Matias",5
+5264,Entrerrios,5
+5266,Envigado,5
+5282,Fredonia,5
+5284,Frontino,5
+5306,Giraldo,5
+5308,Girardota,5
+5313,Granada,5
+5315,Guadalupe,5
+5318,Guarne,5
+5321,Guatape,5
+5347,Heliconia,5
+5353,Hispania,5
+5361,Ituango,5
+5364,Jardin,5
+5368,Jerico,5
+5376,"La Ceja",5
+5411,Liborina,5
+5425,Maceo,5
+5467,Montebello,5
+5475,Murindo,5
+5483,NariÃ±o,5
+5495,Nechi,5
+5501,Olaya,5
+5541,PeÃ±ol,5
+5543,Peque,5
+5576,Pueblorrico,5
+5579,"Puerto Berrio",5
+5585,"Puerto Nare",5
+5591,"Puerto Triunfo",5
+5604,Remedios,5
+5607,Retiro,5
+5615,Rionegro,5
+5628,Sabanalarga,5
+5631,Sabaneta,5
+5642,Salgar,5
+5647,"San Andres de Cuerquia",5
+5649,"San Carlos",5
+5652,"San Francisco",5
+5656,"San Jeronimo",5
+5658,"San Jose de La MontaÃ±a",5
+5659,"San Juan de Uraba",5
+5664,"San Pedro",5
+5665,"San Pedro de Uraba",5
+5667,"San Rafael",5
+5674,"San Vicente",5
+5679,"Santa Barbara",5
+5686,"Santa Rosa de Osos",5
+5697,"El Santuario",5
+5736,Segovia,5
+5756,Sonson,5
+5761,Sopetran,5
+5789,Tamesis,5
+5792,Tarso,5
+5809,Titiribi,5
+5819,Toledo,5
+5837,Turbo,5
+5842,Uramita,5
+5847,Urrao,5
+5854,Valdivia,5
+5856,Valparaiso,5
+5858,Vegachi,5
+5861,Venecia,5
+5873,"Vigia del Fuerte",5
+5885,Yali,5
+5887,Yarumal,5
+5893,Yondo,5
+5895,Zaragoza,5
