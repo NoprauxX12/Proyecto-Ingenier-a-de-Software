@@ -17,11 +17,12 @@ Before running the program, open the `dbMySql.txt` file and copy the SQL query c
 To interact with the registration process in the application, you need to populate the `town` and `technicalknowledge` tables. We provide two CSV files that can be used as samples. To import these records into the database using MySQL Workbench, follow these steps:
 
 1. Double-click to select the schema `el_que_sabe`.
-2. Run the query: `SELECT * FROM el_que_sabe.town;`.
-3. In the Result Grid, click the "Import records from an external file" button.
-4. In the file explorer, find `town.csv` located in the repository files.
-5. Select "Use existing table" and choose the corresponding table from the dropdown menu.
-6. Ensure the columns from the file match the columns in the database table.
+2. Insert a department with the query: `INSERT INTO department (idDepartment, name) VALUES ('5','Antioquia');`.
+3. Run the query: `SELECT * FROM el_que_sabe.town;`.
+4. In the Result Grid, click the "Import records from an external file" button.
+5. In the file explorer, find `town.csv` located in the repository files.
+6. Select "Use existing table" and choose the corresponding table from the dropdown menu.
+7. Ensure the columns from the file match the columns in the database table.
 
 Repeat the same process for the `technicalknowledge` table using `technicalknowledge.csv`.
 
